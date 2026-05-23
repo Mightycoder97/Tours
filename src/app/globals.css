@@ -64,3 +64,18 @@ a, button, [role="button"], input, select, textarea, label {
     font-size: 16px; /* Prevents iOS zoom on focus */
   }
 }
+
+/* Hide scrollbar for horizontal scroll carousels */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Print styles for PDF download */
+@media print {
+  nav, footer, .whatsapp-btn, button { display: none !important; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

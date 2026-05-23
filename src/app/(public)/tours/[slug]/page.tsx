@@ -20,6 +20,7 @@ const fetchTour = async (slug: string) => {
     image: data.image_url,
     images: data.images || [],
     price: data.price_adult,
+    priceChild: data.price_child ?? undefined,
     duration: data.duration
   };
 }
@@ -130,7 +131,9 @@ export default async function TourDetail({ params }: { params: Promise<{ slug: s
              <BookingSidebar 
                tourId={tour.id}
                tourName={tour.title}
+               tourSlug={tour.slug}
                priceAdult={tour.price}
+               priceChild={tour.priceChild}
                imageUrl={tour.image}
              />
           </div>

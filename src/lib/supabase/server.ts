@@ -1,6 +1,11 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
+/**
+ * Authenticated Supabase client for server components.
+ * USE THIS for: operations requiring user auth (admin CRUD, bookings, user data)
+ * For public reads, prefer the simpler client from '@/lib/supabase'
+ */
 export async function createClient() {
   const cookieStore = await cookies()
 

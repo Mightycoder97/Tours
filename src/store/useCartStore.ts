@@ -4,6 +4,7 @@ import { persist } from 'zustand/middleware'
 export interface CartItem {
   tourId: string
   tourName: string
+  tourSlug: string
   date: string
   adults: number
   children: number

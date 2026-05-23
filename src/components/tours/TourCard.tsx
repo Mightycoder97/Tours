@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Clock, Star } from 'lucide-react';
+import { ArrowRight, Clock } from 'lucide-react';
+import StarRating from '@/components/ui/StarRating';
 
 interface TourProps {
   id: string;
@@ -12,6 +13,7 @@ interface TourProps {
   tag?: string;
   rating?: number;
   reviews?: number;
+  discount?: number;
 }
 
 export default function TourCard({ tour }: { tour: TourProps }) {
@@ -23,6 +25,11 @@ export default function TourCard({ tour }: { tour: TourProps }) {
           <div className="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm tracking-wider">
             {tour.tag}
           </div>
+        )}
+        {tour.discount && tour.discount > 0 && (
+          <span className="absolute top-4 right-4 z-10 bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+            {tour.discount}% OFF
+          </span>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 z-10 transition-opacity duration-300"></div>
         <Image 
@@ -42,9 +49,9 @@ export default function TourCard({ tour }: { tour: TourProps }) {
             {tour.duration}
           </div>
           {tour.rating && (
-            <div className="flex items-center font-bold text-primary">
-              <Star className="w-4 h-4 text-accent fill-accent mr-1" />
-              {tour.rating} <span className="text-text-light font-normal ml-1">({tour.reviews})</span>
+            <div className="flex items-center gap-1">
+              <StarRating rating={tour.rating} size="sm" />
+              <span className="text-text-light font-normal text-xs ml-1">({tour.reviews})</span>
             </div>
           )}
         </div>
@@ -75,3 +82,4 @@ export default function TourCard({ tour }: { tour: TourProps }) {
     </div>
   );
 }
+

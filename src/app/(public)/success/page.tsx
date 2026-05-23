@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { CheckCircle, Calendar, ArrowRight, Download } from 'lucide-react';
+import { CheckCircle, ArrowRight } from 'lucide-react';
+import SuccessActions from '@/components/ui/SuccessActions';
 
 export default async function SuccessPage({ searchParams }: { searchParams: Promise<{ code?: string }> }) {
   const resolvedParams = await searchParams;
@@ -31,14 +32,7 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
                  <span className="text-xs font-bold uppercase text-gray-500 tracking-wider block mb-1">Código de Reserva</span>
                  <span className="text-2xl font-mono font-bold text-primary">{bookingId}</span>
               </div>
-              <div className="mt-4 sm:mt-0 flex space-x-3">
-                 <button className="flex items-center text-sm font-bold text-primary hover:text-accent transition-colors">
-                   <Download className="w-4 h-4 mr-1" /> Descargar PDF
-                 </button>
-                 <button className="flex items-center text-sm font-bold text-primary hover:text-accent transition-colors">
-                   <Calendar className="w-4 h-4 mr-1" /> Añadir a Calendario
-                 </button>
-              </div>
+              <SuccessActions bookingCode={bookingId} />
             </div>
 
             <div className="text-left mb-10">

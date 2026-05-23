@@ -58,7 +58,7 @@ export default function CartPage() {
                     </div>
                     
                     <div className="flex justify-between items-end border-t border-gray-50 pt-4 mt-auto">
-                       <Link href={`/tours/${item.tourId}`} className="text-sm font-bold text-accent hover:underline">Editar</Link>
+                       <Link href={`/tours/${item.tourSlug || item.tourId}`} className="text-sm font-bold text-primary hover:underline">Editar</Link>
                        <div className="text-2xl font-bold text-primary">USD {item.totalPrice}</div>
                     </div>
                   </div>

@@ -8,9 +8,15 @@ export const metadata = {
 
 export const revalidate = 60;
 
-export default async function ToursPage() {
-  const { data: tours } = await supabase.from('tours').select('*').eq('is_active', true).order('created_at', { ascending: true });
-  const displayTours = tours || [];
+interface ToursPageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function ToursPage({ searchParams }: ToursPageProps) {
+  const params = await searchParams;
+  const { data: tours } = await supabase.from('tours').select('*, categories(name), destinations(name)').eq('is_active', true).order('created_at', { ascending: true });
+  const { data: categories } = await supabase.from('categories').select('*').order('name');
+  const { data: destinations } = await supabase.from('destinations').select('*').order('name');
   
   return (
     <div className="bg-gray-50 min-h-screen pb-20 pt-24 sm:pt-28">
@@ -25,7 +31,12 @@ export default async function ToursPage() {
         </div>
       </div>
 
-      <ToursPageClient tours={displayTours} />
+      <ToursPageClient 
+        tours={tours || []} 
+        categories={categories || []}
+        destinations={destinations || []}
+        initialSearch={typeof params.q === 'string' ? params.q : ''}
+      />
     </div>
   );
 }

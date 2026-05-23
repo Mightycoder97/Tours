@@ -1,20 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCartStore } from '@/store/useCartStore';
 import { useRouter } from 'next/navigation';
-import { Calendar as CalendarIcon, Users, Check, AlertCircle, ShoppingCart } from 'lucide-react';
+import { Calendar as CalendarIcon, Users, Check, AlertCircle, ShoppingCart, Loader2 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 interface BookingSidebarProps {
   tourId: string;
   tourName: string;
+  tourSlug: string;
   priceAdult: number;
+  priceChild?: number;
   imageUrl: string;
 }
 
-export default function BookingSidebar({ tourId, tourName, priceAdult, imageUrl }: BookingSidebarProps) {
+export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult, priceChild: priceChildProp, imageUrl }: BookingSidebarProps) {
   const router = useRouter();
   const addItem = useCartStore((state) => state.addItem);
   
@@ -25,14 +27,40 @@ export default function BookingSidebar({ tourId, tourName, priceAdult, imageUrl 
   const [isAdded, setIsAdded] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Mocking dates starting from tomorrow
-  const mockAvailableDates = Array.from({ length: 14 }).map((_, i) => addDays(new Date(), i + 1));
-  const isAvailable = (date: Date) => {
-    return date.getDay() !== 0; 
-  };
+  // Availability states
+  const [availableDates, setAvailableDates] = useState<Date[]>([]);
+  const [isLoadingDates, setIsLoadingDates] = useState(true);
 
-  const priceChild = priceAdult * 0.7;
-  const totalPrice = (adults * priceAdult) + (children * priceChild);
+  // Fetch availability from API
+  useEffect(() => {
+    async function fetchAvailability() {
+      setIsLoadingDates(true);
+      try {
+        const res = await fetch(`/api/availability?tour_id=${tourId}`);
+        const data = await res.json();
+        if (data.dates && Array.isArray(data.dates)) {
+          const dates = data.dates
+            .filter((s: { spots_left: number }) => s.spots_left > 0)
+            .map((s: { date: string }) => new Date(s.date));
+          setAvailableDates(dates.length > 0 ? dates : fallbackDates());
+        } else {
+          setAvailableDates(fallbackDates());
+        }
+      } catch {
+        setAvailableDates(fallbackDates());
+      } finally {
+        setIsLoadingDates(false);
+      }
+    }
+    fetchAvailability();
+  }, [tourId]);
+
+  function fallbackDates() {
+    return Array.from({ length: 14 }, (_, i) => addDays(new Date(), i + 1)).filter(d => d.getDay() !== 0);
+  }
+
+  const childPrice = priceChildProp ?? Math.round(priceAdult * 0.7);
+  const totalPrice = (adults * priceAdult) + (children * childPrice);
 
   const handleBook = () => {
     if (!selectedDate) {
@@ -46,11 +74,12 @@ export default function BookingSidebar({ tourId, tourName, priceAdult, imageUrl 
     addItem({
       tourId,
       tourName,
+      tourSlug,
       date: selectedDate.toISOString(),
       adults,
       children,
       pricePerAdult: priceAdult,
-      pricePerChild: priceChild,
+      pricePerChild: childPrice,
       totalPrice,
       imageUrl
     });
@@ -82,31 +111,34 @@ export default function BookingSidebar({ tourId, tourName, priceAdult, imageUrl 
           </label>
           
           {/* Calendar Grid */}
-          <div className="grid grid-cols-4 gap-2">
-            {mockAvailableDates.slice(0, 12).map((dt, idx) => {
-              const available = isAvailable(dt);
-              const isSelected = selectedDate?.toDateString() === dt.toDateString();
-              
-              return (
-                <button
-                  key={idx}
-                  disabled={!available}
-                  onClick={() => setSelectedDate(dt)}
-                  className={`p-2 flex flex-col items-center justify-center rounded-lg border text-xs transition-all ${
-                    isSelected 
-                      ? 'border-primary bg-primary text-white font-bold shadow-md' 
-                      : available 
-                        ? 'border-gray-200 text-text-main hover:border-primary hover:text-primary cursor-pointer' 
-                        : 'border-gray-100 text-gray-300 bg-gray-50 cursor-not-allowed line-through'
-                  }`}
-                >
-                  <span className="mb-1 leading-none">{format(dt, 'EEEEEE', { locale: es }).toUpperCase()}</span>
-                  <span className="text-lg leading-none">{format(dt, 'd')}</span>
-                  <span className="leading-none">{format(dt, 'MMM', { locale: es }).toUpperCase()}</span>
-                </button>
-              )
-            })}
-          </div>
+          {isLoadingDates ? (
+            <div className="flex items-center justify-center py-8 text-gray-400">
+              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+              <span className="text-sm">Cargando disponibilidad...</span>
+            </div>
+          ) : (
+            <div className="grid grid-cols-4 gap-2">
+              {availableDates.slice(0, 12).map((dt, idx) => {
+                const isSelected = selectedDate?.toDateString() === dt.toDateString();
+                
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedDate(dt)}
+                    className={`p-2 flex flex-col items-center justify-center rounded-lg border text-xs transition-all ${
+                      isSelected 
+                        ? 'border-primary bg-primary text-white font-bold shadow-md' 
+                        : 'border-gray-200 text-text-main hover:border-primary hover:text-primary cursor-pointer'
+                    }`}
+                  >
+                    <span className="mb-1 leading-none">{format(dt, 'EEEEEE', { locale: es }).toUpperCase()}</span>
+                    <span className="text-lg leading-none">{format(dt, 'd')}</span>
+                    <span className="leading-none">{format(dt, 'MMM', { locale: es }).toUpperCase()}</span>
+                  </button>
+                )
+              })}
+            </div>
+          )}
           {!selectedDate && <p className="text-xs text-accent mt-3 italic">* Selecciona una fecha para ver disponibilidad real.</p>}
         </div>
 
@@ -140,7 +172,7 @@ export default function BookingSidebar({ tourId, tourName, priceAdult, imageUrl 
             <div className="flex justify-between items-center border border-gray-200 rounded-lg p-3">
                <div>
                  <p className="text-sm font-bold text-text-main">Niños (4-11 años)</p>
-                 <p className="text-xs text-text-light">USD {priceChild} c/u</p>
+                 <p className="text-xs text-text-light">USD {childPrice} c/u</p>
                </div>
                <div className="flex items-center space-x-3 bg-gray-50 rounded-lg p-1 border border-gray-100">
                  <button 

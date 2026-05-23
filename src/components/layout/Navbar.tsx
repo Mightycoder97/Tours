@@ -2,16 +2,47 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect, useCallback } from 'react';
-import { Menu, X, ShoppingCart } from 'lucide-react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Menu, X, ShoppingCart, Mountain, Compass, Map, ChevronDown, Utensils, Footprints, Users, Landmark, TreePine, Sun } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { usePathname } from 'next/navigation';
 import LanguageSwitcher from './LanguageSwitcher';
+
+const toursDropdownData = {
+  left: {
+    title: 'Destinos TOP',
+    icon: Mountain,
+    items: [
+      { label: 'Machu Picchu Full Day', href: '/tours', icon: Landmark },
+      { label: 'Valle Sagrado de los Incas', href: '/tours', icon: Sun },
+      { label: 'Montaña de 7 Colores', href: '/tours', icon: Mountain },
+    ],
+  },
+  right: {
+    title: 'Experiencias',
+    icon: Compass,
+    items: [
+      { label: 'Tours Gastronómicos', href: '/tours', icon: Utensils },
+      { label: 'Camino Inca Clásico', href: '/tours', icon: Footprints },
+      { label: 'Turismo Comunitario', href: '/tours', icon: Users },
+    ],
+  },
+};
+
+const destinosDropdownData = [
+  { label: 'Cusco', href: '/rutas', icon: Landmark },
+  { label: 'Valle Sagrado', href: '/rutas', icon: Sun },
+  { label: 'Machu Picchu', href: '/rutas', icon: Mountain },
+  { label: 'Laguna Humantay', href: '/rutas', icon: TreePine },
+  { label: 'Montaña de Colores', href: '/rutas', icon: Map },
+];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
   const cartItems = useCartStore((state) => state.items);
   const pathname = usePathname();
@@ -19,6 +50,7 @@ export default function Navbar() {
   // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setMobileAccordion(null);
   }, [pathname]);
 
   // Body scroll lock when mobile menu is open
@@ -39,7 +71,28 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const closeMobileMenu = useCallback(() => setIsMobileMenuOpen(false), []);
+  const closeMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(false);
+    setMobileAccordion(null);
+  }, []);
+
+  const handleMouseEnter = useCallback((menu: string) => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    setActiveMenu(menu);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    closeTimeoutRef.current = setTimeout(() => {
+      setActiveMenu(null);
+    }, 150);
+  }, []);
+
+  const toggleMobileAccordion = useCallback((key: string) => {
+    setMobileAccordion((prev) => (prev === key ? null : key));
+  }, []);
 
   return (
     <header
@@ -65,41 +118,100 @@ export default function Navbar() {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center space-x-8">
+            {/* Tours Dropdown */}
             <div 
-              className="relative group cursor-pointer"
-              onMouseEnter={() => setActiveMenu('tours')}
-              onMouseLeave={() => setActiveMenu(null)}
+              className="relative cursor-pointer"
+              onMouseEnter={() => handleMouseEnter('tours')}
+              onMouseLeave={handleMouseLeave}
             >
-              <Link href="/tours" className="text-sm font-medium hover:text-accent transition-colors py-2 block">
+              <Link href="/tours" className="text-sm font-medium hover:text-accent transition-colors py-2 flex items-center gap-1">
                 Tours & Paquetes
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'tours' ? 'rotate-180' : ''}`} />
               </Link>
               {/* Mega Menu */}
-              {activeMenu === 'tours' && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[600px] bg-white text-text-main rounded-xl shadow-2xl p-6 grid grid-cols-2 gap-8 opacity-100 z-50 mt-4 border border-gray-100">
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 border-t border-l border-gray-100"></div>
-                  <div>
-                    <h3 className="font-serif text-lg text-primary mb-4 border-b pb-2">Destinos TOP</h3>
-                    <ul className="space-y-3">
-                      <li><Link href="/tours" className="hover:text-primary transition-colors hover:font-medium">Machu Picchu Full Day</Link></li>
-                      <li><Link href="/tours" className="hover:text-primary transition-colors hover:font-medium">Valle Sagrado de los Incas</Link></li>
-                      <li><Link href="/tours" className="hover:text-primary transition-colors hover:font-medium">Montaña de 7 Colores</Link></li>
-                    </ul>
+              <div
+                className={`absolute top-full left-1/2 -translate-x-1/2 w-[600px] bg-white text-text-main rounded-xl shadow-2xl p-6 grid grid-cols-2 gap-8 z-50 mt-4 border border-gray-100 transition-all duration-200 ${
+                  activeMenu === 'tours' ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
+                }`}
+              >
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 border-t border-l border-gray-100"></div>
+                
+                {/* Left Column */}
+                <div>
+                  <div className="flex items-center gap-2 mb-4 border-b pb-2">
+                    <toursDropdownData.left.icon className="w-5 h-5 text-primary" />
+                    <h3 className="font-serif text-lg text-primary">{toursDropdownData.left.title}</h3>
                   </div>
-                  <div>
-                    <h3 className="font-serif text-lg text-primary mb-4 border-b pb-2">Experiencias</h3>
-                    <ul className="space-y-3">
-                      <li><Link href="/tours" className="hover:text-primary transition-colors hover:font-medium">Tours Gastronómicos</Link></li>
-                      <li><Link href="/tours" className="hover:text-primary transition-colors hover:font-medium">Camino Inca Clásico</Link></li>
-                      <li><Link href="/tours" className="hover:text-primary transition-colors hover:font-medium">Turismo Comunitario</Link></li>
-                    </ul>
-                  </div>
+                  <ul className="space-y-3">
+                    {toursDropdownData.left.items.map((item) => (
+                      <li key={item.label}>
+                        <Link href={item.href} className="flex items-center gap-2.5 text-gray-600 hover:text-primary transition-colors group">
+                          <item.icon className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" />
+                          <span>{item.label}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              )}
+
+                {/* Right Column */}
+                <div>
+                  <div className="flex items-center gap-2 mb-4 border-b pb-2">
+                    <toursDropdownData.right.icon className="w-5 h-5 text-primary" />
+                    <h3 className="font-serif text-lg text-primary">{toursDropdownData.right.title}</h3>
+                  </div>
+                  <ul className="space-y-3">
+                    {toursDropdownData.right.items.map((item) => (
+                      <li key={item.label}>
+                        <Link href={item.href} className="flex items-center gap-2.5 text-gray-600 hover:text-primary transition-colors group">
+                          <item.icon className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" />
+                          <span>{item.label}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* CTA Row */}
+                <div className="col-span-2 pt-4 border-t">
+                  <Link href="/tours" className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-semibold py-2.5 rounded-lg hover:bg-primary hover:text-white transition-colors text-sm">
+                    <Compass className="w-4 h-4" />
+                    Ver Todos los Tours
+                  </Link>
+                </div>
+              </div>
             </div>
-            
-            <Link href="/rutas" className="text-sm font-medium hover:text-accent transition-colors py-2 block">
-              Destinos
-            </Link>
+
+            {/* Destinos Dropdown */}
+            <div 
+              className="relative cursor-pointer"
+              onMouseEnter={() => handleMouseEnter('destinos')}
+              onMouseLeave={handleMouseLeave}
+            >
+              <Link href="/rutas" className="text-sm font-medium hover:text-accent transition-colors py-2 flex items-center gap-1">
+                Destinos
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'destinos' ? 'rotate-180' : ''}`} />
+              </Link>
+              {/* Destinos Dropdown Panel */}
+              <div
+                className={`absolute top-full left-1/2 -translate-x-1/2 w-[260px] bg-white text-text-main rounded-xl shadow-2xl p-4 z-50 mt-4 border border-gray-100 transition-all duration-200 ${
+                  activeMenu === 'destinos' ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
+                }`}
+              >
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 border-t border-l border-gray-100"></div>
+                <ul className="space-y-1">
+                  {destinosDropdownData.map((item) => (
+                    <li key={item.label}>
+                      <Link href={item.href} className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-gray-600 hover:text-primary hover:bg-primary/5 transition-colors group">
+                        <item.icon className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" />
+                        <span className="text-sm">{item.label}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
             <Link href="/nosotros" className="text-sm font-medium hover:text-accent transition-colors py-2 block">
               Nosotros
             </Link>
@@ -168,12 +280,80 @@ export default function Navbar() {
 
         <nav className="flex flex-col h-full overflow-y-auto px-6 py-6">
           <div className="flex flex-col space-y-1">
-            <Link href="/tours" onClick={closeMobileMenu} className="text-xl font-serif text-white py-4 border-b border-primary-light active:bg-white/10 rounded-lg px-3 transition-colors">
-              Tours & Paquetes
-            </Link>
-            <Link href="/rutas" onClick={closeMobileMenu} className="text-xl font-serif text-white py-4 border-b border-primary-light active:bg-white/10 rounded-lg px-3 transition-colors">
-              Destinos
-            </Link>
+            {/* Tours Accordion */}
+            <div>
+              <button
+                onClick={() => toggleMobileAccordion('tours')}
+                className="w-full flex items-center justify-between text-xl font-serif text-white py-4 border-b border-primary-light px-3 transition-colors"
+                aria-expanded={mobileAccordion === 'tours'}
+              >
+                <span>Tours & Paquetes</span>
+                <ChevronDown className={`w-5 h-5 transition-transform duration-200 ${mobileAccordion === 'tours' ? 'rotate-180' : ''}`} />
+              </button>
+              <div
+                className={`grid transition-[grid-template-rows] duration-300 ${
+                  mobileAccordion === 'tours' ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <div className="pl-6 py-2 space-y-1">
+                    {[...toursDropdownData.left.items, ...toursDropdownData.right.items].map((item) => (
+                      <Link
+                        key={item.label}
+                        href={item.href}
+                        onClick={closeMobileMenu}
+                        className="flex items-center gap-3 text-white/80 hover:text-white py-2.5 px-3 rounded-lg active:bg-white/10 transition-colors"
+                      >
+                        <item.icon className="w-4 h-4 text-accent shrink-0" />
+                        <span className="text-base">{item.label}</span>
+                      </Link>
+                    ))}
+                    <Link
+                      href="/tours"
+                      onClick={closeMobileMenu}
+                      className="flex items-center gap-3 text-accent font-semibold py-2.5 px-3 rounded-lg active:bg-white/10 transition-colors"
+                    >
+                      <Compass className="w-4 h-4 shrink-0" />
+                      <span className="text-base">Ver Todos los Tours</span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Destinos Accordion */}
+            <div>
+              <button
+                onClick={() => toggleMobileAccordion('destinos')}
+                className="w-full flex items-center justify-between text-xl font-serif text-white py-4 border-b border-primary-light px-3 transition-colors"
+                aria-expanded={mobileAccordion === 'destinos'}
+              >
+                <span>Destinos</span>
+                <ChevronDown className={`w-5 h-5 transition-transform duration-200 ${mobileAccordion === 'destinos' ? 'rotate-180' : ''}`} />
+              </button>
+              <div
+                className={`grid transition-[grid-template-rows] duration-300 ${
+                  mobileAccordion === 'destinos' ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <div className="pl-6 py-2 space-y-1">
+                    {destinosDropdownData.map((item) => (
+                      <Link
+                        key={item.label}
+                        href={item.href}
+                        onClick={closeMobileMenu}
+                        className="flex items-center gap-3 text-white/80 hover:text-white py-2.5 px-3 rounded-lg active:bg-white/10 transition-colors"
+                      >
+                        <item.icon className="w-4 h-4 text-accent shrink-0" />
+                        <span className="text-base">{item.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <Link href="/nosotros" onClick={closeMobileMenu} className="text-xl font-serif text-white py-4 border-b border-primary-light active:bg-white/10 rounded-lg px-3 transition-colors">
               Nosotros
             </Link>

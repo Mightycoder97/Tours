@@ -47,10 +47,10 @@ export default function CheckoutPage() {
     setMounted(true);
     // Initialize forms
     if (maxAdults > 0 && adultsInfo.length === 0) {
-      setAdultsInfo(Array(maxAdults).fill({ firstName: '', lastName: '', nationality: 'Perú', birthDate: '', docType: 'DNI', docNumber: '' }));
+      setAdultsInfo(Array.from({ length: maxAdults }, () => ({ firstName: '', lastName: '', nationality: 'Perú', birthDate: '', docType: 'DNI', docNumber: '' })));
     }
     if (maxChildren > 0 && childrenInfo.length === 0) {
-      setChildrenInfo(Array(maxChildren).fill({ firstName: '', lastName: '', nationality: 'Perú', birthDate: '', docType: 'DNI', docNumber: '' }));
+      setChildrenInfo(Array.from({ length: maxChildren }, () => ({ firstName: '', lastName: '', nationality: 'Perú', birthDate: '', docType: 'DNI', docNumber: '' })));
     }
   }, [maxAdults, maxChildren]);
 
@@ -73,34 +73,48 @@ export default function CheckoutPage() {
   };
 
   const registerBooking = async (paymentRef: string, method: string) => {
-    const bookingData = {
-      tourId: items[0].tourId,
-      tourName: items[0].tourName,
-      date: items[0].date,
-      adults: maxAdults,
-      children: maxChildren,
-      totalPrice: getTotal(),
-      contactName: adultsInfo[0]?.firstName ? `${adultsInfo[0].firstName} ${adultsInfo[0].lastName}` : 'Cliente',
-      contactEmail,
-      contactPhone: contactPhonePrefix + contactPhone,
-      paymentMethod: method,
-      paymentRef,
-      passengers: [
-        ...adultsInfo.map(a => ({ ...a, isChild: false })),
-        ...childrenInfo.map(c => ({ ...c, isChild: true }))
-      ]
-    };
+    const allPassengers = [
+      ...adultsInfo.map(a => ({ ...a, isChild: false })),
+      ...childrenInfo.map(c => ({ ...c, isChild: true }))
+    ];
 
-    const res = await fetch('/api/bookings', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(bookingData),
-    });
+    let lastBookingCode = '';
+    let allSuccess = true;
 
-    const data = await res.json();
-    if (data.success) {
+    for (const item of items) {
+      const bookingData = {
+        tourId: item.tourId,
+        tourName: item.tourName,
+        date: item.date,
+        adults: item.adults,
+        children: item.children,
+        totalPrice: item.totalPrice,
+        contactName: adultsInfo[0]?.firstName ? `${adultsInfo[0].firstName} ${adultsInfo[0].lastName}` : 'Cliente',
+        contactEmail,
+        contactPhone: contactPhonePrefix + contactPhone,
+        paymentMethod: method,
+        paymentRef,
+        passengers: allPassengers
+      };
+
+      const res = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        lastBookingCode = data.bookingCode;
+      } else {
+        allSuccess = false;
+        break;
+      }
+    }
+
+    if (allSuccess) {
       clearCart();
-      router.push(`/success?code=${data.bookingCode}`);
+      router.push(`/success?code=${lastBookingCode}`);
     } else {
       alert("Error registrando la reserva en el sistema.");
       setIsProcessing(false);
@@ -159,7 +173,7 @@ export default function CheckoutPage() {
               {/* Contact Person */}
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8">
                 <h2 className="text-sm font-bold text-text-main mb-1">Persona de contacto</h2>
-                <p className="text-xs text-text-light mb-4">Esta persona rercibirá los billetes via email y será contactado en caso sea necesario.</p>
+                <p className="text-xs text-text-light mb-4">Esta persona recibirá los billetes via email y será contactado en caso sea necesario.</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex">
                     <select 
