@@ -1,43 +1,43 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Menu, X, ShoppingCart, Mountain, Compass, Map, ChevronDown, Utensils, Footprints, Users, Landmark, TreePine, Sun } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
-import { usePathname } from 'next/navigation';
+import { usePathname } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 import LanguageSwitcher from './LanguageSwitcher';
 
-const toursDropdownData = {
+const toursDropdownIcons = {
   left: {
-    title: 'Destinos TOP',
     icon: Mountain,
     items: [
-      { label: 'Machu Picchu Full Day', href: '/tours', icon: Landmark },
-      { label: 'Valle Sagrado de los Incas', href: '/tours', icon: Sun },
-      { label: 'Montaña de 7 Colores', href: '/tours', icon: Mountain },
+      { key: 'machuPicchuFullDay' as const, href: '/tours', icon: Landmark },
+      { key: 'sacredValley' as const, href: '/tours', icon: Sun },
+      { key: 'rainbowMountain' as const, href: '/tours', icon: Mountain },
     ],
   },
   right: {
-    title: 'Experiencias',
     icon: Compass,
     items: [
-      { label: 'Tours Gastronómicos', href: '/tours', icon: Utensils },
-      { label: 'Camino Inca Clásico', href: '/tours', icon: Footprints },
-      { label: 'Turismo Comunitario', href: '/tours', icon: Users },
+      { key: 'gastronomicTours' as const, href: '/tours', icon: Utensils },
+      { key: 'classicIncaTrail' as const, href: '/tours', icon: Footprints },
+      { key: 'communityTourism' as const, href: '/tours', icon: Users },
     ],
   },
 };
 
-const destinosDropdownData = [
-  { label: 'Cusco', href: '/rutas', icon: Landmark },
-  { label: 'Valle Sagrado', href: '/rutas', icon: Sun },
-  { label: 'Machu Picchu', href: '/rutas', icon: Mountain },
-  { label: 'Laguna Humantay', href: '/rutas', icon: TreePine },
-  { label: 'Montaña de Colores', href: '/rutas', icon: Map },
+const destinosDropdownIcons = [
+  { key: 'cusco' as const, href: '/rutas', icon: Landmark },
+  { key: 'sacredValley' as const, href: '/rutas', icon: Sun },
+  { key: 'machuPicchu' as const, href: '/rutas', icon: Mountain },
+  { key: 'humantayLake' as const, href: '/rutas', icon: TreePine },
+  { key: 'rainbowMountain' as const, href: '/rutas', icon: Map },
 ];
 
 export default function Navbar() {
+  const t = useTranslations('nav');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -97,7 +97,7 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-primary text-white shadow-lg py-2' : 'bg-white/95 backdrop-blur-md text-primary border-b border-gray-100 py-3'
+        isScrolled ? 'bg-primary-dark text-white shadow-lg py-2' : 'bg-white/95 backdrop-blur-md text-primary border-b border-gray-100 py-3'
       }`}
     >
       <div className="container mx-auto px-4 lg:px-8">
@@ -107,7 +107,7 @@ export default function Navbar() {
             <div className={`relative w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 transition-all duration-300 ${!isScrolled ? 'brightness-0' : ''}`}>
               <Image 
                 src="/imagenes/logo.webp" 
-                alt="Machu Picchu Travel Adventure Logo" 
+                alt={t('ariaLabels.logo')} 
                 fill
                 sizes="(max-width: 640px) 48px, (max-width: 1024px) 64px, 80px"
                 className="object-contain"
@@ -124,8 +124,8 @@ export default function Navbar() {
               onMouseEnter={() => handleMouseEnter('tours')}
               onMouseLeave={handleMouseLeave}
             >
-              <Link href="/tours" className="text-sm font-medium hover:text-accent transition-colors py-2 flex items-center gap-1">
-                Tours & Paquetes
+              <Link href="/tours" aria-current={pathname === '/tours' ? 'page' : undefined} className="text-sm font-medium hover:text-primary-light transition-colors py-2 flex items-center gap-1">
+                {t('toursAndPackages')}
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'tours' ? 'rotate-180' : ''}`} />
               </Link>
               {/* Mega Menu */}
@@ -139,15 +139,15 @@ export default function Navbar() {
                 {/* Left Column */}
                 <div>
                   <div className="flex items-center gap-2 mb-4 border-b pb-2">
-                    <toursDropdownData.left.icon className="w-5 h-5 text-primary" />
-                    <h3 className="font-serif text-lg text-primary">{toursDropdownData.left.title}</h3>
+                    <toursDropdownIcons.left.icon className="w-5 h-5 text-primary" />
+                    <h3 className="font-serif text-lg text-primary">{t('topDestinations')}</h3>
                   </div>
                   <ul className="space-y-3">
-                    {toursDropdownData.left.items.map((item) => (
-                      <li key={item.label}>
+                    {toursDropdownIcons.left.items.map((item) => (
+                      <li key={item.key}>
                         <Link href={item.href} className="flex items-center gap-2.5 text-gray-600 hover:text-primary transition-colors group">
                           <item.icon className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" />
-                          <span>{item.label}</span>
+                          <span>{t(`dropdown.${item.key}`)}</span>
                         </Link>
                       </li>
                     ))}
@@ -157,15 +157,15 @@ export default function Navbar() {
                 {/* Right Column */}
                 <div>
                   <div className="flex items-center gap-2 mb-4 border-b pb-2">
-                    <toursDropdownData.right.icon className="w-5 h-5 text-primary" />
-                    <h3 className="font-serif text-lg text-primary">{toursDropdownData.right.title}</h3>
+                    <toursDropdownIcons.right.icon className="w-5 h-5 text-primary" />
+                    <h3 className="font-serif text-lg text-primary">{t('experiences')}</h3>
                   </div>
                   <ul className="space-y-3">
-                    {toursDropdownData.right.items.map((item) => (
-                      <li key={item.label}>
+                    {toursDropdownIcons.right.items.map((item) => (
+                      <li key={item.key}>
                         <Link href={item.href} className="flex items-center gap-2.5 text-gray-600 hover:text-primary transition-colors group">
                           <item.icon className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" />
-                          <span>{item.label}</span>
+                          <span>{t(`dropdown.${item.key}`)}</span>
                         </Link>
                       </li>
                     ))}
@@ -176,7 +176,7 @@ export default function Navbar() {
                 <div className="col-span-2 pt-4 border-t">
                   <Link href="/tours" className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-semibold py-2.5 rounded-lg hover:bg-primary hover:text-white transition-colors text-sm">
                     <Compass className="w-4 h-4" />
-                    Ver Todos los Tours
+                    {t('viewAllTours')}
                   </Link>
                 </div>
               </div>
@@ -188,8 +188,8 @@ export default function Navbar() {
               onMouseEnter={() => handleMouseEnter('destinos')}
               onMouseLeave={handleMouseLeave}
             >
-              <Link href="/rutas" className="text-sm font-medium hover:text-accent transition-colors py-2 flex items-center gap-1">
-                Destinos
+              <Link href="/rutas" aria-current={pathname === '/rutas' ? 'page' : undefined} className="text-sm font-medium hover:text-primary-light transition-colors py-2 flex items-center gap-1">
+                {t('destinations')}
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'destinos' ? 'rotate-180' : ''}`} />
               </Link>
               {/* Destinos Dropdown Panel */}
@@ -200,11 +200,11 @@ export default function Navbar() {
               >
                 <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 border-t border-l border-gray-100"></div>
                 <ul className="space-y-1">
-                  {destinosDropdownData.map((item) => (
-                    <li key={item.label}>
+                  {destinosDropdownIcons.map((item) => (
+                    <li key={item.key}>
                       <Link href={item.href} className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-gray-600 hover:text-primary hover:bg-primary/5 transition-colors group">
                         <item.icon className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" />
-                        <span className="text-sm">{item.label}</span>
+                        <span className="text-sm">{t(`destinationItems.${item.key}`)}</span>
                       </Link>
                     </li>
                   ))}
@@ -212,11 +212,11 @@ export default function Navbar() {
               </div>
             </div>
 
-            <Link href="/nosotros" className="text-sm font-medium hover:text-accent transition-colors py-2 block">
-              Nosotros
+            <Link href="/nosotros" aria-current={pathname === '/nosotros' ? 'page' : undefined} className="text-sm font-medium hover:text-primary-light transition-colors py-2 block">
+              {t('aboutUs')}
             </Link>
-            <Link href="/blog" className="text-sm font-medium hover:text-accent transition-colors py-2 block">
-              Blog
+            <Link href="/blog" aria-current={pathname === '/blog' ? 'page' : undefined} className="text-sm font-medium hover:text-primary-light transition-colors py-2 block">
+              {t('blog')}
             </Link>
           </nav>
 
@@ -224,17 +224,17 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center space-x-6">
             <LanguageSwitcher />
             
-            <Link href="/cart" className="relative cursor-pointer hover:text-accent transition-colors">
+            <Link href="/cart" className="relative cursor-pointer hover:text-primary-light transition-colors">
               <ShoppingCart className="w-5 h-5" />
               {cartItems.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-accent text-primary text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {cartItems.length}
                 </span>
               )}
             </Link>
 
-            <Link href="/tours" className="bg-accent text-primary px-6 py-2 rounded-full font-semibold text-sm hover:bg-white transition-colors">
-              Planifica tu Viaje
+            <Link href="/tours" className="bg-white text-primary-dark px-6 py-2 rounded-full font-bold text-sm hover:bg-cream border border-gray-200 transition-colors">
+              {t('planYourTrip')}
             </Link>
           </div>
 
@@ -243,7 +243,7 @@ export default function Navbar() {
              <Link href="/cart" className="relative cursor-pointer p-2">
               <ShoppingCart className="w-5 h-5" />
               {cartItems.length > 0 && (
-                <span className="absolute top-0 right-0 bg-accent text-primary text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute top-0 right-0 bg-accent text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {cartItems.length}
                 </span>
               )}
@@ -253,7 +253,7 @@ export default function Navbar() {
               className={`p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg transition-colors ${
                 isScrolled ? 'text-white hover:bg-white/10' : 'text-primary hover:bg-primary/5'
               }`}
-              aria-label={isMobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+              aria-label={isMobileMenuOpen ? t('ariaLabels.closeMenu') : t('ariaLabels.openMenu')}
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -273,7 +273,7 @@ export default function Navbar() {
           onClick={closeMobileMenu}
           className="absolute top-4 right-4 p-3 text-white hover:bg-white/10 rounded-lg"
           style={{ marginTop: 'env(safe-area-inset-top, 0px)' }}
-          aria-label="Cerrar menú"
+          aria-label={t('ariaLabels.closeMenu')}
         >
           <X className="w-6 h-6" />
         </button>
@@ -287,7 +287,7 @@ export default function Navbar() {
                 className="w-full flex items-center justify-between text-xl font-serif text-white py-4 border-b border-primary-light px-3 transition-colors"
                 aria-expanded={mobileAccordion === 'tours'}
               >
-                <span>Tours & Paquetes</span>
+                <span>{t('toursAndPackages')}</span>
                 <ChevronDown className={`w-5 h-5 transition-transform duration-200 ${mobileAccordion === 'tours' ? 'rotate-180' : ''}`} />
               </button>
               <div
@@ -297,15 +297,15 @@ export default function Navbar() {
               >
                 <div className="overflow-hidden">
                   <div className="pl-6 py-2 space-y-1">
-                    {[...toursDropdownData.left.items, ...toursDropdownData.right.items].map((item) => (
+                    {[...toursDropdownIcons.left.items, ...toursDropdownIcons.right.items].map((item) => (
                       <Link
-                        key={item.label}
+                        key={item.key}
                         href={item.href}
                         onClick={closeMobileMenu}
                         className="flex items-center gap-3 text-white/80 hover:text-white py-2.5 px-3 rounded-lg active:bg-white/10 transition-colors"
                       >
-                        <item.icon className="w-4 h-4 text-accent shrink-0" />
-                        <span className="text-base">{item.label}</span>
+                        <item.icon className="w-4 h-4 text-accent-light shrink-0" />
+                        <span className="text-base">{t(`dropdown.${item.key}`)}</span>
                       </Link>
                     ))}
                     <Link
@@ -314,7 +314,7 @@ export default function Navbar() {
                       className="flex items-center gap-3 text-accent font-semibold py-2.5 px-3 rounded-lg active:bg-white/10 transition-colors"
                     >
                       <Compass className="w-4 h-4 shrink-0" />
-                      <span className="text-base">Ver Todos los Tours</span>
+                      <span className="text-base">{t('viewAllTours')}</span>
                     </Link>
                   </div>
                 </div>
@@ -328,7 +328,7 @@ export default function Navbar() {
                 className="w-full flex items-center justify-between text-xl font-serif text-white py-4 border-b border-primary-light px-3 transition-colors"
                 aria-expanded={mobileAccordion === 'destinos'}
               >
-                <span>Destinos</span>
+                <span>{t('destinations')}</span>
                 <ChevronDown className={`w-5 h-5 transition-transform duration-200 ${mobileAccordion === 'destinos' ? 'rotate-180' : ''}`} />
               </button>
               <div
@@ -338,15 +338,15 @@ export default function Navbar() {
               >
                 <div className="overflow-hidden">
                   <div className="pl-6 py-2 space-y-1">
-                    {destinosDropdownData.map((item) => (
+                    {destinosDropdownIcons.map((item) => (
                       <Link
-                        key={item.label}
+                        key={item.key}
                         href={item.href}
                         onClick={closeMobileMenu}
                         className="flex items-center gap-3 text-white/80 hover:text-white py-2.5 px-3 rounded-lg active:bg-white/10 transition-colors"
                       >
-                        <item.icon className="w-4 h-4 text-accent shrink-0" />
-                        <span className="text-base">{item.label}</span>
+                        <item.icon className="w-4 h-4 text-accent-light shrink-0" />
+                        <span className="text-base">{t(`destinationItems.${item.key}`)}</span>
                       </Link>
                     ))}
                   </div>
@@ -355,16 +355,16 @@ export default function Navbar() {
             </div>
 
             <Link href="/nosotros" onClick={closeMobileMenu} className="text-xl font-serif text-white py-4 border-b border-primary-light active:bg-white/10 rounded-lg px-3 transition-colors">
-              Nosotros
+              {t('aboutUs')}
             </Link>
             <Link href="/blog" onClick={closeMobileMenu} className="text-xl font-serif text-white py-4 border-b border-primary-light active:bg-white/10 rounded-lg px-3 transition-colors">
-              Blog
+              {t('blog')}
             </Link>
           </div>
 
           <div className="mt-8 flex flex-col space-y-4">
-            <Link href="/tours" onClick={closeMobileMenu} className="bg-accent text-primary w-full py-4 rounded-full text-center font-bold text-lg active:scale-95 transition-transform">
-              Planifica tu Viaje
+            <Link href="/tours" onClick={closeMobileMenu} className="bg-white text-primary-dark w-full py-4 rounded-full text-center font-bold text-lg active:scale-95 transition-transform">
+              {t('planYourTrip')}
             </Link>
           </div>
 
@@ -375,8 +375,8 @@ export default function Navbar() {
 
           {/* Contact info in mobile menu */}
           <div className="mt-auto pt-8 pb-6 text-center text-white/60 text-sm space-y-1">
-            <p>📞 +51 987 654 321</p>
-            <p>✉️ info@machupicchutravel.com</p>
+            <p>📞 {t('contact.phone')}</p>
+            <p>✉️ {t('contact.email')}</p>
           </div>
         </nav>
       </div>

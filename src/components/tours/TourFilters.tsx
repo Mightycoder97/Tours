@@ -1,6 +1,7 @@
 'use client';
 
 import { Search, Filter, Clock, MapPin, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface Category {
   id: string;
@@ -28,13 +29,17 @@ interface TourFiltersProps {
   onFilterChange: (filters: FilterState) => void;
 }
 
-const DURATION_OPTIONS = [
-  { label: 'Medio día (4-6 hrs)', value: 'half' },
-  { label: 'Full Day (10-14 hrs)', value: 'full' },
-  { label: 'Multi-day (2+ días)', value: 'multi' },
-];
+// DURATION_OPTIONS moved inside the component for i18n
 
 export default function TourFilters({ isOpen = true, onClose, categories, destinations, filters, onFilterChange }: TourFiltersProps) {
+  const t = useTranslations('tours.filters');
+
+  const DURATION_OPTIONS = [
+    { label: t('durationOptions.half'), value: 'half' },
+    { label: t('durationOptions.full'), value: 'full' },
+    { label: t('durationOptions.multi'), value: 'multi' },
+  ];
+
   
   const handleSearchChange = (value: string) => {
     onFilterChange({ ...filters, search: value });
@@ -89,8 +94,8 @@ export default function TourFilters({ isOpen = true, onClose, categories, destin
       `}>
         {/* Header */}
         <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
-          <h3 className="font-serif text-xl font-bold text-primary flex items-center">
-            <Filter className="w-5 h-5 mr-2" /> Filtros
+          <h3 className="font-serif text-xl text-primary-dark flex items-center">
+            <Filter className="w-5 h-5 mr-2" /> {t('title')}
           </h3>
           <div className="flex items-center gap-3">
             {hasActiveFilters && (
@@ -98,14 +103,14 @@ export default function TourFilters({ isOpen = true, onClose, categories, destin
                 onClick={handleClear}
                 className="text-sm text-text-light hover:text-primary transition-colors"
               >
-                Limpiar
+                {t('clear')}
               </button>
             )}
             {onClose && (
               <button 
                 onClick={onClose} 
                 className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                aria-label="Cerrar filtros"
+                aria-label={t('closeFilters')}
               >
                 <X className="w-5 h-5 text-gray-500" />
               </button>
@@ -119,7 +124,7 @@ export default function TourFilters({ isOpen = true, onClose, categories, destin
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input 
               type="text" 
-              placeholder="Buscar tour por nombre..."
+              placeholder={t('searchPlaceholder')}
               value={filters.search}
               onChange={(e) => handleSearchChange(e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all font-medium"
@@ -130,7 +135,7 @@ export default function TourFilters({ isOpen = true, onClose, categories, destin
         {/* Categories */}
         {categories.length > 0 && (
           <div className="mb-8">
-            <h4 className="font-bold text-sm uppercase tracking-wider text-gray-400 mb-4">Categoría</h4>
+            <h4 className="font-bold text-sm uppercase tracking-wider text-gray-400 mb-4">{t('categoryLabel')}</h4>
             <div className="space-y-3">
               {categories.map((cat) => (
                 <label key={cat.id} className="flex items-center space-x-3 cursor-pointer group py-1">
@@ -138,7 +143,7 @@ export default function TourFilters({ isOpen = true, onClose, categories, destin
                     type="checkbox"
                     checked={filters.categories.includes(cat.name)}
                     onChange={() => handleCategoryToggle(cat.name)}
-                    className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
+                    className="w-5 h-5 rounded border-gray-300 text-primary-dark focus:ring-primary-dark"
                   />
                   <span className="text-sm font-medium text-text-main group-hover:text-primary transition-colors">{cat.name}</span>
                 </label>
@@ -150,7 +155,7 @@ export default function TourFilters({ isOpen = true, onClose, categories, destin
         {/* Duration */}
         <div className="mb-8">
           <h4 className="font-bold text-sm uppercase tracking-wider text-gray-400 mb-4 flex items-center">
-            <Clock className="w-4 h-4 mr-2" /> Duración
+            <Clock className="w-4 h-4 mr-2" /> {t('durationLabel')}
           </h4>
           <div className="space-y-3">
             {DURATION_OPTIONS.map((dur) => (
@@ -159,7 +164,7 @@ export default function TourFilters({ isOpen = true, onClose, categories, destin
                   type="checkbox"
                   checked={filters.durations.includes(dur.value)}
                   onChange={() => handleDurationToggle(dur.value)}
-                  className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
+                  className="w-5 h-5 rounded border-gray-300 text-primary-dark focus:ring-primary-dark"
                 />
                 <span className="text-sm font-medium text-text-main group-hover:text-primary transition-colors">{dur.label}</span>
               </label>
@@ -171,7 +176,7 @@ export default function TourFilters({ isOpen = true, onClose, categories, destin
         {destinations.length > 0 && (
           <div>
             <h4 className="font-bold text-sm uppercase tracking-wider text-gray-400 mb-4 flex items-center">
-              <MapPin className="w-4 h-4 mr-2" /> Destino
+              <MapPin className="w-4 h-4 mr-2" /> {t('destinationLabel')}
             </h4>
             <div className="space-y-3">
               {destinations.map((dest) => (
@@ -180,7 +185,7 @@ export default function TourFilters({ isOpen = true, onClose, categories, destin
                     type="checkbox"
                     checked={filters.destinations.includes(dest.name)}
                     onChange={() => handleDestinationToggle(dest.name)}
-                    className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
+                    className="w-5 h-5 rounded border-gray-300 text-primary-dark focus:ring-primary-dark"
                   />
                   <span className="text-sm font-medium text-text-main group-hover:text-primary transition-colors">{dest.name}</span>
                 </label>
@@ -194,9 +199,9 @@ export default function TourFilters({ isOpen = true, onClose, categories, destin
           <div className="lg:hidden mt-6 pt-4 border-t border-gray-100">
             <button 
               onClick={onClose}
-              className="w-full bg-primary text-white py-4 rounded-full font-bold text-base active:scale-95 transition-transform"
+              className="w-full bg-primary-dark text-white py-4 rounded-full font-bold text-base active:scale-95 transition-transform"
             >
-              Aplicar Filtros
+              {t('applyFilters')}
             </button>
           </div>
         )}

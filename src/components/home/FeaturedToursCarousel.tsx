@@ -2,8 +2,9 @@
 
 import { useRef, useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface Tour {
   id: string;
@@ -19,16 +20,31 @@ interface FeaturedToursCarouselProps {
 }
 
 export default function FeaturedToursCarousel({ tours }: FeaturedToursCarouselProps) {
+  const t = useTranslations('tours.card');
+  const tc = useTranslations('common');
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const updateActiveIndex = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>('[data-card]');
+    if (!card) return;
+    const cardWidth = card.offsetWidth;
+    const gap = 24; // gap-6 = 1.5rem = 24px
+    const index = Math.round(el.scrollLeft / (cardWidth + gap));
+    setActiveIndex(Math.min(index, tours.length - 1));
+  }, [tours.length]);
 
   const checkScroll = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
     setCanScrollLeft(el.scrollLeft > 2);
     setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 2);
-  }, []);
+    updateActiveIndex();
+  }, [updateActiveIndex]);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -54,6 +70,19 @@ export default function FeaturedToursCarousel({ tours }: FeaturedToursCarouselPr
     });
   };
 
+  const scrollToIndex = (index: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>('[data-card]');
+    if (!card) return;
+    const cardWidth = card.offsetWidth;
+    const gap = 24;
+    el.scrollTo({
+      left: index * (cardWidth + gap),
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <div className="relative">
       {/* Navigation Arrows - Desktop only */}
@@ -61,7 +90,7 @@ export default function FeaturedToursCarousel({ tours }: FeaturedToursCarouselPr
         <button
           onClick={() => scroll('left')}
           className="hidden md:flex absolute -left-4 lg:-left-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow-lg items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-200 cursor-pointer"
-          aria-label="Anterior"
+          aria-label={tc('previous')}
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
@@ -70,7 +99,7 @@ export default function FeaturedToursCarousel({ tours }: FeaturedToursCarouselPr
         <button
           onClick={() => scroll('right')}
           className="hidden md:flex absolute -right-4 lg:-right-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow-lg items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-200 cursor-pointer"
-          aria-label="Siguiente"
+          aria-label={tc('next')}
         >
           <ChevronRight className="w-6 h-6" />
         </button>
@@ -108,16 +137,16 @@ export default function FeaturedToursCarousel({ tours }: FeaturedToursCarouselPr
 
                 {/* Content overlay */}
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-white font-serif text-2xl font-bold leading-tight mb-2">
+                  <h3 className="text-white font-serif text-2xl leading-tight mb-2">
                     {tour.title}
                   </h3>
                   <div className="flex justify-between items-end mt-4">
                     <div className="text-white/80">
-                      <span className="text-xs uppercase tracking-wider block mb-1">Desde</span>
-                      <div className="font-bold text-xl text-accent">USD {tour.price_adult}</div>
+                      <span className="text-xs uppercase tracking-wider block mb-1">{t('from')}</span>
+                      <div className="font-bold text-xl text-accent">{tc('currency')} {tour.price_adult}</div>
                     </div>
                     <span className="text-white flex items-center hover:underline text-sm font-medium">
-                      Descubre <ArrowRight className="w-4 h-4 ml-1" />
+                      {tc('explore')} <ArrowRight className="w-4 h-4 ml-1" />
                     </span>
                   </div>
                 </div>
@@ -130,10 +159,15 @@ export default function FeaturedToursCarousel({ tours }: FeaturedToursCarouselPr
       {/* Scroll Progress Dots - Mobile */}
       <div className="flex justify-center gap-2 mt-4 md:hidden">
         {tours.map((_, i) => (
-          <div
+          <button
             key={i}
-            className="w-2 h-2 rounded-full bg-primary/30"
-            aria-hidden="true"
+            onClick={() => scrollToIndex(i)}
+            className={`h-2 rounded-full transition-all duration-300 ${
+              i === activeIndex
+                ? 'w-8 bg-primary-dark'
+                : 'w-2 bg-primary/30 hover:bg-primary/50'
+            }`}
+            aria-label={`${tc('viewAll')} ${i + 1}`}
           />
         ))}
       </div>

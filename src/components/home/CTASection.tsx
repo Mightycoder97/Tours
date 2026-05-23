@@ -1,7 +1,10 @@
 import { ArrowRight, Mail } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
+import { getTranslations } from 'next-intl/server';
 
-export default function CTASection() {
+export default async function CTASection() {
+  const t = await getTranslations('home.cta');
+
   return (
     <section className="relative py-20 lg:py-28 overflow-hidden">
       {/* Gradient background */}
@@ -14,18 +17,18 @@ export default function CTASection() {
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center">
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-white mb-6 max-w-3xl mx-auto leading-tight">
-          Tu aventura en Machu Picchu te espera
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6 max-w-3xl mx-auto leading-tight">
+          {t('title')}
         </h2>
         <p className="text-white/80 text-lg font-light max-w-2xl mx-auto mb-10">
-          Reserva hoy y asegura tu lugar en una de las maravillas del mundo. Plazas limitadas por grupo para una experiencia personalizada.
+          {t('subtitle')}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link 
             href="/tours" 
-            className="bg-white text-primary px-8 py-4 rounded-full font-bold text-lg hover:bg-accent hover:shadow-xl transition-all inline-flex items-center gap-2 group"
+            className="bg-white text-primary-dark px-8 py-4 rounded-full font-bold text-lg hover:bg-cream hover:shadow-xl transition-all inline-flex items-center gap-2 group"
           >
-            Explorar Tours
+            {t('exploreTours')}
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link
@@ -33,7 +36,7 @@ export default function CTASection() {
             className="border-2 border-white/40 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all inline-flex items-center gap-2"
           >
             <Mail className="w-5 h-5" />
-            Contáctanos
+            {t('contactUs')}
           </Link>
         </div>
       </div>

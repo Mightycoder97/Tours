@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 import { Lock } from 'lucide-react';
 
 export default function LoginPage() {
@@ -13,6 +14,7 @@ export default function LoginPage() {
   
   const supabase = createClient();
   const router = useRouter();
+  const t = useTranslations('pages.login');
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,8 +40,8 @@ export default function LoginPage() {
             <Lock className="w-8 h-8" />
           </div>
         </div>
-        <h2 className="text-2xl font-serif font-bold text-center text-primary mb-2">Portal Administrativo</h2>
-        <p className="text-center text-text-light text-sm mb-8">Ingresa tus credenciales para administrar reservaciones y tours.</p>
+        <h2 className="text-2xl font-serif text-center text-primary-dark mb-2">{t('title')}</h2>
+        <p className="text-center text-text-light text-sm mb-8">{t('subtitle')}</p>
         
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm text-center">
@@ -49,25 +51,25 @@ export default function LoginPage() {
 
         <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-text-main mb-1">Correo Electrónico</label>
+            <label className="block text-sm font-medium text-text-main mb-1">{t('emailLabel')}</label>
             <input 
               type="email" 
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-              placeholder="admin@machupicchu.com"
+              placeholder={t('emailPlaceholder')}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-text-main mb-1">Contraseña</label>
+            <label className="block text-sm font-medium text-text-main mb-1">{t('passwordLabel')}</label>
             <input 
               type="password" 
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-              placeholder="••••••••"
+              placeholder={t('passwordPlaceholder')}
             />
           </div>
           <button 
@@ -75,7 +77,7 @@ export default function LoginPage() {
             disabled={isLoading}
             className="w-full py-3 bg-primary text-white rounded-lg font-bold hover:bg-primary-light transition-colors disabled:opacity-70 mt-4"
           >
-            {isLoading ? 'Iniciando Sesión...' : 'Ingresar'}
+            {isLoading ? t('loading') : t('submitButton')}
           </button>
         </form>
       </div>

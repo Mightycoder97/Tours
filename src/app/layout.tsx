@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat, DM_Serif_Display } from "next/font/google";
+import { getLocale } from "next-intl/server";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -49,19 +50,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
     <html
-      lang="es"
+      lang={locale}
       suppressHydrationWarning
       className={`${montserrat.variable} ${dmSerif.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col bg-background text-foreground">
-        <main className="flex-1 flex flex-col">
+        <a href="#main-content" className="skip-to-content">
+          {locale === 'en' ? 'Skip to main content' : 'Saltar al contenido principal'}
+        </a>
+        <main id="main-content" className="flex-1 flex flex-col">
           {children}
         </main>
       </body>

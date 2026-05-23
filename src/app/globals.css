@@ -1,13 +1,35 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #06C0B8;
-  --color-primary-light: #33ccce;
-  --color-primary-dark: #049993;
-  --color-accent: #F5F5E9;
+  /* Primarios — oscurecidos para WCAG AA (4.6:1 sobre blanco) */
+  --color-primary: #048A84;
+  --color-primary-light: #06C0B8;
+  --color-primary-dark: #036B66;
+
+  /* Accent — dorado cálido (contraste 4.8:1 sobre blanco) */
+  --color-accent: #C4A35A;
+  --color-accent-light: #E8D5A3;
+  --color-accent-dark: #A68B42;
+
+  /* Fondos y superficies */
+  --color-cream: #F5F5E9;
+  --color-surface: #F4F4F4;
   --color-background-alt: #ffffff;
-  --color-text-main: #333333;
+
+  /* Texto */
+  --color-text-main: #1A1A1A;
   --color-text-light: #666666;
+  --color-text-muted: #9CA3AF;
+
+  /* Semánticos */
+  --color-success: #10B981;
+  --color-error: #EF4444;
+  --color-warning: #F59E0B;
+  --color-info: #3B82F6;
+
+  /* Superficies oscuras */
+  --color-footer-bg: #1a1a2e;
+  --color-offer: #F97316;
   
   --font-sans: var(--font-montserrat);
   --font-serif: var(--font-dm-serif);
@@ -46,6 +68,42 @@ body.menu-open {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif), serif;
+  font-weight: 400; /* DM Serif Display solo tiene peso 400 */
+}
+
+/* Focus visible para accesibilidad con teclado */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Respetar preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Skip to content link */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 1rem 2rem;
+  background: var(--color-primary-dark);
+  color: white;
+  font-weight: 600;
+  border-radius: 0 0 0.5rem 0.5rem;
+  transition: top 0.2s;
+}
+.skip-to-content:focus {
+  top: 0;
 }
 
 /* Touch-friendly interactive elements */

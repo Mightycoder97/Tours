@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useCartStore } from '@/store/useCartStore';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { Calendar as CalendarIcon, Users, Check, AlertCircle, ShoppingCart, Loader2 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale/en-US';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface BookingSidebarProps {
   tourId: string;
@@ -19,6 +21,10 @@ interface BookingSidebarProps {
 export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult, priceChild: priceChildProp, imageUrl }: BookingSidebarProps) {
   const router = useRouter();
   const addItem = useCartStore((state) => state.addItem);
+  const t = useTranslations('tours.booking');
+  const tc = useTranslations('common');
+  const locale = useLocale();
+  const dateFnsLocale = locale === 'es' ? es : enUS;
   
   // States
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -64,7 +70,7 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
 
   const handleBook = () => {
     if (!selectedDate) {
-      setErrorMsg('Por favor, selecciona una fecha para el tour.');
+      setErrorMsg(t('selectDateError'));
       return;
     }
     
@@ -96,9 +102,9 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
       <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-5 sm:p-6 lg:sticky lg:top-24 border border-gray-100">
         <div className="flex justify-between items-end border-b border-gray-100 pb-4 mb-6">
           <div>
-            <span className="text-xs uppercase text-gray-400 font-bold tracking-wider block mb-1">Precio por adulto desde</span>
-            <div className="text-2xl sm:text-3xl font-bold text-primary">
-              <span className="text-base sm:text-lg font-medium text-text-light mr-1">USD</span>
+            <span className="text-xs uppercase text-gray-400 font-bold tracking-wider block mb-1">{t('pricePerAdultFrom')}</span>
+            <div className="text-2xl sm:text-3xl font-bold text-primary-dark">
+              <span className="text-base sm:text-lg font-medium text-text-light mr-1">{tc('currency')}</span>
               {priceAdult}
             </div>
           </div>
@@ -107,14 +113,14 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
         {/* Date Selector */}
         <div className="mb-6">
           <label className="font-bold text-sm uppercase tracking-wider text-gray-500 mb-3 flex items-center">
-            <CalendarIcon className="w-4 h-4 mr-2" /> Fecha de Ida
+            <CalendarIcon className="w-4 h-4 mr-2" /> {t('departureDate')}
           </label>
           
           {/* Calendar Grid */}
           {isLoadingDates ? (
             <div className="flex items-center justify-center py-8 text-gray-400">
               <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-              <span className="text-sm">Cargando disponibilidad...</span>
+              <span className="text-sm">{t('loadingAvailability')}</span>
             </div>
           ) : (
             <div className="grid grid-cols-4 gap-2">
@@ -127,33 +133,33 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
                     onClick={() => setSelectedDate(dt)}
                     className={`p-2 flex flex-col items-center justify-center rounded-lg border text-xs transition-all ${
                       isSelected 
-                        ? 'border-primary bg-primary text-white font-bold shadow-md' 
-                        : 'border-gray-200 text-text-main hover:border-primary hover:text-primary cursor-pointer'
+                        ? 'border-primary-dark bg-primary-dark text-white font-bold shadow-md' 
+                        : 'border-gray-200 text-text-main hover:border-primary-dark hover:text-primary-dark cursor-pointer'
                     }`}
                   >
-                    <span className="mb-1 leading-none">{format(dt, 'EEEEEE', { locale: es }).toUpperCase()}</span>
+                    <span className="mb-1 leading-none">{format(dt, 'EEEEEE', { locale: dateFnsLocale }).toUpperCase()}</span>
                     <span className="text-lg leading-none">{format(dt, 'd')}</span>
-                    <span className="leading-none">{format(dt, 'MMM', { locale: es }).toUpperCase()}</span>
+                    <span className="leading-none">{format(dt, 'MMM', { locale: dateFnsLocale }).toUpperCase()}</span>
                   </button>
                 )
               })}
             </div>
           )}
-          {!selectedDate && <p className="text-xs text-accent mt-3 italic">* Selecciona una fecha para ver disponibilidad real.</p>}
+          {!selectedDate && <p className="text-xs text-text-light mt-3 italic">{t('selectDateHint')}</p>}
         </div>
 
         {/* Passengers */}
         <div className="mb-8">
           <label className="font-bold text-sm uppercase tracking-wider text-gray-500 mb-4 flex items-center">
-            <Users className="w-4 h-4 mr-2" /> Pasajeros y Clases
+            <Users className="w-4 h-4 mr-2" /> {t('passengersAndClasses')}
           </label>
 
           <div className="space-y-4">
             {/* Adults */}
             <div className="flex justify-between items-center border border-gray-200 rounded-lg p-3">
                <div>
-                 <p className="text-sm font-bold text-text-main">Adultos (12+)</p>
-                 <p className="text-xs text-text-light">USD {priceAdult} c/u</p>
+                 <p className="text-sm font-bold text-text-main">{t('adults')}</p>
+                 <p className="text-xs text-text-light">{t('pricePerUnit', { price: priceAdult })}</p>
                </div>
                <div className="flex items-center space-x-3 bg-gray-50 rounded-lg p-1 border border-gray-100">
                  <button 
@@ -171,8 +177,8 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
             {/* Children */}
             <div className="flex justify-between items-center border border-gray-200 rounded-lg p-3">
                <div>
-                 <p className="text-sm font-bold text-text-main">Niños (4-11 años)</p>
-                 <p className="text-xs text-text-light">USD {childPrice} c/u</p>
+                 <p className="text-sm font-bold text-text-main">{t('children')}</p>
+                 <p className="text-xs text-text-light">{t('pricePerUnit', { price: childPrice })}</p>
                </div>
                <div className="flex items-center space-x-3 bg-gray-50 rounded-lg p-1 border border-gray-100">
                  <button 
@@ -191,9 +197,9 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
 
         {/* Summary */}
         <div className="border-t border-gray-100 pt-6 mb-6">
-          <div className="flex justify-between items-center bg-gray-50 p-4 rounded-xl">
-             <span className="font-bold text-text-main">Total a Pagar:</span>
-             <span className="font-serif text-xl sm:text-2xl font-bold text-primary">USD {totalPrice}</span>
+          <div className="flex justify-between items-center bg-gray-50 p-4 rounded-xl" aria-live="polite" aria-atomic="true">
+             <span className="font-bold text-text-main">{t('totalToPay')}</span>
+             <span className="font-serif text-xl sm:text-2xl font-bold text-primary-dark">{tc('currency')} {totalPrice}</span>
           </div>
         </div>
 
@@ -207,19 +213,19 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
         {/* CTA - Hidden on mobile (shown in sticky bar instead) */}
         <button 
           onClick={handleBook}
-          className={`hidden lg:flex w-full py-4 rounded-full font-bold text-lg transition-all items-center justify-center shadow-lg hover:shadow-xl ${
-            isAdded ? 'bg-green-500 text-white' : 'bg-primary hover:bg-primary-light text-white'
+          className={`hidden lg:flex w-full py-4 rounded-full font-bold text-lg transition-all items-center justify-center shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed ${
+            isAdded ? 'bg-green-500 text-white' : 'bg-primary-dark hover:bg-primary-dark text-white'
           }`}
         >
           {isAdded ? (
-            <><Check className="w-5 h-5 mr-2" /> ¡Añadido al Carrito!</>
+            <><Check className="w-5 h-5 mr-2" /> {t('addedToCart')}</>
           ) : (
-            'Reservar Ahora'
+            t('bookNow')
           )}
         </button>
 
         <div className="hidden lg:block mt-4 text-center">
-          <p className="text-xs text-gray-400">Confirmación inmediata. Pago 100% seguro.</p>
+          <p className="text-xs text-gray-400">{t('confirmationNote')}</p>
         </div>
       </div>
 
@@ -227,22 +233,22 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgb(0,0,0,0.1)] px-4 py-3 safe-area-bottom">
         <div className="flex items-center gap-3 max-w-lg mx-auto">
           <div className="flex-1">
-            <p className="text-xs text-gray-500 leading-none mb-1">Desde</p>
-            <p className="text-xl font-bold text-primary leading-none">
-              <span className="text-xs font-medium text-text-light mr-1">USD</span>
+            <p className="text-xs text-gray-500 leading-none mb-1">{t('from')}</p>
+            <p className="text-xl font-bold text-primary-dark leading-none">
+              <span className="text-xs font-medium text-text-light mr-1">{tc('currency')}</span>
               {totalPrice}
             </p>
           </div>
           <button 
             onClick={handleBook}
-            className={`flex-1 py-3.5 rounded-full font-bold text-base transition-all flex items-center justify-center active:scale-95 ${
-              isAdded ? 'bg-green-500 text-white' : 'bg-primary text-white active:bg-primary-dark'
+            className={`flex-1 py-3.5 rounded-full font-bold text-base transition-all flex items-center justify-center active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed ${
+              isAdded ? 'bg-green-500 text-white' : 'bg-primary-dark text-white active:bg-primary-dark'
             }`}
           >
             {isAdded ? (
-              <><Check className="w-5 h-5 mr-2" /> ¡Añadido!</>
+              <><Check className="w-5 h-5 mr-2" /> {t('addedToCartShort')}</>
             ) : (
-              <><ShoppingCart className="w-5 h-5 mr-2" /> Reservar</>
+              <><ShoppingCart className="w-5 h-5 mr-2" /> {t('bookNowShort')}</>
             )}
           </button>
         </div>

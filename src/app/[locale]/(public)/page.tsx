@@ -6,17 +6,21 @@ import FAQ from '@/components/home/FAQ';
 import CTASection from '@/components/home/CTASection';
 import SEOBlock from '@/components/home/SEOBlock';
 import JsonLd from '@/components/seo/JsonLd';
+import { getTranslations } from 'next-intl/server';
 
 export const revalidate = 60;
 
-export default function Home() {
+export default async function Home() {
+  const tFaq = await getTranslations('home.faq');
+  const tCommon = await getTranslations('common');
+
   return (
     <>
       <JsonLd data={{
         '@context': 'https://schema.org',
         '@type': 'TravelAgency',
         name: 'Machu Picchu Travel Adventures',
-        description: 'Tours guiados a Machu Picchu, Valle Sagrado y Cusco. Experiencias auténticas con guías locales expertos.',
+        description: tCommon('jsonLdDescription'),
         url: 'https://machupicchutravel.com',
         telephone: '+51987654321',
         address: {
@@ -38,34 +42,34 @@ export default function Home() {
         mainEntity: [
           {
             '@type': 'Question',
-            name: '¿Cuánto tiempo antes debo reservar mi tour a Machu Picchu?',
+            name: tFaq('items.0.question'),
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Recomendamos reservar con al menos 2 semanas de anticipación, especialmente en temporada alta (junio-agosto).'
+              text: tFaq('items.0.answer')
             }
           },
           {
             '@type': 'Question',
-            name: '¿Qué incluye el precio del tour?',
+            name: tFaq('items.1.question'),
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Nuestros tours incluyen transporte, entrada a sitios arqueológicos, guía profesional bilingüe, y almuerzo buffet.'
+              text: tFaq('items.1.answer')
             }
           },
           {
             '@type': 'Question',
-            name: '¿Es seguro viajar a Machu Picchu?',
+            name: tFaq('items.2.question'),
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Sí, es completamente seguro. Cusco y Machu Picchu son destinos turísticos muy bien organizados.'
+              text: tFaq('items.2.answer')
             }
           },
           {
             '@type': 'Question',
-            name: '¿Puedo cancelar o reprogramar mi reserva?',
+            name: tFaq('items.4.question'),
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Sí, ofrecemos cancelación gratuita hasta 48 horas antes del tour.'
+              text: tFaq('items.4.answer')
             }
           },
         ]

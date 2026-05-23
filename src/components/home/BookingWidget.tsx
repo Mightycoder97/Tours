@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { Calendar as CalendarIcon, Users, MapPin, Search } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export default function BookingWidget() {
+  const t = useTranslations('home.booking');
   const router = useRouter();
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
@@ -28,13 +30,13 @@ export default function BookingWidget() {
         <div className="flex-1 px-4 sm:px-6 py-3 sm:py-4 w-full flex items-center hover:bg-gray-50 md:rounded-l-[1rem] rounded-t-xl md:rounded-tr-none transition-colors cursor-pointer group">
           <MapPin className="text-primary w-5 h-5 sm:w-6 sm:h-6 mr-3 flex-shrink-0" />
           <div className="flex flex-col w-full">
-            <label htmlFor="destination" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">Destino o Tour</label>
+            <label htmlFor="destination" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">{t('destinationLabel')}</label>
             <input 
               id="destination"
               type="text" 
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
-              placeholder="¿A dónde quieres ir?" 
+              placeholder={t('destinationPlaceholder')} 
               className="w-full bg-transparent border-none outline-none text-text-main font-semibold placeholder:text-text-light placeholder:font-normal focus:ring-0 p-0 leading-tight text-sm sm:text-base"
             />
           </div>
@@ -44,7 +46,7 @@ export default function BookingWidget() {
         <div className="flex-1 px-4 sm:px-6 py-3 sm:py-4 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group">
           <CalendarIcon className="text-primary w-5 h-5 sm:w-6 sm:h-6 mr-3 flex-shrink-0" />
           <div className="flex flex-col w-full relative">
-            <label htmlFor="date" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">Fechas</label>
+            <label htmlFor="date" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">{t('dateLabel')}</label>
             <div className="relative w-full">
               <input 
                 id="date"
@@ -55,7 +57,7 @@ export default function BookingWidget() {
               />
               {!date && (
                 <span className="absolute inset-0 pointer-events-none text-text-main font-semibold group-hover:text-primary transition-colors flex items-center flex-1 text-sm sm:text-base">
-                  Agrega tu fecha
+                  {t('datePlaceholder')}
                 </span>
               )}
             </div>
@@ -66,7 +68,7 @@ export default function BookingWidget() {
         <div className="flex-1 px-4 sm:px-6 py-3 sm:py-4 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group">
           <Users className="text-primary w-5 h-5 sm:w-6 sm:h-6 mr-3 flex-shrink-0" />
           <div className="flex flex-col w-full">
-            <label htmlFor="passengers" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">Pasajeros</label>
+            <label htmlFor="passengers" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">{t('passengersLabel')}</label>
             <select 
               id="passengers"
               value={passengers}
@@ -74,7 +76,7 @@ export default function BookingWidget() {
               className="w-full bg-transparent border-none outline-none text-text-main font-semibold focus:ring-0 p-0 leading-tight cursor-pointer appearance-none group-hover:text-primary transition-colors text-sm sm:text-base"
             >
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                <option key={num} value={num} className="text-text-main">{num} Viajero{num !== 1 ? 's' : ''}</option>
+                <option key={num} value={num} className="text-text-main">{t('passengerOption', { count: num })}</option>
               ))}
             </select>
           </div>
@@ -84,11 +86,11 @@ export default function BookingWidget() {
         <div className="px-3 sm:px-2 w-full md:w-auto pt-2 pb-1 md:pt-0 md:pb-0 shrink-0">
           <button 
             type="submit" 
-            className="w-full md:w-auto bg-primary hover:bg-primary-light text-white rounded-full p-3 sm:p-4 flex items-center justify-center transition-colors shadow-lg gap-2 md:gap-0"
-            aria-label="Buscar tours"
+            className="w-full md:w-auto bg-primary hover:bg-primary-dark text-white rounded-full p-3 sm:p-4 flex items-center justify-center transition-colors shadow-lg gap-2 md:gap-0"
+            aria-label={t('searchAriaLabel')}
           >
             <Search className="w-5 h-5 sm:w-6 sm:h-6" />
-            <span className="md:hidden font-semibold text-sm">Buscar</span>
+            <span className="md:hidden font-semibold text-sm">{t('searchButton')}</span>
           </button>
         </div>
 

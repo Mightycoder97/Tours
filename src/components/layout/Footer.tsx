@@ -1,5 +1,6 @@
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -25,46 +26,48 @@ function YoutubeIcon({ className }: { className?: string }) {
   );
 }
 
-export default function Footer() {
+export default async function Footer() {
+  const t = await getTranslations('footer');
+
   return (
-    <footer className="bg-[#1a1a2e] text-white">
+    <footer className="bg-footer-bg text-white">
       {/* Main Footer */}
       <div className="container mx-auto px-4 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           
           {/* Column 1: Brand */}
           <div>
-            <h3 className="font-serif text-2xl font-bold text-primary mb-4">Machu Picchu<br />Travel</h3>
+            <h3 className="font-serif text-2xl text-primary mb-4">{t('brand.name')}</h3>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              Expertos en crear experiencias inolvidables en el corazón del Imperio Inca. Más de 10 años conectando viajeros con las maravillas del Perú.
+              {t('brand.description')}
             </p>
             <div className="flex gap-3">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label="Facebook">
-                <FacebookIcon className="w-4 h-4" />
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label={t('social.facebook')}>
+                <FacebookIcon className="w-5 h-5" />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label="Instagram">
-                <InstagramIcon className="w-4 h-4" />
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label={t('social.instagram')}>
+                <InstagramIcon className="w-5 h-5" />
               </a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label="YouTube">
-                <YoutubeIcon className="w-4 h-4" />
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label={t('social.youtube')}>
+                <YoutubeIcon className="w-5 h-5" />
               </a>
             </div>
           </div>
 
           {/* Column 2: Tours */}
           <div>
-            <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-6">Tours Populares</h4>
+            <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-6">{t('popularTours.title')}</h4>
             <ul className="space-y-3">
               {[
-                { label: 'Machu Picchu Full Day', href: '/tours' },
-                { label: 'Valle Sagrado VIP', href: '/tours' },
-                { label: 'Montaña de Colores', href: '/tours' },
-                { label: 'City Tour Cusco', href: '/tours' },
-                { label: 'Laguna Humantay', href: '/tours' },
+                { key: 'machuPicchuFullDay', href: '/tours' },
+                { key: 'sacredValleyVIP', href: '/tours' },
+                { key: 'rainbowMountain', href: '/tours' },
+                { key: 'cityTourCusco', href: '/tours' },
+                { key: 'humantayLake', href: '/tours' },
               ].map((link) => (
-                <li key={link.label}>
+                <li key={link.key}>
                   <Link href={link.href} className="text-gray-400 hover:text-primary transition-colors text-sm">
-                    {link.label}
+                    {t(`popularTours.${link.key}`)}
                   </Link>
                 </li>
               ))}
@@ -73,18 +76,18 @@ export default function Footer() {
 
           {/* Column 3: Info */}
           <div>
-            <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-6">Información</h4>
+            <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-6">{t('information.title')}</h4>
             <ul className="space-y-3">
               {[
-                { label: 'Sobre Nosotros', href: '/nosotros' },
-                { label: 'Blog de Viajes', href: '/blog' },
-                { label: 'Preguntas Frecuentes', href: '/tours' },
-                { label: 'Términos y Condiciones', href: '/tours' },
-                { label: 'Política de Privacidad', href: '/tours' },
+                { key: 'aboutUs', href: '/nosotros' },
+                { key: 'travelBlog', href: '/blog' },
+                { key: 'faq', href: '/faq' },
+                { key: 'termsAndConditions', href: '/terminos' },
+                { key: 'privacyPolicy', href: '/privacidad' },
               ].map((link) => (
-                <li key={link.label}>
+                <li key={link.key}>
                   <Link href={link.href} className="text-gray-400 hover:text-primary transition-colors text-sm">
-                    {link.label}
+                    {t(`information.${link.key}`)}
                   </Link>
                 </li>
               ))}
@@ -93,23 +96,23 @@ export default function Footer() {
 
           {/* Column 4: Contact */}
           <div>
-            <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-6">Contacto</h4>
+            <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-6">{t('contact.title')}</h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-gray-400 text-sm">Av. El Sol 123, Centro Histórico, Cusco, Perú</span>
+                <span className="text-gray-400 text-sm">{t('contact.address')}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-primary shrink-0" />
-                <a href="tel:+51987654321" className="text-gray-400 hover:text-primary transition-colors text-sm">+51 987 654 321</a>
+                <a href="tel:+51987654321" className="text-gray-400 hover:text-primary transition-colors text-sm">{t('contact.phone')}</a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-primary shrink-0" />
-                <a href="mailto:info@machupicchutravel.com" className="text-gray-400 hover:text-primary transition-colors text-sm">info@machupicchutravel.com</a>
+                <a href="mailto:info@machupicchutravel.com" className="text-gray-400 hover:text-primary transition-colors text-sm">{t('contact.email')}</a>
               </li>
               <li className="flex items-center gap-3">
                 <Clock className="w-5 h-5 text-primary shrink-0" />
-                <span className="text-gray-400 text-sm">Lun - Sáb: 8:00 - 20:00</span>
+                <span className="text-gray-400 text-sm">{t('contact.hours')}</span>
               </li>
             </ul>
           </div>
@@ -122,10 +125,10 @@ export default function Footer() {
         <div className="container mx-auto px-4 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-500 text-xs">
-              © {new Date().getFullYear()} Machu Picchu Travel Adventures. Todos los derechos reservados.
+              {t('bottom.copyright', { year: new Date().getFullYear() })}
             </p>
             <div className="flex items-center gap-4">
-              <span className="text-gray-500 text-xs">Métodos de pago:</span>
+              <span className="text-gray-500 text-xs">{t('bottom.paymentMethods')}</span>
               <div className="flex gap-2">
                 <div className="bg-white/10 rounded px-2 py-1 text-xs font-bold text-gray-300">VISA</div>
                 <div className="bg-white/10 rounded px-2 py-1 text-xs font-bold text-gray-300">MC</div>

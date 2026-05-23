@@ -1,7 +1,10 @@
-import Link from 'next/link';
+'use client';
+
+import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import { ArrowRight, Clock } from 'lucide-react';
 import StarRating from '@/components/ui/StarRating';
+import { useTranslations } from 'next-intl';
 
 interface TourProps {
   id: string;
@@ -17,6 +20,9 @@ interface TourProps {
 }
 
 export default function TourCard({ tour }: { tour: TourProps }) {
+  const t = useTranslations('tours.card');
+  const tc = useTranslations('common');
+
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-50 flex flex-col h-full transition-all duration-300 transform hover:-translate-y-1">
       {/* Img Header */}
@@ -28,7 +34,7 @@ export default function TourCard({ tour }: { tour: TourProps }) {
         )}
         {tour.discount && tour.discount > 0 && (
           <span className="absolute top-4 right-4 z-10 bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-            {tour.discount}% OFF
+            {t('off', { percent: tour.discount })}
           </span>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 z-10 transition-opacity duration-300"></div>
@@ -45,7 +51,7 @@ export default function TourCard({ tour }: { tour: TourProps }) {
       <div className="p-6 flex flex-col flex-grow">
         <div className="flex items-center justify-between mb-3 text-sm text-text-light font-medium">
           <div className="flex items-center">
-            <Clock className="w-4 h-4 mr-1 text-accent" />
+            <Clock className="w-4 h-4 mr-1 text-primary" />
             {tour.duration}
           </div>
           {tour.rating && (
@@ -56,7 +62,7 @@ export default function TourCard({ tour }: { tour: TourProps }) {
           )}
         </div>
 
-        <h3 className="text-xl font-serif font-bold text-primary mb-2 line-clamp-2 hover:text-accent transition-colors">
+        <h3 className="text-xl font-serif text-text-main mb-2 line-clamp-2 hover:text-primary transition-colors">
           <Link href={`/tours/${tour.slug}`}>
             {tour.title}
           </Link>
@@ -64,9 +70,9 @@ export default function TourCard({ tour }: { tour: TourProps }) {
         
         <div className="mt-auto pt-6 flex items-center justify-between border-t border-gray-100">
           <div>
-            <span className="text-xs uppercase text-gray-400 font-bold tracking-wider block mb-1">Desde</span>
-            <div className="text-2xl font-bold text-primary">
-              <span className="text-sm font-medium text-text-light mr-1">USD</span>
+            <span className="text-xs uppercase text-gray-400 font-bold tracking-wider block mb-1">{t('from')}</span>
+            <div className="text-2xl font-bold text-primary-dark">
+              <span className="text-sm font-medium text-text-light mr-1">{tc('currency')}</span>
               {tour.price}
             </div>
           </div>

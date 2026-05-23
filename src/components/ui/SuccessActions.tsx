@@ -1,12 +1,14 @@
 'use client';
 
 import { Download, Calendar } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface SuccessActionsProps {
   bookingCode: string;
 }
 
 export default function SuccessActions({ bookingCode }: SuccessActionsProps) {
+  const t = useTranslations('pages.success');
 
   const handleDownloadPDF = () => {
     // Use browser print as PDF - cleanest approach without server-side PDF generation
@@ -36,14 +38,14 @@ export default function SuccessActions({ bookingCode }: SuccessActionsProps) {
       'BEGIN:VEVENT',
       `DTSTART:${formatDate(tourDate)}`,
       `DTEND:${formatDate(endDate)}`,
-      `SUMMARY:Tour Machu Picchu - Reserva ${bookingCode}`,
-      `DESCRIPTION:Tu tour con Machu Picchu Travel Adventures.\\nCódigo de reserva: ${bookingCode}\\nPresenta tu documento de identidad original.\\nPunto de encuentro: 30 min antes de la hora acordada.`,
-      'LOCATION:Cusco\\, Perú',
+      `SUMMARY:${t('calendarEvent.summary', { code: bookingCode })}`,
+      `DESCRIPTION:${t('calendarEvent.description', { code: bookingCode }).replace(/\n/g, '\\\\n')}`,
+      `LOCATION:${t('calendarEvent.location')}`,
       `UID:${bookingCode}@machupicchutravel.com`,
       'STATUS:CONFIRMED',
       'BEGIN:VALARM',
       'TRIGGER:-PT1H',
-      'DESCRIPTION:Tu tour comienza en 1 hora',
+      `DESCRIPTION:${t('calendarEvent.reminder')}`,
       'ACTION:DISPLAY',
       'END:VALARM',
       'END:VEVENT',
@@ -54,7 +56,7 @@ export default function SuccessActions({ bookingCode }: SuccessActionsProps) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `reserva-${bookingCode}.ics`;
+    link.download = `booking-${bookingCode}.ics`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -67,13 +69,13 @@ export default function SuccessActions({ bookingCode }: SuccessActionsProps) {
         onClick={handleDownloadPDF}
         className="flex items-center text-sm font-bold text-primary hover:text-primary-dark transition-colors"
       >
-        <Download className="w-4 h-4 mr-1" /> Descargar PDF
+        <Download className="w-4 h-4 mr-1" /> {t('downloadPDF')}
       </button>
       <button
         onClick={handleAddToCalendar}
         className="flex items-center text-sm font-bold text-primary hover:text-primary-dark transition-colors"
       >
-        <Calendar className="w-4 h-4 mr-1" /> Añadir a Calendario
+        <Calendar className="w-4 h-4 mr-1" /> {t('addToCalendar')}
       </button>
     </div>
   );
