@@ -44,7 +44,7 @@ export default function BookingWidget() {
   };
 
   return (
-    <div className="bg-white rounded-2xl sm:rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-4 sm:p-5 mx-auto max-w-5xl relative z-20 mt-[-50px] border border-gray-100">
+    <div className="bg-white rounded-2xl sm:rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-4 sm:p-5 mx-auto max-w-5xl xl:max-w-7xl relative z-20 mt-[-50px] border border-gray-100">
       {/* Upper bar with quick link to all packages */}
       <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
         <Link 
@@ -59,7 +59,7 @@ export default function BookingWidget() {
       <form onSubmit={handleSearch} className="flex flex-col xl:flex-row items-stretch xl:items-center divide-y xl:divide-y-0 xl:divide-x divide-gray-100 gap-2 xl:gap-0">
         
         {/* Destino / Actividad */}
-        <div className="flex-1 px-4 sm:px-5 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group rounded-lg xl:rounded-none xl:rounded-l-[1rem]">
+        <div className="flex-1 px-4 sm:px-5 xl:px-4 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group rounded-lg xl:rounded-none xl:rounded-l-[1rem]">
           <MapPin className="text-primary w-5 h-5 mr-3 flex-shrink-0 group-hover:scale-110 transition-transform" />
           <div className="flex flex-col w-full">
             <label htmlFor="destination" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">{t('destinationLabel')}</label>
@@ -69,13 +69,13 @@ export default function BookingWidget() {
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
               placeholder={t('destinationPlaceholder')} 
-              className="w-full bg-transparent border-none outline-none text-text-main font-semibold placeholder:text-text-light placeholder:font-normal focus:ring-0 p-0 leading-tight text-sm sm:text-base"
+              className="w-full bg-transparent border-none outline-none text-text-main font-semibold placeholder:text-text-light placeholder:font-normal focus:ring-0 p-0 leading-tight text-sm sm:text-base xl:text-sm"
             />
           </div>
         </div>
 
         {/* Tipo de Viaje */}
-        <div className="flex-1 px-4 sm:px-5 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group">
+        <div className="flex-1 px-4 sm:px-5 xl:px-4 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group">
           <Compass className="text-primary w-5 h-5 mr-3 flex-shrink-0 group-hover:scale-110 transition-transform" />
           <div className="flex flex-col w-full">
             <label htmlFor="tripType" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">{t('tripTypeLabel')}</label>
@@ -83,7 +83,7 @@ export default function BookingWidget() {
               id="tripType"
               value={tripType}
               onChange={(e) => setTripType(e.target.value)}
-              className="w-full bg-transparent border-none outline-none text-text-main font-semibold focus:ring-0 p-0 leading-tight cursor-pointer appearance-none group-hover:text-primary transition-colors text-sm sm:text-base"
+              className="w-full bg-transparent border-none outline-none text-text-main font-semibold focus:ring-0 p-0 leading-tight cursor-pointer appearance-none group-hover:text-primary transition-colors text-sm sm:text-base xl:text-sm"
             >
               <option value="" className="text-text-light font-normal">{t('tripTypePlaceholder')}</option>
               {['adventure', 'cultural', 'family', 'archaeological', 'private'].map(type => (
@@ -94,7 +94,7 @@ export default function BookingWidget() {
         </div>
 
         {/* Fechas */}
-        <div className="flex-1 px-4 sm:px-5 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group">
+        <div className="flex-1 px-4 sm:px-5 xl:px-4 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group">
           <CalendarIcon className="text-primary w-5 h-5 mr-3 flex-shrink-0 group-hover:scale-110 transition-transform" />
           <div className="flex flex-col w-full relative">
             <label htmlFor="date" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">{t('dateLabel')}</label>
@@ -104,10 +104,10 @@ export default function BookingWidget() {
                 type="date" 
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className={`w-full bg-transparent border-none outline-none font-semibold focus:ring-0 p-0 leading-tight appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer z-10 text-sm sm:text-base ${date ? 'text-text-main' : 'text-transparent'}`}
+                className={`w-full bg-transparent border-none outline-none font-semibold focus:ring-0 p-0 leading-tight appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer z-10 text-sm sm:text-base xl:text-sm ${date ? 'text-text-main' : 'text-transparent'}`}
               />
               {!date && (
-                <span className="absolute inset-0 pointer-events-none text-text-main font-semibold group-hover:text-primary transition-colors flex items-center flex-1 text-sm sm:text-base">
+                <span className="absolute inset-0 pointer-events-none text-text-main font-semibold group-hover:text-primary transition-colors flex items-center flex-1 text-sm sm:text-base xl:text-sm">
                   {t('datePlaceholder')}
                 </span>
               )}
@@ -116,7 +116,7 @@ export default function BookingWidget() {
         </div>
 
         {/* Pasajeros */}
-        <div className="flex-1 px-4 sm:px-5 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group">
+        <div className="flex-1 px-4 sm:px-5 xl:px-4 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group">
           <Users className="text-primary w-5 h-5 mr-3 flex-shrink-0 group-hover:scale-110 transition-transform" />
           <div className="flex flex-col w-full">
             <label htmlFor="passengers" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">{t('passengersLabel')}</label>
@@ -124,7 +124,7 @@ export default function BookingWidget() {
               id="passengers"
               value={passengers}
               onChange={(e) => setPassengers(e.target.value)}
-              className="w-full bg-transparent border-none outline-none text-text-main font-semibold focus:ring-0 p-0 leading-tight cursor-pointer appearance-none group-hover:text-primary transition-colors text-sm sm:text-base"
+              className="w-full bg-transparent border-none outline-none text-text-main font-semibold focus:ring-0 p-0 leading-tight cursor-pointer appearance-none group-hover:text-primary transition-colors text-sm sm:text-base xl:text-sm"
             >
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
                 <option key={num} value={num} className="text-text-main">{t('passengerOption', { count: num })}</option>
@@ -134,7 +134,7 @@ export default function BookingWidget() {
         </div>
 
         {/* Cupón */}
-        <div className="flex-1 px-4 sm:px-5 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group rounded-lg xl:rounded-none">
+        <div className="flex-1 px-4 sm:px-5 xl:px-4 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group rounded-lg xl:rounded-none">
           <Tag className="text-primary w-5 h-5 mr-3 flex-shrink-0 group-hover:scale-110 transition-transform" />
           <div className="flex flex-col w-full">
             <label htmlFor="coupon" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">{t('couponLabel')}</label>
@@ -144,7 +144,7 @@ export default function BookingWidget() {
               value={coupon}
               onChange={(e) => setCoupon(e.target.value)}
               placeholder={t('couponPlaceholder')} 
-              className="w-full bg-transparent border-none outline-none text-text-main font-semibold placeholder:text-text-light placeholder:font-normal focus:ring-0 p-0 leading-tight text-sm sm:text-base"
+              className="w-full bg-transparent border-none outline-none text-text-main font-semibold placeholder:text-text-light placeholder:font-normal focus:ring-0 p-0 leading-tight text-sm sm:text-base xl:text-sm"
             />
           </div>
         </div>
