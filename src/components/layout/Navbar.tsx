@@ -212,11 +212,17 @@ export default function Navbar() {
               </div>
             </div>
 
+            <Link href="/experiencias" aria-current={pathname === '/experiencias' ? 'page' : undefined} className="text-sm font-medium hover:text-primary-light transition-colors py-2 block">
+              {t('experiences')}
+            </Link>
             <Link href="/nosotros" aria-current={pathname === '/nosotros' ? 'page' : undefined} className="text-sm font-medium hover:text-primary-light transition-colors py-2 block">
               {t('aboutUs')}
             </Link>
             <Link href="/blog" aria-current={pathname === '/blog' ? 'page' : undefined} className="text-sm font-medium hover:text-primary-light transition-colors py-2 block">
               {t('blog')}
+            </Link>
+            <Link href="/contacto" aria-current={pathname === '/contacto' ? 'page' : undefined} className="text-sm font-medium hover:text-primary-light transition-colors py-2 block">
+              {t('contactUs')}
             </Link>
           </nav>
 
@@ -354,11 +360,17 @@ export default function Navbar() {
               </div>
             </div>
 
+            <Link href="/experiencias" onClick={closeMobileMenu} className="text-xl font-serif text-white py-4 border-b border-primary-light active:bg-white/10 rounded-lg px-3 transition-colors">
+              {t('experiences')}
+            </Link>
             <Link href="/nosotros" onClick={closeMobileMenu} className="text-xl font-serif text-white py-4 border-b border-primary-light active:bg-white/10 rounded-lg px-3 transition-colors">
               {t('aboutUs')}
             </Link>
             <Link href="/blog" onClick={closeMobileMenu} className="text-xl font-serif text-white py-4 border-b border-primary-light active:bg-white/10 rounded-lg px-3 transition-colors">
               {t('blog')}
+            </Link>
+            <Link href="/contacto" onClick={closeMobileMenu} className="text-xl font-serif text-white py-4 border-b border-primary-light active:bg-white/10 rounded-lg px-3 transition-colors">
+              {t('contactUs')}
             </Link>
           </div>
 

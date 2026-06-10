@@ -263,3 +263,72 @@
 - [x] Admin: mobile layout responsive
 - [x] Google Translate eliminado → LanguageSwitcher limpio
 
+---
+
+## 🔵 Fase 4 — Datos Corporativos, Personalización y Nuevas Ventanas (DOCX)
+
+### 4.1 Actualización de Datos de Contacto Globales e Identidad Corporativa
+- [x] Actualizar traducciones de contacto en `messages/es.json` y `messages/en.json` (teléfono principal, secundarios, email de reservas)
+- [x] Actualizar textos de Misión, Visión, Valores e Historia en `messages/es.json` y `messages/en.json`
+- [x] Cambiar número de WhatsApp principal en `WhatsAppButton.tsx` a `51955723329`
+- [x] Actualizar teléfono, email y enlaces de redes sociales en `Navbar.tsx` (móvil y desktop)
+- [x] Actualizar teléfono, email y enlaces de redes en `Footer.tsx`
+- [x] Actualizar teléfono en el JSON-LD schema de la homepage (`src/app/[locale]/(public)/page.tsx`)
+
+### 4.2 Optimización del BookingWidget (Buscador con WhatsApp Directo)
+- [x] Agregar enlace/barra superior "Disponibilidad / Tours y paquetes" en `BookingWidget.tsx`
+- [x] Agregar dropdown "Tipo de Viaje" con categorías en `BookingWidget.tsx` (traducciones en json)
+- [x] Agregar input "Cupón" en `BookingWidget.tsx`
+- [x] Agregar botón "WhatsApp directo" al lado de buscar
+- [x] Implementar composición de mensaje dinámico para WhatsApp con datos del formulario
+- [x] Estilizar la barra para integrarse perfectamente a la paleta de colores de la agencia
+
+### 4.3 Clasificación de Paquetes y TripAdvisor en la Homepage
+- [x] Modificar `FeaturedTours.tsx` o `FeaturedToursCarousel.tsx` para soportar pestañas (Tabs): Recomendados, Individuales, Promociones
+- [x] Asegurar que las tarjetas de tour (Tour Cards) muestren resumen, botón "Leer más" y botón "Reservar ahora"
+- [x] Modificar `FeaturedTours.tsx` para agregar botón "Ver todos los paquetes" que apunte a `/tours`
+- [x] Crear componente `TripAdvisorCarousel.tsx` que imite visualmente un feed de TripAdvisor de alta calidad (5/5 globos, testimonios y logos oficiales)
+- [x] Agregar el carrusel de TripAdvisor a la homepage en `src/app/[locale]/(public)/page.tsx`
+
+### 4.4 Nueva Ventana: Experiencias (`/experiencias`)
+- [x] Registrar la ruta `/experiencias` creando `src/app/[locale]/(public)/experiencias/page.tsx` con metadatos y JSON-LD
+- [x] Crear componente `PassengerGallery.tsx` con carrusel horizontal interactivo de fotos de pasajeros (usando Embla)
+- [x] Implementar bloque persuasivo "Por qué viajar con nosotros" y botón para desplegar fotos
+- [x] Agregar botones sociales destacados (TripAdvisor, Facebook, Instagram, WhatsApp, Licencias de empresa)
+- [x] Crear formulario de asesoría directa conectado a WhatsApp en `AdvisorContact.tsx`
+- [x] Agregar grid de reseñas/testimonios estructurado en la página de Experiencias
+- [x] Agregar sección de beneficios "Por qué comprar todo con nosotros"
+
+### 4.5 Nueva Ventana: Contacto (`/contacto`)
+- [x] Registrar la ruta `/contacto` creando `src/app/[locale]/(public)/contacto/page.tsx`
+- [x] Crear formulario de contacto con validaciones e integrarlo con WhatsApp
+- [x] Diseñar bloque "Linktree" con accesos directos optimizado para dispositivos móviles
+- [x] Crear componente `AdvisorsSection.tsx` con fotos y números de WhatsApp de los asesores
+- [x] Integrar mapa embebido interactivo de Google Maps apuntando a Cusco en la página
+- [x] Agregar sección de preguntas frecuentes de reserva y detalles de ubicación
+
+### 4.6 Enriquecimiento de la Ventana: Nosotros (`/nosotros`)
+- [x] Agregar badge del sello de la agencia certificada en `nosotros/page.tsx`
+- [x] Integrar botón intrusivo/flotante "Planificar mi Viaje con un Experto" en la sección
+- [x] Crear sección de Sostenibilidad y Reforestación con imágenes de apoyo
+- [x] Crear sección de Consejos útiles para reservar y evitar estafas
+- [x] Crear acordeón de Licencias y Permisos Oficiales con RUC `20564458385` y datos de resoluciones directorales
+
+### 4.7 Actualización Estructural del Footer y Métodos de Pago
+- [x] Modificar estructura de enlaces en `Footer.tsx` para agregar servicios y destinos completos (Huacachina, Titicaca, Salar de Uyuni, etc.)
+- [x] Agregar sección "Información Útil" en el footer (blog de viajes, destinos recomendados)
+- [x] Agregar enlaces a Cambios, FAQ, y Libro de Reclamaciones
+- [x] Actualizar logotipos SVG de métodos de pago (Visa, Mastercard, PayPal, Izipay, Western Union / Moneygram)
+- [x] Mostrar RUC oficial `20564458385` e insignias de Aliados (Peru Rail, Inca Rail, Latam, Mincul) en el pie de página
+
+---
+
+## ✅ Verificación Global Post-Implementación
+- [x] `npm run build` compila sin errores
+- [x] Redirecciones de WhatsApp verificadas para BookingWidget y Asesores
+- [x] Multi-idioma funcional para las nuevas ventanas de Experiencias y Contacto
+- [x] Responsividad en resoluciones móvil y desktop certificada
+- [x] Formulario de contacto validado y operativo
+- [x] RUC y enlaces legales confirmados en Footer y Nosotros
+
+

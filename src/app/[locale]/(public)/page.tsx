@@ -22,7 +22,7 @@ export default async function Home() {
         name: 'Machu Picchu Travel Adventures',
         description: tCommon('jsonLdDescription'),
         url: 'https://machupicchutravel.com',
-        telephone: '+51987654321',
+        telephone: '+51955723329',
         address: {
           '@type': 'PostalAddress',
           addressLocality: 'Cusco',

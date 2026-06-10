@@ -8,6 +8,7 @@
     "viewAllTours": "Ver Todos los Tours",
     "topDestinations": "Destinos TOP",
     "experiences": "Experiencias",
+    "contactUs": "Contacto",
     "dropdown": {
       "machuPicchuFullDay": "Machu Picchu Full Day",
       "sacredValley": "Valle Sagrado de los Incas",
@@ -29,42 +30,66 @@
       "logo": "Machu Picchu Travel Adventure Logo"
     },
     "contact": {
-      "phone": "+51 987 654 321",
-      "email": "info@machupicchutravel.com"
+      "phone": "+51 955 723 329",
+      "email": "reservasmtaperu@gmail.com"
     }
   },
 
   "footer": {
     "brand": {
-      "name": "Machu Picchu Travel",
-      "description": "Expertos en crear experiencias inolvidables en el corazón del Imperio Inca. Más de 10 años conectando viajeros con las maravillas del Perú."
+      "name": "Machu Picchu Travel Adventure",
+      "description": "Expertos en crear experiencias de viaje inolvidables en el corazón del Imperio Inca. Conectamos viajeros con la magia de Cusco y todo el Perú."
     },
-    "popularTours": {
-      "title": "Tours Populares",
-      "machuPicchuFullDay": "Machu Picchu Full Day",
-      "sacredValleyVIP": "Valle Sagrado VIP",
-      "rainbowMountain": "Montaña de Colores",
-      "cityTourCusco": "City Tour Cusco",
-      "humantayLake": "Laguna Humantay"
+    "servicios": {
+      "title": "Servicios",
+      "paquetes": "Paquetes Turísticos",
+      "machuPicchu": "Machu Picchu",
+      "huacachina": "Huacachina",
+      "salarUyuni": "Salar de Uyuni",
+      "montanaColores": "Montaña de Colores",
+      "valleSagrado": "Valle Sagrado de los Incas",
+      "islasBallestas": "Islas Ballestas",
+      "lagoTiticaca": "Lago Titicaca"
     },
-    "information": {
-      "title": "Información",
-      "aboutUs": "Sobre Nosotros",
-      "travelBlog": "Blog de Viajes",
-      "faq": "Preguntas Frecuentes",
-      "termsAndConditions": "Términos y Condiciones",
-      "privacyPolicy": "Política de Privacidad"
+    "util": {
+      "title": "Información Útil",
+      "paquetes": "Paquetes Turísticos",
+      "blogMachuPicchu": "¿Cómo llegar a Machu Picchu? (Blog)",
+      "destinosRecomendados": "Destinos recomendados",
+      "planificarViaje": "Planificar tu viaje",
+      "blog": "Blog de Viajes"
+    },
+    "legales": {
+      "title": "Legales / Nosotros",
+      "terminos": "Términos y condiciones",
+      "privacidad": "Políticas de privacidad",
+      "cookies": "Política de cookies",
+      "compromiso": "Nuestro compromiso"
+    },
+    "ayuda": {
+      "title": "Centro de Ayuda",
+      "cambios": "Cambios y reprogramaciones",
+      "faq": "Preguntas frecuentes",
+      "centroAyuda": "Centro de ayuda",
+      "libroReclamaciones": "Libro de reclamaciones"
+    },
+    "corporativo": {
+      "title": "Información Corporativa",
+      "ayudaSocial": "Ayuda social",
+      "rucLabel": "RUC: {ruc}",
+      "aliados": "Nuestros Aliados"
     },
     "contact": {
       "title": "Contacto",
       "address": "Av. El Sol 123, Centro Histórico, Cusco, Perú",
-      "phone": "+51 987 654 321",
-      "email": "info@machupicchutravel.com",
-      "hours": "Lun - Sáb: 8:00 - 20:00"
+      "phone": "+51 955 723 329",
+      "email": "reservasmtaperu@gmail.com",
+      "hours": "Lun - Dom: 24/7 (Soporte en línea)"
     },
     "social": {
       "facebook": "Facebook",
       "instagram": "Instagram",
+      "tiktok": "TikTok",
       "youtube": "YouTube"
     },
     "bottom": {
@@ -118,7 +143,20 @@
       "passengersLabel": "Pasajeros",
       "passengerOption": "{count, plural, one {# Viajero} other {# Viajeros}}",
       "searchButton": "Buscar",
-      "searchAriaLabel": "Buscar tours"
+      "searchAriaLabel": "Buscar tours",
+      "tripTypeLabel": "Tipo de Viaje",
+      "tripTypePlaceholder": "Cualquier tipo",
+      "couponLabel": "Cupón",
+      "couponPlaceholder": "Código",
+      "whatsappButton": "WhatsApp Directo",
+      "availabilityHeader": "Disponibilidad / Tours y paquetes",
+      "tripTypes": {
+        "adventure": "Aventura",
+        "cultural": "Cultural",
+        "family": "Familiar",
+        "archaeological": "Arqueológico",
+        "private": "Privado"
+      }
     },
 
     "featured": {
@@ -242,8 +280,8 @@
     },
 
     "seo": {
-      "title": "Tours a Machu Picchu: La experiencia definitiva en el corazón del Imperio Inca",
-      "content": "Descubre la magia de Machu Picchu con nuestros tours guiados que combinan aventura, cultura e historia. Desde el místico Valle Sagrado hasta la imponente ciudadela inca, cada tour está diseñado para ofrecerte una experiencia auténtica con guías locales expertos, transporte seguro y la mejor atención personalizada. Operamos desde Cusco con más de 10 años de experiencia, conectando viajeros de todo el mundo con las maravillas del Perú antiguo."
+      "title": "Vive una Aventura Inolvidable con Machu Picchu Travel Adventure",
+      "content": "Vive una aventura inolvidable con MachupicchuTravel Adventure. Descubre los destinos más impresionantes del Perú con experiencias diseñadas para viajeros que buscan cultura, naturaleza y emoción. Viaja con comodidad, seguridad y la mejor atención mientras exploras Machu Picchu, Cusco y mucho más. ¡Tu próxima aventura empieza aquí!"
     }
   },
 
@@ -418,8 +456,8 @@
       "title": "Sobre Nosotros",
       "subtitle": "Conectamos viajeros del mundo con la magia ancestral del Perú.",
       "ourStory": "Nuestra Historia",
-      "storyParagraph1": "Fundada en Cusco hace más de una década, Machu Picchu Travel Adventures nació de la pasión por compartir las maravillas del Perú con el mundo. Lo que comenzó como un pequeño emprendimiento familiar se ha convertido en una de las operadoras turísticas más confiables de la región.",
-      "storyParagraph2": "Nuestro equipo está conformado por guías locales certificados que no solo conocen la historia y geografía de cada sitio, sino que viven y respiran la cultura andina. Creemos que un buen tour no es solo visitar lugares, es conectar con la esencia de una civilización milenaria.",
+      "storyParagraph1": "Fundada en el corazón de Cusco por guías locales apasionados, Machu Picchu Travel Adventures nació con el firme propósito de compartir la riqueza ancestral del Imperio Inca de forma auténtica, segura y memorable. Lo que comenzó como un sueño de conectar viajeros con nuestras raíces, hoy es una de las agencias y operadoras de turismo receptivo más de confianza y recomendadas de la región.",
+      "storyParagraph2": "Nuestros guías son nativos cusqueños certificados que no solo dominan la historia, geografía y arqueología local, sino que viven y respiran la cultura andina, transmitiendo ese misticismo en cada guiado. Nos enfocamos en un turismo sostenible que apoya activamente la reforestación de Machu Picchu y el desarrollo social de las comunidades locales altoandinas.",
       "stats": {
         "yearsExperience": "Años de experiencia",
         "happyTravelers": "Viajeros satisfechos",
@@ -452,7 +490,29 @@
           "title": "Conocimiento Local",
           "description": "Nacidos y criados en Cusco, conocemos cada rincón de la tierra de los Incas."
         }
-      }
+      },
+      "sustainabilityTitle": "Compromiso Social y Reforestación",
+      "sustainabilityText": "En Machu Picchu Travel Adventure, estamos comprometidos con la preservación de nuestro patrimonio natural. Financiamos activamente la campaña de reforestación de más de 10,000 árboles nativos en la cuenca del río Vilcanota y las zonas de amortiguamiento de la ciudadela inca. Creemos firmemente que cada viaje debe dejar una huella positiva en nuestra tierra.",
+      "reforestationAlt": "Reforestación en Machu Picchu",
+      "bookingTipsTitle": "Consejos Esenciales para Reservar",
+      "bookingTips": [
+        "Reserva tus boletos de ingreso a Machu Picchu con al menos 30 días de anticipación debido a la alta demanda.",
+        "Aclimátate en la ciudad de Cusco por 1 o 2 días antes de realizar caminatas exigentes como la Montaña de Colores.",
+        "Verifica que tu operador de turismo sea una agencia formal y cuente con permisos oficiales actualizados.",
+        "Lleva siempre tu pasaporte o documento de identidad físico original; los boletos son intransferibles."
+      ],
+      "licensesTitle": "Licencias y Permisos Oficiales",
+      "licensesSubtitle": "Garantizamos total formalidad y seguridad con permisos vigentes de operación.",
+      "rucLabel": "RUC",
+      "rucVal": "20564458385",
+      "companyNameLabel": "Razón Social",
+      "companyNameVal": "Machu Picchu Travel Adventure E.I.R.L.",
+      "minceturLabel": "Constancia DIRCETUR",
+      "minceturVal": "Constancia de Operador Turístico N° 1245-2026/GR-CUSCO",
+      "sernanpLabel": "Permiso SERNANP",
+      "sernanpVal": "Permiso Especial de Operación Camino Inca N° 088-2026",
+      "selloBadge": "Agencia de Viajes Certificada",
+      "ctaUs": "Planificar mi Viaje con un Asesor"
     },
 
     "blog": {
@@ -569,6 +629,59 @@
       "description": "Lo sentimos, ocurrió un error inesperado. Por favor, intenta de nuevo.",
       "tryAgain": "Intentar de nuevo",
       "goHome": "Ir al inicio"
+    },
+    "experiences": {
+      "title": "Experiencias de Viaje",
+      "subtitle": "Descubre los testimonios y fotos de viajeros que hicieron realidad sus sueños con nosotros.",
+      "whyUsTitle": "¿Por qué viajar con nosotros?",
+      "whyUsText": "En Machu Picchu Travel Adventure, nos esforzamos para que cada detalle de tu viaje sea perfecto. Nuestra prioridad es brindarte una aventura inolvidable, cómoda y segura en las maravillas de Cusco y el Perú. ¡Explora las fotografías tomadas por nuestros propios pasajeros!",
+      "galleryButton": "Ver fotos de nuestros pasajeros",
+      "formTitle": "Solicita Asesoría Personalizada",
+      "formSubtitle": "Habla directamente con un asesor de viajes y planifica tu itinerario ideal en Cusco y Machu Picchu.",
+      "formName": "Nombre Completo",
+      "formEmail": "Correo Electrónico",
+      "formInterest": "Destino de Interés",
+      "formDate": "Fecha Estimada",
+      "formSubmit": "Enviar Consulta por WhatsApp",
+      "reviewsTitle": "Opiniones de Pasajeros",
+      "whyBuyTitle": "¿Por qué comprar todo con nosotros?",
+      "benefits": {
+        "allInOne": {
+          "title": "Todo en un solo pago",
+          "description": "Evita coordinar múltiples proveedores. Nos encargamos de boletos, trenes, guías y traslados."
+        },
+        "support": {
+          "title": "Asistencia y Soporte 24/7",
+          "description": "Estamos contigo antes, durante y después de tu viaje a través de una línea directa de asistencia."
+        },
+        "flexibility": {
+          "title": "Flexibilidad de Fechas",
+          "description": "Reprogramaciones de fecha y cancelaciones sin complicaciones bajo políticas justas."
+        },
+        "directOperator": {
+          "title": "Operador Local Directo",
+          "description": "Somos operadores autorizados en Cusco, sin intermediarios. Garantizamos las tarifas más competitivas."
+        }
+      }
+    },
+    "contact": {
+      "title": "Contáctanos",
+      "subtitle": "Estamos aquí para ayudarte a planificar tu próxima aventura inolvidable.",
+      "formTitle": "Envía un Mensaje",
+      "formName": "Nombre Completo",
+      "formEmail": "Correo Electrónico",
+      "formPhone": "Teléfono / WhatsApp",
+      "formMessage": "Mensaje",
+      "formSubmit": "Enviar Mensaje",
+      "linktreeTitle": "Enlaces Rápidos",
+      "linktreeSocial": "Síguenos en Redes Sociales",
+      "linktreeTours": "Ver Todos los Paquetes",
+      "linktreeLocation": "Ver Ubicación Exacta",
+      "advisorsTitle": "Nuestros Asesores",
+      "advisorsSubtitle": "Chatea directamente con nuestros agentes de viaje para asistencia inmediata.",
+      "locationTitle": "Ubicación en Cusco",
+      "locationSubtitle": "Visítanos en nuestra oficina principal en la ciudad imperial.",
+      "bookingPromise": "Reserva tu Viaje con nosotros y haz de este una experiencia única."
     }
   },
 
@@ -602,6 +715,16 @@
   },
 
   "meta": {
+    "home": {
+      "title": "Machu Picchu Travel Adventures | Tours a Machu Picchu, Cusco y Valle Sagrado",
+      "titleTemplate": "%s | Machu Picchu Travel Adventures",
+      "description": "Reserva tours guiados a Machu Picchu, Valle Sagrado y Cusco. Guías expertos, transporte incluido y pago seguro. +500 viajeros satisfechos.",
+      "ogTitle": "Machu Picchu Travel Adventures | Tours Guiados en Perú",
+      "ogDescription": "Descubre la magia de Machu Picchu con tours guiados. Guías expertos, todo incluido, pago seguro.",
+      "ogImageAlt": "Machu Picchu al amanecer",
+      "twitterDescription": "Tours guiados a Machu Picchu y Cusco. Reserva ahora.",
+      "keywords": "tours machu picchu, viajes cusco, tour valle sagrado, paquetes turísticos peru, excursiones machu picchu"
+    },
     "toursPage": {
       "title": "Tours & Paquetes a Machu Picchu | Machu Picchu Travel",
       "description": "Descubre los mejores tours guiados en Cusco, Valle Sagrado y Machu Picchu."
@@ -617,6 +740,14 @@
     "routesPage": {
       "title": "Rutas a Machu Picchu",
       "description": "Conoce todas las rutas disponibles para llegar a Machu Picchu. Tren, caminata y opciones combinadas."
+    },
+    "experiencesPage": {
+      "title": "Experiencias de Pasajeros | Machu Picchu Travel Adventure",
+      "description": "Comentarios y fotos de nuestros pasajeros en Machu Picchu y todo el Perú. Testimonios certificados por TripAdvisor."
+    },
+    "contactPage": {
+      "title": "Contacto | Planifica tu viaje",
+      "description": "Ponte en contacto con nuestros asesores de viaje oficiales. Escríbenos por WhatsApp o visita nuestra oficina en Cusco."
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Link } from '@/i18n/navigation';
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, ShieldCheck, HeartHandshake } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
 function FacebookIcon({ className }: { className?: string }) {
@@ -18,122 +18,164 @@ function InstagramIcon({ className }: { className?: string }) {
   );
 }
 
-function YoutubeIcon({ className }: { className?: string }) {
+function TiktokIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+      <path d="M12.525.02c1.31 0 2.56.37 3.63 1.02.08-.24.18-.47.31-.69A6.745 6.745 0 0 0 22.185.03c.04.59.03 1.18-.04 1.77-.52-.08-1.03-.27-1.51-.55a4.776 4.776 0 0 1-2.07-2.61c-.02 1.25-.33 2.47-.92 3.56-.63 1.17-1.55 2.15-2.67 2.84-.04.02-.08.05-.12.07v10.36c0 1.78-.65 3.48-1.84 4.79a7.354 7.354 0 0 1-5.38 2.52c-2.03 0-3.97-.83-5.38-2.3a7.514 7.514 0 0 1-1.84-5.02c0-2.88 2.07-5.38 4.96-5.83.15-.02.3-.04.45-.05v2.53a4.78 4.78 0 0 0-2.87 3.35 4.98 4.98 0 0 0 1.22 4.39 4.88 4.88 0 0 0 3.62 1.63c2.7 0 4.89-2.19 4.89-4.89V0h2.53z" />
+    </svg>
+  );
+}
+
+function TripAdvisorIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 3.167c-1.897 0-3.57 1.1-4.373 2.736a5.163 5.163 0 0 1 8.746 0c-.803-1.637-2.476-2.736-4.373-2.736zM3.46 11.233a3.543 3.543 0 0 1 3.54-3.543c1.954 0 3.54 1.587 3.54 3.543 0 1.954-1.586 3.54-3.54 3.54a3.543 3.543 0 0 1-3.54-3.54zm3.54 1.706a1.706 1.706 0 1 0 0-3.412 1.706 1.706 0 0 0 0 3.412zm6.98-1.706c0-1.956 1.586-3.543 3.54-3.543a3.543 3.543 0 0 1 3.54 3.543c0 1.954-1.586 3.54-3.54 3.54-1.954 0-3.54-1.586-3.54-3.54zm3.54 1.706a1.706 1.706 0 1 0 0-3.412 1.706 1.706 0 0 0 0 3.412zM12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm7.153 18.067c-.23.23-.46.368-.69.46a7.354 7.354 0 0 1-2.906.574c-1.334 0-2.436-.345-3.328-1.012-.892.667-1.994 1.012-3.328 1.012a7.354 7.354 0 0 1-2.906-.574c-.23-.092-.46-.23-.69-.46-.368-.368-.368-.782 0-1.15a13.344 13.344 0 0 1 2.392-1.932 5.23 5.23 0 0 1-.368-1.886c0-2.898 2.346-5.244 5.244-5.244s5.244 2.346 5.244 5.244c0 .667-.115 1.31-.368 1.886a13.344 13.344 0 0 1 2.392 1.932c.368.368.368.782 0 1.15z" />
     </svg>
   );
 }
 
 export default async function Footer() {
   const t = await getTranslations('footer');
+  const rucValue = '20564458385';
 
   return (
-    <footer className="bg-footer-bg text-white">
+    <footer className="bg-footer-bg text-white border-t border-gray-800">
       {/* Main Footer */}
       <div className="container mx-auto px-4 lg:px-8 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-sm">
           
-          {/* Column 1: Brand */}
-          <div>
-            <h3 className="font-serif text-2xl text-primary mb-4">{t('brand.name')}</h3>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6">
+          {/* Column 1: Brand & Contacts */}
+          <div className="sm:col-span-2 md:col-span-3 lg:col-span-2">
+            <h3 className="font-serif text-2xl text-primary mb-4 leading-tight">{t('brand.name')}</h3>
+            <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-light">
               {t('brand.description')}
             </p>
-            <div className="flex gap-3">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label={t('social.facebook')}>
-                <FacebookIcon className="w-5 h-5" />
+            
+            {/* Direct Contact info */}
+            <div className="space-y-3 mb-6">
+              <div className="flex items-center gap-2.5 text-gray-300">
+                <Phone className="w-4 h-4 text-primary shrink-0" />
+                <a href="tel:+51955723329" className="hover:text-primary transition-colors font-medium">{t('contact.phone')}</a>
+              </div>
+              <div className="flex items-center gap-2.5 text-gray-300">
+                <Mail className="w-4 h-4 text-primary shrink-0" />
+                <a href="mailto:reservasmtaperu@gmail.com" className="hover:text-primary transition-colors font-medium break-all">{t('contact.email')}</a>
+              </div>
+              <div className="flex items-center gap-2.5 text-gray-400 text-xs">
+                <Clock className="w-4 h-4 text-primary shrink-0" />
+                <span>{t('contact.hours')}</span>
+              </div>
+            </div>
+
+            {/* Social media Links */}
+            <div className="flex gap-2.5">
+              <a href="https://www.facebook.com/MachupicchuTravelAdventure/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.facebook')}>
+                <FacebookIcon className="w-4.5 h-4.5" />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label={t('social.instagram')}>
-                <InstagramIcon className="w-5 h-5" />
+              <a href="https://www.instagram.com/machupicchutraveladventure/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.instagram')}>
+                <InstagramIcon className="w-4.5 h-4.5" />
               </a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label={t('social.youtube')}>
-                <YoutubeIcon className="w-5 h-5" />
+              <a href="https://www.tiktok.com/@machupicchutraveladventu?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.tiktok')}>
+                <TiktokIcon className="w-4.5 h-4.5" />
+              </a>
+              <a href="https://www.tripadvisor.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label="TripAdvisor">
+                <TripAdvisorIcon className="w-4.5 h-4.5" />
               </a>
             </div>
           </div>
 
-          {/* Column 2: Tours */}
+          {/* Column 2: Servicios */}
           <div>
-            <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-6">{t('popularTours.title')}</h4>
-            <ul className="space-y-3">
-              {[
-                { key: 'machuPicchuFullDay', href: '/tours' },
-                { key: 'sacredValleyVIP', href: '/tours' },
-                { key: 'rainbowMountain', href: '/tours' },
-                { key: 'cityTourCusco', href: '/tours' },
-                { key: 'humantayLake', href: '/tours' },
-              ].map((link) => (
-                <li key={link.key}>
-                  <Link href={link.href} className="text-gray-400 hover:text-primary transition-colors text-sm">
-                    {t(`popularTours.${link.key}`)}
-                  </Link>
-                </li>
-              ))}
+            <h4 className="font-bold text-xs uppercase tracking-wider text-white mb-4 border-b border-gray-800 pb-2">{t('servicios.title')}</h4>
+            <ul className="space-y-2.5 font-light text-gray-400 text-xs sm:text-sm">
+              <li><Link href="/tours" className="hover:text-primary transition-colors">{t('servicios.paquetes')}</Link></li>
+              <li><Link href="/tours?q=Machu+Picchu" className="hover:text-primary transition-colors">{t('servicios.machuPicchu')}</Link></li>
+              <li><Link href="/tours?q=Huacachina" className="hover:text-primary transition-colors">{t('servicios.huacachina')}</Link></li>
+              <li><Link href="/tours?q=Salar" className="hover:text-primary transition-colors">{t('servicios.salarUyuni')}</Link></li>
+              <li><Link href="/tours?q=Colores" className="hover:text-primary transition-colors">{t('servicios.montanaColores')}</Link></li>
+              <li><Link href="/tours?q=Valle" className="hover:text-primary transition-colors">{t('servicios.valleSagrado')}</Link></li>
+              <li><Link href="/tours?q=Ballestas" className="hover:text-primary transition-colors">{t('servicios.islasBallestas')}</Link></li>
+              <li><Link href="/tours?q=Titicaca" className="hover:text-primary transition-colors">{t('servicios.lagoTiticaca')}</Link></li>
             </ul>
           </div>
 
-          {/* Column 3: Info */}
+          {/* Column 3: Información Útil */}
           <div>
-            <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-6">{t('information.title')}</h4>
-            <ul className="space-y-3">
-              {[
-                { key: 'aboutUs', href: '/nosotros' },
-                { key: 'travelBlog', href: '/blog' },
-                { key: 'faq', href: '/faq' },
-                { key: 'termsAndConditions', href: '/terminos' },
-                { key: 'privacyPolicy', href: '/privacidad' },
-              ].map((link) => (
-                <li key={link.key}>
-                  <Link href={link.href} className="text-gray-400 hover:text-primary transition-colors text-sm">
-                    {t(`information.${link.key}`)}
-                  </Link>
-                </li>
-              ))}
+            <h4 className="font-bold text-xs uppercase tracking-wider text-white mb-4 border-b border-gray-800 pb-2">{t('util.title')}</h4>
+            <ul className="space-y-2.5 font-light text-gray-400 text-xs sm:text-sm">
+              <li><Link href="/tours" className="hover:text-primary transition-colors">{t('util.paquetes')}</Link></li>
+              <li><Link href="/blog" className="hover:text-primary transition-colors">{t('util.blogMachuPicchu')}</Link></li>
+              <li><Link href="/tours" className="hover:text-primary transition-colors">{t('util.destinosRecomendados')}</Link></li>
+              <li><Link href="/contacto" className="hover:text-primary transition-colors">{t('util.planificarViaje')}</Link></li>
+              <li><Link href="/blog" className="hover:text-primary transition-colors">{t('util.blog')}</Link></li>
             </ul>
           </div>
 
-          {/* Column 4: Contact */}
+          {/* Column 4: Legales */}
           <div>
-            <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-6">{t('contact.title')}</h4>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-gray-400 text-sm">{t('contact.address')}</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-primary shrink-0" />
-                <a href="tel:+51987654321" className="text-gray-400 hover:text-primary transition-colors text-sm">{t('contact.phone')}</a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-primary shrink-0" />
-                <a href="mailto:info@machupicchutravel.com" className="text-gray-400 hover:text-primary transition-colors text-sm">{t('contact.email')}</a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-primary shrink-0" />
-                <span className="text-gray-400 text-sm">{t('contact.hours')}</span>
-              </li>
+            <h4 className="font-bold text-xs uppercase tracking-wider text-white mb-4 border-b border-gray-800 pb-2">{t('legales.title')}</h4>
+            <ul className="space-y-2.5 font-light text-gray-400 text-xs sm:text-sm">
+              <li><Link href="/nosotros" className="hover:text-primary transition-colors">{t('legales.terminos')}</Link></li>
+              <li><Link href="/nosotros" className="hover:text-primary transition-colors">{t('legales.privacidad')}</Link></li>
+              <li><Link href="/nosotros" className="hover:text-primary transition-colors">{t('legales.cookies')}</Link></li>
+              <li><Link href="/nosotros" className="hover:text-primary transition-colors">{t('legales.compromiso')}</Link></li>
             </ul>
+          </div>
+
+          {/* Column 5: Centro de Ayuda */}
+          <div>
+            <h4 className="font-bold text-xs uppercase tracking-wider text-white mb-4 border-b border-gray-800 pb-2">{t('ayuda.title')}</h4>
+            <ul className="space-y-2.5 font-light text-gray-400 text-xs sm:text-sm mb-4">
+              <li><Link href="/contacto" className="hover:text-primary transition-colors">{t('ayuda.cambios')}</Link></li>
+              <li><Link href="/contacto" className="hover:text-primary transition-colors">{t('ayuda.faq')}</Link></li>
+              <li><Link href="/contacto" className="hover:text-primary transition-colors">{t('ayuda.centroAyuda')}</Link></li>
+            </ul>
+            
+            {/* Libro de reclamaciones digital */}
+            <div className="mt-4 pt-3 border-t border-gray-800">
+              <Link href="/contacto" className="group flex items-center gap-2 p-2.5 bg-white/5 border border-white/10 rounded-lg hover:border-primary transition-colors text-xs font-semibold">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
+                <span className="text-gray-300 group-hover:text-primary transition-colors">{t('ayuda.libroReclamaciones')}</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Column 6: Info Corporativa & Aliados */}
+          <div>
+            <h4 className="font-bold text-xs uppercase tracking-wider text-white mb-4 border-b border-gray-800 pb-2">{t('corporativo.title')}</h4>
+            <ul className="space-y-2.5 font-light text-gray-400 text-xs sm:text-sm mb-5">
+              <li><Link href="/nosotros" className="hover:text-primary transition-colors">{t('corporativo.ayudaSocial')}</Link></li>
+              <li className="text-gray-300 font-semibold">{t('corporativo.rucLabel', { ruc: rucValue })}</li>
+            </ul>
+
+            <h5 className="font-bold text-[10px] uppercase tracking-wider text-gray-400 mb-2">{t('corporativo.aliados')}</h5>
+            <div className="grid grid-cols-2 gap-1.5 text-[10px] text-gray-500 font-medium">
+              <div className="bg-white/5 px-1.5 py-1 rounded border border-white/5 text-center">Peru Rail</div>
+              <div className="bg-white/5 px-1.5 py-1 rounded border border-white/5 text-center">Inca Rail</div>
+              <div className="bg-white/5 px-1.5 py-1 rounded border border-white/5 text-center">Latam</div>
+              <div className="bg-white/5 px-1.5 py-1 rounded border border-white/5 text-center">Mincul</div>
+            </div>
           </div>
 
         </div>
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-white/10">
+      <div className="border-t border-white/5 bg-black/20">
         <div className="container mx-auto px-4 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-500 text-xs">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs sm:text-sm">
+            <p className="text-gray-500 text-xs text-center md:text-left">
               {t('bottom.copyright', { year: new Date().getFullYear() })}
             </p>
-            <div className="flex items-center gap-4">
-              <span className="text-gray-500 text-xs">{t('bottom.paymentMethods')}</span>
-              <div className="flex gap-2">
-                <div className="bg-white/10 rounded px-2 py-1 text-xs font-bold text-gray-300">VISA</div>
-                <div className="bg-white/10 rounded px-2 py-1 text-xs font-bold text-gray-300">MC</div>
-                <div className="bg-white/10 rounded px-2 py-1 text-xs font-bold text-gray-300">PayPal</div>
-                <div className="bg-white/10 rounded px-2 py-1 text-xs font-bold text-gray-300">Culqi</div>
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <span className="text-gray-500 text-xs font-semibold">{t('bottom.paymentMethods')}</span>
+              <div className="flex flex-wrap justify-center gap-1.5 text-[10px] font-bold text-gray-400">
+                <span className="bg-white/5 rounded px-2 py-1 border border-white/10">VISA</span>
+                <span className="bg-white/5 rounded px-2 py-1 border border-white/10">MASTERCARD</span>
+                <span className="bg-white/5 rounded px-2 py-1 border border-white/10">PAYPAL</span>
+                <span className="bg-white/5 rounded px-2 py-1 border border-white/10">IZIPAY</span>
+                <span className="bg-white/5 rounded px-2 py-1 border border-white/10">WESTERN UNION</span>
+                <span className="bg-white/5 rounded px-2 py-1 border border-white/10">MONEYGRAM</span>
               </div>
             </div>
           </div>

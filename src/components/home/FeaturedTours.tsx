@@ -2,23 +2,18 @@ import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { getTranslations } from 'next-intl/server';
-import FeaturedToursCarousel from './FeaturedToursCarousel';
-
+import FeaturedToursTabs from './FeaturedToursTabs';
 
 export default async function FeaturedTours() {
   const t = await getTranslations('home.featured');
-  const { data: tours } = await supabase.from('tours').select('*').eq('is_active', true).limit(4);
+  
+  // Fetch all active tours to categorize them in client-side tabs
+  const { data: tours } = await supabase
+    .from('tours')
+    .select('id, slug, title, description, image_url, price_adult, tag')
+    .eq('is_active', true);
+    
   const displayTours = tours || [];
-
-  let settingsMap: Record<string, string> = {};
-  try {
-    const { data: settings } = await supabase.from('site_settings').select('*');
-    if (settings) {
-      settings.forEach(s => settingsMap[s.key] = s.value);
-    }
-  } catch (e) {
-    console.error('Settings table missing or error', e);
-  }
 
   const heroTitle = t('defaultTitle');
   const heroSubtitle = t('defaultSubtitle');
@@ -47,7 +42,7 @@ export default async function FeaturedTours() {
           </Link>
         </div>
 
-        <FeaturedToursCarousel tours={displayTours} />
+        <FeaturedToursTabs tours={displayTours} />
       </div>
     </section>
   );

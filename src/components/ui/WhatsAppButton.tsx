@@ -4,7 +4,7 @@ import { MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 export default function WhatsAppButton() {
-  const phoneNumber = '51987654321'; // Peru phone number
+  const phoneNumber = '51955723329'; // Peru phone number
   const t = useTranslations('whatsapp');
   const message = encodeURIComponent(t('defaultMessage'));
   

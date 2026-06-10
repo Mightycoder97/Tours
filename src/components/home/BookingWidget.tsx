@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from '@/i18n/navigation';
-import { Calendar as CalendarIcon, Users, MapPin, Search } from 'lucide-react';
+import { useRouter, Link } from '@/i18n/navigation';
+import { Calendar as CalendarIcon, Users, MapPin, Search, MessageCircle, Compass, Tag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 export default function BookingWidget() {
@@ -11,6 +11,8 @@ export default function BookingWidget() {
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
   const [passengers, setPassengers] = useState('2');
+  const [tripType, setTripType] = useState('');
+  const [coupon, setCoupon] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,17 +20,47 @@ export default function BookingWidget() {
     if (destination) params.append('q', destination);
     if (date) params.append('date', date);
     if (passengers) params.append('passengers', passengers);
+    if (tripType) params.append('tripType', tripType);
+    if (coupon) params.append('coupon', coupon);
     
     router.push(`/tours?${params.toString()}`);
   };
 
+  const handleWhatsApp = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const cleanPhone = '51955723329';
+    const selectedTripType = tripType ? t(`tripTypes.${tripType}`) : 'Cualquiera';
+    
+    const textMessage = `¡Hola Machupicchu Travel Adventure! Me interesa planificar un viaje.\n\n` +
+      `📍 Destino/Tour: ${destination || 'Por definir'}\n` +
+      `📅 Fecha: ${date || 'Por definir'}\n` +
+      `👥 Pasajeros: ${passengers}\n` +
+      `🏔️ Tipo de viaje: ${selectedTripType}\n` +
+      (coupon ? `🎫 Cupón: ${coupon}\n` : '') +
+      `\n¿Tienen disponibilidad y tarifas para estas fechas?`;
+      
+    const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(textMessage)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
-    <div className="bg-white rounded-2xl sm:rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-3 sm:p-2 mx-auto max-w-4xl relative z-20 mt-[-50px]">
-      <form onSubmit={handleSearch} className="flex flex-col md:flex-row items-stretch md:items-center divide-y md:divide-y-0 md:divide-x divide-gray-100">
+    <div className="bg-white rounded-2xl sm:rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-4 sm:p-5 mx-auto max-w-5xl relative z-20 mt-[-50px] border border-gray-100">
+      {/* Upper bar with quick link to all packages */}
+      <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
+        <Link 
+          href="/tours" 
+          className="text-xs sm:text-sm font-bold text-primary hover:text-primary-dark transition-colors flex items-center gap-1.5 uppercase tracking-wider"
+        >
+          <Compass className="w-4.5 h-4.5" />
+          {t('availabilityHeader')}
+        </Link>
+      </div>
+
+      <form onSubmit={handleSearch} className="flex flex-col xl:flex-row items-stretch xl:items-center divide-y xl:divide-y-0 xl:divide-x divide-gray-100 gap-2 xl:gap-0">
         
         {/* Destino / Actividad */}
-        <div className="flex-1 px-4 sm:px-6 py-3 sm:py-4 w-full flex items-center hover:bg-gray-50 md:rounded-l-[1rem] rounded-t-xl md:rounded-tr-none transition-colors cursor-pointer group">
-          <MapPin className="text-primary w-5 h-5 sm:w-6 sm:h-6 mr-3 flex-shrink-0" />
+        <div className="flex-1 px-4 sm:px-5 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group rounded-lg xl:rounded-none xl:rounded-l-[1rem]">
+          <MapPin className="text-primary w-5 h-5 mr-3 flex-shrink-0 group-hover:scale-110 transition-transform" />
           <div className="flex flex-col w-full">
             <label htmlFor="destination" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">{t('destinationLabel')}</label>
             <input 
@@ -42,9 +74,28 @@ export default function BookingWidget() {
           </div>
         </div>
 
+        {/* Tipo de Viaje */}
+        <div className="flex-1 px-4 sm:px-5 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group">
+          <Compass className="text-primary w-5 h-5 mr-3 flex-shrink-0 group-hover:scale-110 transition-transform" />
+          <div className="flex flex-col w-full">
+            <label htmlFor="tripType" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">{t('tripTypeLabel')}</label>
+            <select 
+              id="tripType"
+              value={tripType}
+              onChange={(e) => setTripType(e.target.value)}
+              className="w-full bg-transparent border-none outline-none text-text-main font-semibold focus:ring-0 p-0 leading-tight cursor-pointer appearance-none group-hover:text-primary transition-colors text-sm sm:text-base"
+            >
+              <option value="" className="text-text-light font-normal">{t('tripTypePlaceholder')}</option>
+              {['adventure', 'cultural', 'family', 'archaeological', 'private'].map(type => (
+                <option key={type} value={type} className="text-text-main font-semibold">{t(`tripTypes.${type}`)}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
         {/* Fechas */}
-        <div className="flex-1 px-4 sm:px-6 py-3 sm:py-4 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group">
-          <CalendarIcon className="text-primary w-5 h-5 sm:w-6 sm:h-6 mr-3 flex-shrink-0" />
+        <div className="flex-1 px-4 sm:px-5 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group">
+          <CalendarIcon className="text-primary w-5 h-5 mr-3 flex-shrink-0 group-hover:scale-110 transition-transform" />
           <div className="flex flex-col w-full relative">
             <label htmlFor="date" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">{t('dateLabel')}</label>
             <div className="relative w-full">
@@ -65,8 +116,8 @@ export default function BookingWidget() {
         </div>
 
         {/* Pasajeros */}
-        <div className="flex-1 px-4 sm:px-6 py-3 sm:py-4 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group">
-          <Users className="text-primary w-5 h-5 sm:w-6 sm:h-6 mr-3 flex-shrink-0" />
+        <div className="flex-1 px-4 sm:px-5 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group">
+          <Users className="text-primary w-5 h-5 mr-3 flex-shrink-0 group-hover:scale-110 transition-transform" />
           <div className="flex flex-col w-full">
             <label htmlFor="passengers" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">{t('passengersLabel')}</label>
             <select 
@@ -82,15 +133,40 @@ export default function BookingWidget() {
           </div>
         </div>
 
-        {/* Botón Buscar */}
-        <div className="px-3 sm:px-2 w-full md:w-auto pt-2 pb-1 md:pt-0 md:pb-0 shrink-0">
+        {/* Cupón */}
+        <div className="flex-1 px-4 sm:px-5 py-2 sm:py-3 w-full flex items-center hover:bg-gray-50 transition-colors cursor-pointer group rounded-lg xl:rounded-none">
+          <Tag className="text-primary w-5 h-5 mr-3 flex-shrink-0 group-hover:scale-110 transition-transform" />
+          <div className="flex flex-col w-full">
+            <label htmlFor="coupon" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 cursor-pointer">{t('couponLabel')}</label>
+            <input 
+              id="coupon"
+              type="text" 
+              value={coupon}
+              onChange={(e) => setCoupon(e.target.value)}
+              placeholder={t('couponPlaceholder')} 
+              className="w-full bg-transparent border-none outline-none text-text-main font-semibold placeholder:text-text-light placeholder:font-normal focus:ring-0 p-0 leading-tight text-sm sm:text-base"
+            />
+          </div>
+        </div>
+
+        {/* Botones de Acción */}
+        <div className="px-4 py-3 xl:pl-5 w-full xl:w-auto shrink-0 flex flex-col sm:flex-row xl:flex-col gap-2.5 items-stretch justify-center">
           <button 
             type="submit" 
-            className="w-full md:w-auto bg-primary hover:bg-primary-dark text-white rounded-full p-3 sm:p-4 flex items-center justify-center transition-colors shadow-lg gap-2 md:gap-0"
+            className="bg-primary hover:bg-primary-dark text-white rounded-full py-2 px-5 flex items-center justify-center transition-colors shadow-md gap-2 text-sm font-bold cursor-pointer min-h-[42px]"
             aria-label={t('searchAriaLabel')}
           >
-            <Search className="w-5 h-5 sm:w-6 sm:h-6" />
-            <span className="md:hidden font-semibold text-sm">{t('searchButton')}</span>
+            <Search className="w-4 h-4" />
+            <span>{t('searchButton')}</span>
+          </button>
+          
+          <button 
+            type="button"
+            onClick={handleWhatsApp}
+            className="bg-green-500 hover:bg-green-600 text-white rounded-full py-2 px-5 flex items-center justify-center transition-colors shadow-md gap-2 text-sm font-bold whitespace-nowrap cursor-pointer min-h-[42px]"
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span>{t('whatsappButton')}</span>
           </button>
         </div>
 
