@@ -8,6 +8,14 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: t('aboutPage.title'),
     description: t('aboutPage.description'),
+    alternates: {
+      canonical: 'https://machupicchutravel.com/es/nosotros',
+      languages: {
+        'es': 'https://machupicchutravel.com/es/nosotros',
+        'en': 'https://machupicchutravel.com/en/nosotros',
+        'x-default': 'https://machupicchutravel.com/es/nosotros',
+      },
+    },
   };
 }
 

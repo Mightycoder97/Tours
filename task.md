@@ -331,4 +331,35 @@
 - [x] Formulario de contacto validado y operativo
 - [x] RUC y enlaces legales confirmados en Footer y Nosotros
 
+---
 
+## 🔷 Fase E — SEO y Deuda Técnica
+
+- [x] **E.1** Sitemap con hreflang + todas las páginas
+  - [x] Generar URLs para locales es + en
+  - [x] Incluir todas las páginas estáticas (home, tours, nosotros, blog, contacto, experiencias, rutas, faq, condiciones, politicas)
+  - [x] Incluir tours activos con alternates hreflang
+  - [x] Usar SSR Supabase client
+
+- [x] **E.2** hreflang en nosotros generateMetadata
+  - [x] Agregar `alternates.canonical` + `alternates.languages` (es, en, x-default)
+
+- [x] **E.3** Eliminar framer-motion (no utilizado)
+  - [x] Grep: 0 archivos usaban framer-motion
+  - [x] `npm uninstall framer-motion` — removido exitosamente
+
+- [x] **E.4** Auditar clsx + tailwind-merge
+  - [x] Grep: 0 archivos usaban clsx / tailwind-merge / cn()
+  - [x] `npm uninstall clsx tailwind-merge` — removidos exitosamente
+
+- [x] **E.5** Auditar `priority` en galería de tour
+  - [x] GallerySection.tsx: sin `priority` en thumbnails ✓
+  - [x] page.tsx hero image: tiene `priority` correctamente ✓
+
+- [x] **E.6** Actualizar .env.local con placeholders
+  - [x] Agregadas variables Culqi (pk/sk)
+  - [x] Agregado RESEND_FROM_EMAIL
+  - [x] Agregados comentarios Sentry + Upstash Redis (opcionales)
+
+## ✅ Verificación Fase E
+- [x] `npm run build` compila sin errores (38 páginas generadas)

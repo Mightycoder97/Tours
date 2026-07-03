@@ -1,6 +1,33 @@
+import '@/lib/env';
 import { NextResponse } from 'next/server';
+import { checkRateLimit } from '@/lib/ratelimit';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
+
+interface PassengerInput {
+  firstName: string;
+  lastName: string;
+  docType: 'DNI' | 'PASSPORT' | 'CE';
+  docNumber: string;
+  nationality: string;
+  isChild: boolean;
+}
+
+interface BookingPayload {
+  tourId: string;
+  tourName: string;
+  date: string;
+  adults: number;
+  children: number;
+  totalPrice: number;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
+  paymentMethod: string;
+  paymentRef: string;
+  paymentStatus?: 'PAID' | 'PENDING';
+  passengers: PassengerInput[];
+}
 
 const resend = new Resend(process.env.RESEND_API_KEY || 're_mock_key');
 const supabase = createClient(
@@ -10,7 +37,19 @@ const supabase = createClient(
 
 export async function POST(req: Request) {
   try {
-    const bookingData = await req.json();
+    const bookingData = await req.json() as BookingPayload;
+
+    // Rate limiting
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
+               req.headers.get('x-real-ip') ??
+               '127.0.0.1';
+    const { allowed } = checkRateLimit(ip);
+    if (!allowed) {
+      return NextResponse.json(
+        { error: 'Demasiadas solicitudes. Por favor espera unos minutos antes de intentar nuevamente.' },
+        { status: 429 }
+      );
+    }
     
     // Validate capacity before booking
     const totalPassengers = (bookingData.adults || 0) + (bookingData.children || 0);
@@ -35,7 +74,7 @@ export async function POST(req: Request) {
     }
 
     // Generate a reference code
-    const bookingCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+    const bookingCode = 'MTP-' + crypto.randomUUID().split('-')[0].toUpperCase();
     
     // 1. Insert Booking to Supabase (DB trigger will auto-increment booked_count)
     const { data: booking, error: bookingError } = await supabase.from('bookings').insert({
@@ -51,7 +90,7 @@ export async function POST(req: Request) {
       passenger_phone: bookingData.contactPhone,
       
       payment_method: bookingData.paymentMethod,
-      payment_status: 'PAID',
+      payment_status: (bookingData.paymentStatus as 'PAID' | 'PENDING' | 'CANCELLED') || 'PENDING',
       payment_ref: bookingData.paymentRef
     }).select().single();
 
@@ -60,7 +99,7 @@ export async function POST(req: Request) {
     // 2. Insert Passengers
     // Usually we would insert the passenger array here:
     if (bookingData.passengers && bookingData.passengers.length > 0) {
-      const passengersToInsert = bookingData.passengers.map((p: any) => ({
+      const passengersToInsert = bookingData.passengers.map((p: PassengerInput) => ({
         booking_id: booking.id,
         first_name: p.firstName,
         last_name: p.lastName,
@@ -75,7 +114,7 @@ export async function POST(req: Request) {
     // 3. Send Email
     if (process.env.RESEND_API_KEY) {
       await resend.emails.send({
-        from: 'Reservas <reservas@tudominio.com>', // Replace with verified domain
+        from: process.env.RESEND_FROM_EMAIL || 'Reservas <reservas@machupicchutravel.com>',
         to: bookingData.contactEmail,
         subject: `Confirmación de Reserva #${bookingCode} - Machu Picchu Travel`,
         html: `

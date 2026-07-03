@@ -52,6 +52,9 @@ export async function generateMetadata(): Promise<Metadata> {
       index: true,
       follow: true,
     },
+    alternates: {
+      canonical: 'https://machupicchutravel.com',
+    },
   };
 }
 

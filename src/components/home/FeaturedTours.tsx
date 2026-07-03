@@ -1,11 +1,12 @@
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 import { getTranslations } from 'next-intl/server';
 import FeaturedToursTabs from './FeaturedToursTabs';
 
 export default async function FeaturedTours() {
   const t = await getTranslations('home.featured');
+  const supabase = await createClient();
   
   // Fetch all active tours to categorize them in client-side tabs
   const { data: tours } = await supabase

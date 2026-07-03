@@ -6,6 +6,11 @@ import { redirect } from 'next/navigation';
 
 export async function createTour(formData: FormData) {
   const supabase = await createClient();
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    redirect('/login');
+  }
   
   const inclusionsStr = formData.get('inclusions')?.toString() || '';
   const inclusions = inclusionsStr.split('\n').filter(i => i.trim() !== '');
@@ -39,6 +44,11 @@ export async function createTour(formData: FormData) {
 
 export async function updateTour(id: string, formData: FormData) {
   const supabase = await createClient();
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    redirect('/login');
+  }
   
   const inclusionsStr = formData.get('inclusions')?.toString() || '';
   const inclusions = inclusionsStr.split('\n').filter(i => i.trim() !== '');
@@ -74,6 +84,11 @@ export async function updateTour(id: string, formData: FormData) {
 
 export async function deleteTour(id: string) {
   const supabase = await createClient();
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    redirect('/login');
+  }
   const { error } = await supabase.from('tours').delete().eq('id', id);
   if (error) {
     return { error: error.message };

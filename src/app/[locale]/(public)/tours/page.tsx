@@ -1,5 +1,5 @@
 import ToursPageClient from '@/components/tours/ToursPageClient';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata() {
@@ -7,6 +7,13 @@ export async function generateMetadata() {
   return {
     title: t('title'),
     description: t('description'),
+    alternates: {
+      canonical: 'https://machupicchutravel.com/tours',
+      languages: {
+        'es': 'https://machupicchutravel.com/es/tours',
+        'en': 'https://machupicchutravel.com/en/tours',
+      },
+    },
   };
 }
 
@@ -18,6 +25,7 @@ interface ToursPageProps {
 
 export default async function ToursPage({ searchParams }: ToursPageProps) {
   const params = await searchParams;
+  const supabase = await createClient();
   const { data: tours } = await supabase.from('tours').select('*, categories(name), destinations(name)').eq('is_active', true).order('created_at', { ascending: true });
   const { data: categories } = await supabase.from('categories').select('*').order('name');
   const { data: destinations } = await supabase.from('destinations').select('*').order('name');

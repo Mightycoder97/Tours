@@ -1,5 +1,17 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import Image from 'next/image';
+
+interface Tour {
+  id: string;
+  title: string;
+  image_url: string;
+  price_adult: number;
+  duration: string;
+  is_active: boolean;
+  created_at: string;
+  slug: string;
+}
 
 export const revalidate = 0;
 
@@ -33,10 +45,12 @@ export default async function AdminToursPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 text-sm">
-            {safeTours.map((t: any) => (
+            {safeTours.map((t: Tour) => (
               <tr key={t.id} className="hover:bg-gray-50 transition-colors cursor-pointer group relative">
                 <td className="px-6 py-4 font-medium text-text-main flex items-center space-x-4">
-                  <img src={t.image_url} className="w-12 h-12 object-cover rounded-md" />
+                  <div className="relative w-12 h-12 rounded-md overflow-hidden shrink-0">
+                    <Image src={t.image_url} alt={t.title} fill className="object-cover" sizes="48px" />
+                  </div>
                   <Link href={`/admin/tours/${t.id}`} className="absolute inset-0" aria-label={`Editar ${t.title}`} />
                   <span>{t.title}</span>
                 </td>

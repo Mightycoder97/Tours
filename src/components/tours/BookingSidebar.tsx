@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useCartStore } from '@/store/useCartStore';
 import { useRouter } from '@/i18n/navigation';
 import { Calendar as CalendarIcon, Users, Check, AlertCircle, ShoppingCart, Loader2 } from 'lucide-react';
@@ -16,15 +16,17 @@ interface BookingSidebarProps {
   priceAdult: number;
   priceChild?: number;
   imageUrl: string;
+  autoOpen?: boolean;
 }
 
-export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult, priceChild: priceChildProp, imageUrl }: BookingSidebarProps) {
+export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult, priceChild: priceChildProp, imageUrl, autoOpen }: BookingSidebarProps) {
   const router = useRouter();
   const addItem = useCartStore((state) => state.addItem);
   const t = useTranslations('tours.booking');
   const tc = useTranslations('common');
   const locale = useLocale();
   const dateFnsLocale = locale === 'es' ? es : enUS;
+  const sidebarRef = useRef<HTMLDivElement>(null);
   
   // States
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -36,6 +38,15 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
   // Availability states
   const [availableDates, setAvailableDates] = useState<Date[]>([]);
   const [isLoadingDates, setIsLoadingDates] = useState(true);
+
+  // Auto-scroll to sidebar when autoOpen=true
+  useEffect(() => {
+    if (autoOpen && sidebarRef.current) {
+      setTimeout(() => {
+        sidebarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 500);
+    }
+  }, [autoOpen]);
 
   // Fetch availability from API
   useEffect(() => {
@@ -99,7 +110,7 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
   return (
     <>
       {/* Main Sidebar Card */}
-      <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-5 sm:p-6 lg:sticky lg:top-24 border border-gray-100">
+      <div ref={sidebarRef} className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-5 sm:p-6 lg:sticky lg:top-24 border border-gray-100">
         <div className="flex justify-between items-end border-b border-gray-100 pb-4 mb-6">
           <div>
             <span className="text-xs uppercase text-gray-400 font-bold tracking-wider block mb-1">{t('pricePerAdultFrom')}</span>

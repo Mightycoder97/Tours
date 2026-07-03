@@ -3,11 +3,15 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Clock, MapPin, Check, Info } from 'lucide-react';
 import BookingSidebar from '@/components/tours/BookingSidebar';
+import GallerySection from '@/components/tours/GallerySection';
+import TourItinerary from '@/components/tours/TourItinerary';
+import JsonLd from '@/components/seo/JsonLd';
 
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 import { getTranslations } from 'next-intl/server';
 
 const fetchTour = async (slug: string) => {
+  const supabase = await createClient();
   const { data, error } = await supabase.from('tours').select('*').eq('slug', slug).single();
   
   if (error || !data) return null;
@@ -22,7 +26,8 @@ const fetchTour = async (slug: string) => {
     images: data.images || [],
     price: data.price_adult,
     priceChild: data.price_child ?? undefined,
-    duration: data.duration
+    duration: data.duration,
+    itinerary: data.itinerary || [],
   };
 }
 
@@ -40,11 +45,26 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       images: [tour.image],
     },
+    alternates: {
+      canonical: `https://machupicchutravel.com/tours/${tour.slug}`,
+      languages: {
+        'es': `https://machupicchutravel.com/es/tours/${tour.slug}`,
+        'en': `https://machupicchutravel.com/en/tours/${tour.slug}`,
+        'x-default': `https://machupicchutravel.com/es/tours/${tour.slug}`,
+      },
+    },
   };
 }
 
-export default async function TourDetail({ params }: { params: Promise<{ slug: string }>}) {
+export default async function TourDetail({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ book?: string }>;
+}) {
   const resolvedParams = await params;
+  const resolvedSearch = await searchParams;
   const tour = await fetchTour(resolvedParams.slug);
   
   if (!tour) return notFound();
@@ -53,6 +73,30 @@ export default async function TourDetail({ params }: { params: Promise<{ slug: s
 
   return (
     <div className="bg-background min-h-screen pt-20 sm:pt-24 pb-28 lg:pb-20">
+      {/* Schema.org Product JSON-LD */}
+      <JsonLd data={{
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        name: tour.title,
+        description: tour.description?.substring(0, 300) || tour.title,
+        image: [tour.image, ...tour.images],
+        brand: {
+          '@type': 'Brand',
+          name: 'Machu Picchu Travel Adventures',
+        },
+        offers: {
+          '@type': 'Offer',
+          price: tour.price,
+          priceCurrency: 'USD',
+          availability: 'https://schema.org/InStock',
+          url: `https://machupicchutravel.com/tours/${tour.slug}`,
+          seller: {
+            '@type': 'Organization',
+            name: 'Machu Picchu Travel Adventures',
+          },
+        },
+      }} />
+
       {/* Breadcrumb & Navigation */}
       <div className="container mx-auto px-4 lg:px-8 py-4">
         <Link href="/tours" className="inline-flex items-center text-sm font-bold text-primary hover:text-primary-light transition-colors">
@@ -85,17 +129,8 @@ export default async function TourDetail({ params }: { params: Promise<{ slug: s
               <Image src={tour.image} fill sizes="(max-width: 768px) 100vw, 66vw" className="object-cover" alt={tour.title} priority />
             </div>
 
-            {/* Small Masonry Gallery */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mb-8 sm:mb-12">
-               {tour.images.map((img: string, idx: number) => (
-                  <div key={idx} className="rounded-xl sm:rounded-2xl overflow-hidden aspect-square h-28 sm:h-36 md:h-48 shadow-sm hover:shadow-md transition-shadow cursor-pointer relative">
-                    <Image src={img} fill sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 20vw" className="object-cover hover:scale-105 transition-transform duration-500" alt={t('galleryAlt')} />
-                  </div>
-               ))}
-               <div className="rounded-xl sm:rounded-2xl overflow-hidden aspect-square h-28 sm:h-36 md:h-48 bg-gray-100 flex items-center justify-center font-bold text-primary-dark hover:bg-gray-200 transition-colors shadow-sm cursor-pointer text-sm sm:text-base">
-                  {t('viewGallery')}
-               </div>
-            </div>
+            {/* Gallery Section (thumbnails + modal) */}
+            <GallerySection images={tour.images} mainImage={tour.image} altText={tour.title} />
 
             {/* Content Tabs mock (Descripción, Itinerario) */}
             <div className="bg-white rounded-2xl p-5 sm:p-6 md:p-10 shadow-sm border border-gray-100">
@@ -119,6 +154,9 @@ export default async function TourDetail({ params }: { params: Promise<{ slug: s
                  ))}
               </ul>
             </div>
+
+            {/* Itinerary */}
+            <TourItinerary items={tour.itinerary} />
             
             {/* Additional Info / Policies */}
             <div className="mt-8 bg-surface rounded-2xl p-6 md:p-10 text-text-light">
@@ -141,6 +179,7 @@ export default async function TourDetail({ params }: { params: Promise<{ slug: s
                priceAdult={tour.price}
                priceChild={tour.priceChild}
                imageUrl={tour.image}
+               autoOpen={resolvedSearch.book === 'true'}
              />
           </div>
 
