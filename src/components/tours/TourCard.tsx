@@ -38,7 +38,8 @@ export default function TourCard({ tour }: { tour: TourProps }) {
   const t = useTranslations('tours.card');
   const tc = useTranslations('common');
 
-  const formattedPrice = tour.price != null
+  const hasPrice = tour.price != null && Number(tour.price) > 0;
+  const formattedPrice = hasPrice
     ? `${tc('currency')} ${Number(tour.price).toFixed(2)}`
     : 'Consultar precio';
 
@@ -66,12 +67,13 @@ export default function TourCard({ tour }: { tour: TourProps }) {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 z-10 transition-opacity duration-300 group-hover:opacity-100" />
         <ProtectedImage
-          src={tour.image}
+          src={tour.image || '/placeholder-tour.jpg'}
           alt={tour.title}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover w-full h-full"
           showCopyright={false}
+          unoptimized
         />
       </div>
 
@@ -110,9 +112,9 @@ export default function TourCard({ tour }: { tour: TourProps }) {
         <div className="mt-auto pt-5 flex items-center justify-between border-t border-gray-100">
           <div>
             <span className="text-xs uppercase text-gray-400 font-bold tracking-wider block mb-1">
-              {tour.price != null ? t('from') : ''}
+              {hasPrice ? t('from') : ''}
             </span>
-            <div className={`font-bold ${tour.price != null ? 'text-2xl text-primary-dark' : 'text-sm text-text-light italic'}`}>
+            <div className={`font-bold ${hasPrice ? 'text-2xl text-primary-dark' : 'text-sm text-text-light italic'}`}>
               {formattedPrice}
             </div>
           </div>
