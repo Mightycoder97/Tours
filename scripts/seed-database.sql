@@ -91,7 +91,7 @@ SELECT
   'City Tour Lima',
   'Descubre la fascinante historia de Lima recorriendo sus etapas ancestral, colonial y moderna. Visita la emblemática Huaca Pucllana, explora el Centro Histórico con sus impresionantes plazas y monumentos coloniales, conoce las misteriosas Catacumbas de San Francisco y disfruta de los modernos atractivos de Miraflores y el Parque del Amor en un recorrido lleno de cultura, historia y tradición.',
   '5h',
-  NULL,
+  0.00,
   NULL,
   'Popular',
   'Lima',
