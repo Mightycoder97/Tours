@@ -243,6 +243,9 @@ export default function ToursPageClient({
                   price: tour.price_adult,
                   duration: tour.duration,
                   tag: tour.tag,
+                  // @ts-ignore - location may not be in type yet
+                  location: (tour as { location?: string }).location,
+                  destination: tour.destinations?.name,
                   rating: tour.rating,
                   reviews: tour.reviews_count
                 }} />

@@ -137,3 +137,27 @@ a, button, [role="button"], input, select, textarea, label {
   nav, footer, .whatsapp-btn, button { display: none !important; }
   body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
+/* === IMAGE PROTECTION === */
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+.protected-gallery {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.photo-bg {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Prevent pointer events on image overlays to avoid selection */
+[data-protected] img {
+  pointer-events: none;
+}
+

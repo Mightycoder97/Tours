@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Montserrat, DM_Serif_Display } from "next/font/google";
 import { getLocale, getTranslations } from "next-intl/server";
 import "./globals.css";
+import ImageProtectionProvider from "@/components/ui/ImageProtectionProvider";
+
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -72,6 +74,7 @@ export default async function RootLayout({
       className={`${montserrat.variable} ${dmSerif.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col bg-background text-foreground">
+        <ImageProtectionProvider />
         <a href="#main-content" className="skip-to-content">
           {locale === 'en' ? 'Skip to main content' : 'Saltar al contenido principal'}
         </a>

@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Carpeta original de fotos y paquetes (archivos fuente locales, no van al repo)
+/Info Paquetes y Fotos/
+/Paquetes Fotos.zip
+/Datos de la empresa - Machupicchu travel adventure.docx
+
+# Archivos generados por scripts (el SQL sí va al repo)
+/scripts/tour-photos-map.json

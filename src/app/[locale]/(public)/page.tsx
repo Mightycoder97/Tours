@@ -6,7 +6,9 @@ import FAQ from '@/components/home/FAQ';
 import CTASection from '@/components/home/CTASection';
 import SEOBlock from '@/components/home/SEOBlock';
 import JsonLd from '@/components/seo/JsonLd';
+import DestinationsSection from '@/components/home/DestinationsSection';
 import { getTranslations } from 'next-intl/server';
+
 
 export const revalidate = 60;
 
@@ -80,8 +82,12 @@ export default async function Home() {
       {/* Tours Destacados */}
       <FeaturedTours />
 
+      {/* Destinos */}
+      <DestinationsSection />
+
       {/* SEO Content Block */}
       <SEOBlock />
+
 
       {/* Por qué elegirnos */}
       <WhyChooseUs />

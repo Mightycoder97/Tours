@@ -1,25 +1,17 @@
 'use client';
 
-declare global {
-  interface Window {
-    Culqi: {
-      settings: (s: object) => void;
-      open: () => void;
-      token?: { id: string };
-      error?: object;
-    };
-    culqi: () => void;
-  }
-}
+// Culqi Checkout Custom v1.0 — tipos cargados desde src/types/culqi.d.ts
+// La declaración global de window.CulqiCheckout vive en ese archivo.
 
 import { useCartStore } from '@/store/useCartStore';
 import { useRouter } from '@/i18n/navigation';
-import { useEffect, useState, FormEvent } from 'react';
-import { Lock, ShieldCheck, User } from 'lucide-react';
+import { useEffect, useRef, useState, FormEvent } from 'react';
+import { ShieldCheck, User, CreditCard, Smartphone } from 'lucide-react';
 import Image from 'next/image';
 import Script from 'next/script';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useTranslations } from 'next-intl';
+import type { CulqiInstance } from '@/types/culqi';
 
 interface PassengerForm {
   firstName: string;
@@ -30,48 +22,126 @@ interface PassengerForm {
   docNumber: string;
 }
 
+/** Método de pago seleccionado: tarjeta usa USD, yape usa PEN */
+type PaymentMethod = 'card' | 'yape' | 'paypal';
+
+/** Colores de marca para personalizar Culqi Checkout Custom */
+const BRAND_COLORS = {
+  primary: '#06C0B8',
+  primaryDark: '#049993',
+  white: '#ffffff',
+} as const;
+
+/** Llave pública de Culqi (debe tener prefijo NEXT_PUBLIC_) */
+const CULQI_PUBLIC_KEY = process.env.NEXT_PUBLIC_CULQI_PUBLIC_KEY ?? '';
+
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, getTotal, clearCart, removeItem } = useCartStore();
   const t = useTranslations('checkout');
   const tc = useTranslations('common');
-  
+
   const [mounted, setMounted] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal'>('card');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card');
   const [isProcessing, setIsProcessing] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  /** true = el script de Culqi ya cargó */
+  const [culqiReady, setCulqiReady] = useState(false);
 
   // Contact Info
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhone, setContactPhone] = useState('');
   const [contactPhonePrefix, setContactPhonePrefix] = useState('+51');
 
+  /** Instancia persistente de CulqiCheckout (se crea una sola vez por montaje) */
+  const culqiRef = useRef<CulqiInstance | null>(null);
+
   const paypalOptions = {
-    clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "test",
-    currency: "USD",
-    intent: "capture",
+    clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test',
+    currency: 'USD',
+    intent: 'capture',
   };
 
-  // Calculate passengers needed based on the maximum in any single cart item
-  // (Assuming the same group takes all tours)
-  const maxAdults = items.length > 0 ? Math.max(...items.map(i => i.adults)) : 0;
+  // Calcular pasajeros necesarios (el máximo entre todos los tours del carrito)
+  const maxAdults   = items.length > 0 ? Math.max(...items.map(i => i.adults))   : 0;
   const maxChildren = items.length > 0 ? Math.max(...items.map(i => i.children)) : 0;
 
-  const [adultsInfo, setAdultsInfo] = useState<PassengerForm[]>([]);
+  const [adultsInfo,   setAdultsInfo]   = useState<PassengerForm[]>([]);
   const [childrenInfo, setChildrenInfo] = useState<PassengerForm[]>([]);
 
+  // ── Inicializar formularios de pasajeros ───────────────────────────────────
   useEffect(() => {
     setMounted(true);
-    // Initialize forms
     if (maxAdults > 0 && adultsInfo.length === 0) {
-      setAdultsInfo(Array.from({ length: maxAdults }, () => ({ firstName: '', lastName: '', nationality: 'Perú', birthDate: '', docType: 'DNI', docNumber: '' })));
+      setAdultsInfo(
+        Array.from({ length: maxAdults }, () => ({
+          firstName: '', lastName: '', nationality: 'Perú',
+          birthDate: '', docType: 'DNI', docNumber: '',
+        }))
+      );
     }
     if (maxChildren > 0 && childrenInfo.length === 0) {
-      setChildrenInfo(Array.from({ length: maxChildren }, () => ({ firstName: '', lastName: '', nationality: 'Perú', birthDate: '', docType: 'DNI', docNumber: '' })));
+      setChildrenInfo(
+        Array.from({ length: maxChildren }, () => ({
+          firstName: '', lastName: '', nationality: 'Perú',
+          birthDate: '', docType: 'DNI', docNumber: '',
+        }))
+      );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maxAdults, maxChildren]);
 
-  if (!mounted) return <div className="min-h-screen"></div>;
+  // ── Inicializar instancia de Culqi Checkout Custom cuando el script carga ──
+  useEffect(() => {
+    if (!culqiReady || typeof window.CulqiCheckout === 'undefined') return;
+    if (!CULQI_PUBLIC_KEY) {
+      console.warn('[Culqi] Llave pública no configurada (NEXT_PUBLIC_CULQI_PUBLIC_KEY).');
+      return;
+    }
+
+    // Creamos la instancia con configuración base; el monto y email
+    // se actualizan justo antes de abrir (ver handleCulqiPay).
+    culqiRef.current = new window.CulqiCheckout(CULQI_PUBLIC_KEY, {
+      settings: {
+        title: 'Machu Picchu Travel Adventures',
+        currency: 'PEN',   // se sobreescribe antes de open()
+        amount: 0,          // se sobreescribe antes de open()
+      },
+      options: {
+        lang: 'auto',
+        installments: false, // Tours no aplican cuotas
+        modal: true,
+        paymentMethods: {
+          tarjeta:    true,
+          yape:       true,
+          billetera:  false,
+          bancaMovil: false,
+          agente:     false,
+          cuotealo:   false,
+        },
+        paymentMethodsSort: ['tarjeta', 'yape'],
+      },
+      appearance: {
+        theme: 'default',
+        hiddenCulqiLogo: false,
+        hiddenBanner: false,
+        hiddenEmail: false,
+        menuType: 'sidebar',
+        buttonCardPayText: 'Confirmar pago',
+        logo: null,
+        defaultStyle: {
+          bannerColor:     BRAND_COLORS.primary,
+          buttonBackground: BRAND_COLORS.primaryDark,
+          menuColor:       BRAND_COLORS.primary,
+          linksColor:      BRAND_COLORS.primary,
+          buttonTextColor: BRAND_COLORS.white,
+          priceColor:      BRAND_COLORS.primary,
+        },
+      },
+    });
+  }, [culqiReady]);
+
+  if (!mounted) return <div className="min-h-screen" />;
   if (items.length === 0) {
     router.push('/cart');
     return null;
@@ -154,36 +224,96 @@ export default function CheckoutPage() {
     return null;
   };
 
+  /**
+   * Abre Culqi Checkout Custom.
+   * - Tarjeta → USD
+   * - Yape    → PEN (requerido por Culqi para billeteras móviles)
+   */
   const handleCulqiPay = (e: FormEvent) => {
     e.preventDefault();
-    if (paymentMethod !== 'card') return;
+    if (paymentMethod === 'paypal') return;
+
     const validationError = validatePassengers();
     if (validationError) { setFormError(validationError); return; }
     setFormError(null);
-    if (typeof window.Culqi === 'undefined') {
-      setFormError('Error: El sistema de pago no está disponible. Recarga la página.');
+
+    if (!culqiRef.current) {
+      setFormError('El sistema de pago no está disponible. Recarga la página.');
       return;
     }
-    window.Culqi.settings({
-      title: 'Machu Picchu Travel Adventures',
-      currency: 'USD',
-      description: items.map(i => i.tourName).join(', '),
-      amount: Math.round(getTotal() * 100),
-      order: '',
+
+    const culqi = culqiRef.current;
+
+    // Moneda dinámica: PEN para Yape, USD para tarjeta
+    const currency = paymentMethod === 'yape' ? 'PEN' : 'USD';
+    const total    = getTotal();
+    const amountInCents = Math.round(total * 100);
+
+    // Actualizar configuración antes de abrir (monto, email, moneda)
+    // La API permite re-crear la instancia con nueva config
+    const updatedInstance = new window.CulqiCheckout(CULQI_PUBLIC_KEY, {
+      settings: {
+        title: 'Machu Picchu Travel Adventures',
+        currency,
+        amount: amountInCents,
+      },
+      client: {
+        email: contactEmail,
+      },
+      options: {
+        lang: 'auto',
+        installments: false,
+        modal: true,
+        paymentMethods: {
+          tarjeta:    paymentMethod === 'card',
+          yape:       paymentMethod === 'yape',
+          billetera:  false,
+          bancaMovil: false,
+          agente:     false,
+          cuotealo:   false,
+        },
+        paymentMethodsSort: paymentMethod === 'yape' ? ['yape'] : ['tarjeta'],
+      },
+      appearance: {
+        theme: 'default',
+        hiddenCulqiLogo: false,
+        hiddenBanner: false,
+        hiddenEmail: false,
+        menuType: 'sidebar',
+        buttonCardPayText: 'Confirmar pago',
+        logo: null,
+        defaultStyle: {
+          bannerColor:      BRAND_COLORS.primary,
+          buttonBackground: BRAND_COLORS.primaryDark,
+          menuColor:        BRAND_COLORS.primary,
+          linksColor:       BRAND_COLORS.primary,
+          buttonTextColor:  BRAND_COLORS.white,
+          priceColor:       BRAND_COLORS.primary,
+        },
+      },
     });
-    window.culqi = async () => {
-      if (window.Culqi.token) {
+
+    culqiRef.current = updatedInstance;
+
+    // Definir el callback de respuesta ANTES de open()
+    updatedInstance.culqi = async function (this: CulqiInstance) {
+      if (this.token) {
         setIsProcessing(true);
         setFormError(null);
         try {
           const res = await fetch('/api/checkout/culqi', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token_id: window.Culqi.token.id, email: contactEmail, amount: getTotal() }),
+            body: JSON.stringify({
+              token_id: this.token.id,
+              email:    this.token.email || contactEmail,
+              amount:   total,
+              currency,
+            }),
           });
           const chargeData = await res.json();
           if (chargeData.success) {
-            await registerBooking(chargeData.chargeId, 'culqi', 'PAID');
+            await registerBooking(chargeData.chargeId, paymentMethod === 'yape' ? 'yape' : 'culqi', 'PAID');
           } else {
             setFormError(`Error de pago: ${chargeData.error || 'Error desconocido'}`);
             setIsProcessing(false);
@@ -192,18 +322,24 @@ export default function CheckoutPage() {
           setFormError('Error de red. Intenta nuevamente.');
           setIsProcessing(false);
         }
-      } else if (window.Culqi.error) {
-        setFormError('Datos de tarjeta incorrectos. Verifica e intenta nuevamente.');
+      } else if (this.error) {
+        setFormError(this.error.user_message || 'Datos incorrectos. Verifica e intenta nuevamente.');
       }
     };
-    window.Culqi.open();
+
+    updatedInstance.open();
   };
 
   const today = new Date().toISOString().split('T')[0];
 
   return (
     <>
-      <Script src="https://checkout.culqi.com/js/v4" strategy="afterInteractive" />
+      {/* Culqi Checkout Custom v1.0 — nuevo SDK multipago */}
+      <Script
+        src="https://js.culqi.com/checkout-js"
+        strategy="afterInteractive"
+        onLoad={() => setCulqiReady(true)}
+      />
       <div className="bg-background-alt min-h-screen pt-24 sm:pt-28 pb-20">
         <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
           
@@ -330,26 +466,75 @@ export default function CheckoutPage() {
                   </h2>
                   
                   <div className="space-y-4">
-                    {/* Culqi / Tarjetas */}
-                    <label className={`block border rounded-xl p-4 cursor-pointer transition-colors ${paymentMethod === 'card' ? 'border-primary bg-primary/5' : 'border-gray-200 hover:bg-white bg-white'}`}>
+                    {/* ── Opción: Tarjeta de débito / crédito ── */}
+                    <label
+                      id="payment-method-card"
+                      className={`block border rounded-xl p-4 cursor-pointer transition-colors ${
+                        paymentMethod === 'card'
+                          ? 'border-primary bg-primary/5'
+                          : 'border-gray-200 hover:bg-white bg-white'
+                      }`}
+                    >
                       <div className="flex items-center">
-                        <input 
-                          type="radio" 
-                          name="payment" 
-                          value="card" 
-                          checked={paymentMethod === 'card'} 
+                        <input
+                          type="radio"
+                          id="radio-card"
+                          name="payment"
+                          value="card"
+                          checked={paymentMethod === 'card'}
                           onChange={() => setPaymentMethod('card')}
-                          className="w-5 h-5 text-primary border-gray-300 focus:ring-primary" 
+                          className="w-5 h-5 text-primary border-gray-300 focus:ring-primary"
                         />
-                        <span className="ml-3 font-medium flex-1">{t('payment.creditDebitCard')}</span>
+                        <CreditCard className="w-5 h-5 ml-3 text-gray-500" />
+                        <span className="ml-2 font-medium flex-1">{t('payment.creditDebitCard')}</span>
                         <div className="flex gap-2 text-xs font-bold text-gray-400">
                           <span className="bg-gray-100 px-2 py-1 rounded">VISA</span>
                           <span className="bg-gray-100 px-2 py-1 rounded">MC</span>
+                          <span className="bg-gray-100 px-2 py-1 rounded">AMEX</span>
                         </div>
                       </div>
                       {paymentMethod === 'card' && (
-                        <div className="mt-4 pl-4 sm:pl-8">
-                          <p className="text-sm text-text-light bg-gray-50 rounded-lg p-4 flex items-center gap-2"><ShieldCheck className="w-5 h-5 text-green-600" /> Al hacer clic en &quot;Pagar&quot;, se abrirá el formulario seguro de Culqi para ingresar tus datos de tarjeta.</p>
+                        <div className="mt-4 pl-9">
+                          <p className="text-sm text-text-light bg-gray-50 rounded-lg p-4 flex items-center gap-2">
+                            <ShieldCheck className="w-5 h-5 shrink-0 text-green-600" />
+                            Se abrirá el formulario seguro de Culqi. Pago en <strong>USD</strong>.
+                          </p>
+                        </div>
+                      )}
+                    </label>
+
+                    {/* ── Opción: Yape ── */}
+                    <label
+                      id="payment-method-yape"
+                      className={`block border rounded-xl p-4 cursor-pointer transition-colors ${
+                        paymentMethod === 'yape'
+                          ? 'border-primary bg-primary/5'
+                          : 'border-gray-200 hover:bg-white bg-white'
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        <input
+                          type="radio"
+                          id="radio-yape"
+                          name="payment"
+                          value="yape"
+                          checked={paymentMethod === 'yape'}
+                          onChange={() => setPaymentMethod('yape')}
+                          className="w-5 h-5 text-primary border-gray-300 focus:ring-primary"
+                        />
+                        <Smartphone className="w-5 h-5 ml-3 text-[#6E2ED6]" />
+                        <span className="ml-2 font-medium flex-1">
+                          <span className="text-[#6E2ED6] font-bold">Yape</span>
+                          <span className="ml-2 text-xs text-gray-400 font-normal">Solo para residentes en Perú</span>
+                        </span>
+                        <span className="text-xs font-semibold bg-purple-100 text-purple-700 px-2 py-1 rounded">PEN</span>
+                      </div>
+                      {paymentMethod === 'yape' && (
+                        <div className="mt-4 pl-9">
+                          <p className="text-sm text-text-light bg-purple-50 rounded-lg p-4 flex items-center gap-2">
+                            <ShieldCheck className="w-5 h-5 shrink-0 text-green-600" />
+                            Necesitarás el código de aprobación de <strong>6 dígitos</strong> de tu app Yape. Pago en <strong>PEN</strong>.
+                          </p>
                         </div>
                       )}
                     </label>
@@ -426,14 +611,19 @@ export default function CheckoutPage() {
                     </div>
                   )}
 
-                  {paymentMethod !== 'paypal' && (
+                  {(paymentMethod === 'card' || paymentMethod === 'yape') && (
                     <div className="mt-8">
-                      <button 
-                        type="submit" 
-                        disabled={isProcessing}
+                      <button
+                        id="btn-culqi-pay"
+                        type="submit"
+                        disabled={isProcessing || !culqiReady}
                         className="w-full flex items-center justify-center bg-primary-dark text-white py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl hover:bg-primary transition-all disabled:opacity-70 disabled:cursor-not-allowed"
                       >
-                        {isProcessing ? t('payment.processing') : t('payment.continueToPay', { total: getTotal() })}
+                        {isProcessing
+                          ? t('payment.processing')
+                          : !culqiReady
+                          ? 'Cargando sistema de pago…'
+                          : t('payment.continueToPay', { total: getTotal() })}
                       </button>
                     </div>
                   )}
