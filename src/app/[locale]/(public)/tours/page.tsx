@@ -50,6 +50,7 @@ export default async function ToursPage({ searchParams }: ToursPageProps) {
         categories={categories || []}
         destinations={destinations || []}
         initialSearch={typeof params.q === 'string' ? params.q : ''}
+        initialDestino={typeof params.destino === 'string' ? params.destino : undefined}
       />
     </div>
   );

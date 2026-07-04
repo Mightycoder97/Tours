@@ -5,7 +5,7 @@ import BookingSidebar from '@/components/tours/BookingSidebar';
 import TourItinerary from '@/components/tours/TourItinerary';
 import JsonLd from '@/components/seo/JsonLd';
 import PhotoGallery from '@/components/ui/PhotoGallery';
-import { ProtectedImage } from '@/components/ui/ProtectedImage';
+import HeroCarousel from '@/components/ui/HeroCarousel';
 
 import { createClient } from '@/lib/supabase/server';
 import { getTranslations } from 'next-intl/server';
@@ -148,22 +148,12 @@ export default async function TourDetail({
           {/* Main Content Column */}
           <div className="w-full lg:w-2/3">
             
-            {/* Hero Image */}
-            {tour.image && (
-              <div className="rounded-3xl overflow-hidden shadow-sm aspect-video w-full mb-6 relative">
-                <ProtectedImage
-                  src={tour.image}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 66vw"
-                  className="object-cover"
-                  alt={tour.title}
-                  priority
-                  showCopyright={true}
-                />
-              </div>
+            {/* Hero Carousel — auto-advances through all tour images */}
+            {allImages.length > 0 && (
+              <HeroCarousel images={allImages} altText={tour.title} />
             )}
 
-            {/* Photo Gallery (protected CSS background-image) */}
+            {/* Photo Gallery — thumbnail grid with lightbox (shown when >1 image) */}
             {allImages.length > 1 && (
               <PhotoGallery images={allImages} altText={tour.title} />
             )}

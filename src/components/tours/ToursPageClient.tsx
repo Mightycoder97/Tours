@@ -45,12 +45,14 @@ export default function ToursPageClient({
   tours, 
   categories = [], 
   destinations = [],
-  initialSearch = '' 
+  initialSearch = '',
+  initialDestino,
 }: { 
   tours: Tour[]; 
   categories?: Category[]; 
   destinations?: Destination[];
   initialSearch?: string;
+  initialDestino?: string;
 }) {
   const t = useTranslations('tours.listing');
   const tf = useTranslations('tours.filters');
@@ -59,7 +61,9 @@ export default function ToursPageClient({
     search: initialSearch,
     categories: [],
     durations: [],
-    destinations: [],
+    // Pre-select destination from URL param (e.g. ?destino=lima from navbar)
+    // The filter comparison is case-insensitive so 'lima' matches 'Lima'
+    destinations: initialDestino ? [initialDestino] : [],
   });
   const [sortBy, setSortBy] = useState('recommended');
   const [currentPage, setCurrentPage] = useState(1);
