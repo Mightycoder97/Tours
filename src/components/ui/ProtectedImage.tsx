@@ -8,17 +8,27 @@ interface ProtectedImageProps extends ImageProps {
 /**
  * ProtectedImage
  * Wraps Next.js Image with drag prevention, context menu blocking,
- * and an optional copyright watermark overlay.
+ * and an optional copyright notice overlay.
+ *
+ * When `fill` is used the wrapper is absolute inset-0 so the image
+ * fills the nearest positioned ancestor (the caller's container).
+ * When `fill` is NOT used the wrapper is relative and sized by the image.
  */
-export function ProtectedImage({ showCopyright = false, className, ...props }: ProtectedImageProps) {
+export function ProtectedImage({ showCopyright = false, fill, className, ...props }: ProtectedImageProps) {
+  const wrapperClass = fill
+    ? 'absolute inset-0 select-none'
+    : 'relative select-none';
+
   return (
-    <div className="relative select-none" data-protected="true">
+    <div className={wrapperClass} data-protected="true">
       <Image
         {...props}
-        className={className}
+        fill={fill}
+        className={className ?? (fill ? 'object-cover' : undefined)}
         draggable={false}
         onDragStart={(e) => e.preventDefault()}
         onContextMenu={(e) => e.preventDefault()}
+        unoptimized
       />
       {showCopyright && (
         <div
