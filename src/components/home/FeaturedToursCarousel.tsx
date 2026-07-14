@@ -194,7 +194,7 @@ export default function FeaturedToursCarousel({ tours }: FeaturedToursCarouselPr
           <button
             key={i}
             onClick={() => scrollToIndex(i)}
-            className={`h-2 rounded-full transition-all duration-300 ${
+            className={`h-2 rounded-full transition-all duration-300 !min-w-0 !min-h-0 ${
               i === activeIndex
                 ? 'w-8 bg-primary-dark'
                 : 'w-2 bg-primary/30 hover:bg-primary/50'

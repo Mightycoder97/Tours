@@ -380,8 +380,9 @@ export default function CheckoutPage() {
                         type="tel" 
                         value={contactPhone}
                         onChange={(e) => setContactPhone(e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-r-lg focus:ring-primary focus:border-primary outline-none transition-colors" 
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-r-lg focus:ring-primary focus:border-primary outline-none transition-colors text-base" 
                         placeholder={t('contactPerson.phonePlaceholder')} 
+                        autoComplete="tel"
                       />
                     </div>
                     <div>
@@ -390,8 +391,9 @@ export default function CheckoutPage() {
                         type="email" 
                         value={contactEmail}
                         onChange={(e) => setContactEmail(e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-primary focus:border-primary outline-none transition-colors" 
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-primary focus:border-primary outline-none transition-colors text-base" 
                         placeholder={t('contactPerson.emailPlaceholder')} 
+                        autoComplete="email"
                       />
                     </div>
                   </div>
@@ -404,9 +406,9 @@ export default function CheckoutPage() {
                       <h3 className="font-bold text-primary flex items-center"><User className="w-4 h-4 mr-2"/> {t('passenger.adultTitle', { number: index + 1 })}</h3>
                     </div>
                     <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <input required type="text" placeholder={t('passenger.firstNamePlaceholder')} value={adult.firstName} onChange={(e) => handleAdultChange(index, 'firstName', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary" />
-                      <input required type="text" placeholder={t('passenger.lastNamePlaceholder')} value={adult.lastName} onChange={(e) => handleAdultChange(index, 'lastName', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary" />
-                      <select required value={adult.nationality} onChange={(e) => handleAdultChange(index, 'nationality', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary">
+                      <input required type="text" placeholder={t('passenger.firstNamePlaceholder')} value={adult.firstName} onChange={(e) => handleAdultChange(index, 'firstName', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary text-base" autoComplete="given-name" />
+                      <input required type="text" placeholder={t('passenger.lastNamePlaceholder')} value={adult.lastName} onChange={(e) => handleAdultChange(index, 'lastName', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary text-base" autoComplete="family-name" />
+                      <select required value={adult.nationality} onChange={(e) => handleAdultChange(index, 'nationality', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary text-base">
                         <option value="Perú">{t('nationality.peru')}</option>
                         <option value="Estados Unidos">{t('nationality.usa')}</option>
                         <option value="España">{t('nationality.spain')}</option>
@@ -415,14 +417,14 @@ export default function CheckoutPage() {
                         <option value="Chile">{t('nationality.chile')}</option>
                         <option value="Otro">{t('nationality.other')}</option>
                       </select>
-                      <input required type="date" max={today} placeholder={t('passenger.birthDatePlaceholder')} value={adult.birthDate} onChange={(e) => handleAdultChange(index, 'birthDate', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary" />
+                      <input required type="date" max={today} placeholder={t('passenger.birthDatePlaceholder')} value={adult.birthDate} onChange={(e) => handleAdultChange(index, 'birthDate', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary text-base" />
                       <div className="col-span-full flex flex-col sm:flex-row">
-                        <select value={adult.docType} onChange={(e) => handleAdultChange(index, 'docType', e.target.value)} className="bg-white border border-gray-200 rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none px-4 py-3 outline-none w-full sm:w-1/3 border-b-0 sm:border-b sm:border-r-0">
+                        <select value={adult.docType} onChange={(e) => handleAdultChange(index, 'docType', e.target.value)} className="bg-white border border-gray-200 rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none px-4 py-3 outline-none w-full sm:w-1/3 border-b-0 sm:border-b sm:border-r-0 text-base">
                           <option value="DNI">{t('docType.dni')}</option>
                           <option value="PASSPORT">{t('docType.passport')}</option>
                           <option value="CE">{t('docType.foreignId')}</option>
                         </select>
-                        <input required type="text" placeholder={t('passenger.docNumberPlaceholder')} value={adult.docNumber} onChange={(e) => handleAdultChange(index, 'docNumber', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none outline-none focus:border-primary" />
+                        <input required type="text" placeholder={t('passenger.docNumberPlaceholder')} value={adult.docNumber} onChange={(e) => handleAdultChange(index, 'docNumber', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none outline-none focus:border-primary text-base" inputMode={adult.docType === 'DNI' || adult.docType === 'CE' ? 'numeric' : 'text'} pattern={adult.docType === 'DNI' || adult.docType === 'CE' ? '[0-9]*' : undefined} />
                       </div>
                     </div>
                   </div>
@@ -435,9 +437,9 @@ export default function CheckoutPage() {
                       <h3 className="font-bold text-primary flex items-center"><User className="w-4 h-4 mr-2"/> {t('passenger.childTitle', { number: index + 1 })}</h3>
                     </div>
                     <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <input required type="text" placeholder={t('passenger.firstNamePlaceholder')} value={child.firstName} onChange={(e) => handleChildChange(index, 'firstName', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary" />
-                      <input required type="text" placeholder={t('passenger.lastNamePlaceholder')} value={child.lastName} onChange={(e) => handleChildChange(index, 'lastName', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary" />
-                      <select required value={child.nationality} onChange={(e) => handleChildChange(index, 'nationality', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary">
+                      <input required type="text" placeholder={t('passenger.firstNamePlaceholder')} value={child.firstName} onChange={(e) => handleChildChange(index, 'firstName', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary text-base" autoComplete="given-name" />
+                      <input required type="text" placeholder={t('passenger.lastNamePlaceholder')} value={child.lastName} onChange={(e) => handleChildChange(index, 'lastName', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary text-base" autoComplete="family-name" />
+                      <select required value={child.nationality} onChange={(e) => handleChildChange(index, 'nationality', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary text-base">
                         <option value="Perú">{t('nationality.peru')}</option>
                         <option value="Estados Unidos">{t('nationality.usa')}</option>
                         <option value="España">{t('nationality.spain')}</option>
@@ -446,14 +448,14 @@ export default function CheckoutPage() {
                         <option value="Chile">{t('nationality.chile')}</option>
                         <option value="Otro">{t('nationality.other')}</option>
                       </select>
-                      <input required type="date" max={today} placeholder={t('passenger.birthDatePlaceholder')} value={child.birthDate} onChange={(e) => handleChildChange(index, 'birthDate', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary" />
+                      <input required type="date" max={today} placeholder={t('passenger.birthDatePlaceholder')} value={child.birthDate} onChange={(e) => handleChildChange(index, 'birthDate', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg outline-none focus:border-primary text-base" />
                       <div className="col-span-full flex flex-col sm:flex-row">
-                        <select value={child.docType} onChange={(e) => handleChildChange(index, 'docType', e.target.value)} className="bg-white border border-gray-200 rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none px-4 py-3 outline-none w-full sm:w-1/3 border-b-0 sm:border-b sm:border-r-0">
+                        <select value={child.docType} onChange={(e) => handleChildChange(index, 'docType', e.target.value)} className="bg-white border border-gray-200 rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none px-4 py-3 outline-none w-full sm:w-1/3 border-b-0 sm:border-b sm:border-r-0 text-base">
                           <option value="DNI">{t('docType.dni')}</option>
                           <option value="PASSPORT">{t('docType.passport')}</option>
                           <option value="CE">{t('docType.foreignId')}</option>
                         </select>
-                        <input required type="text" placeholder={t('passenger.docNumberPlaceholder')} value={child.docNumber} onChange={(e) => handleChildChange(index, 'docNumber', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none outline-none focus:border-primary" />
+                        <input required type="text" placeholder={t('passenger.docNumberPlaceholder')} value={child.docNumber} onChange={(e) => handleChildChange(index, 'docNumber', e.target.value)} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none outline-none focus:border-primary text-base" inputMode={child.docType === 'DNI' || child.docType === 'CE' ? 'numeric' : 'text'} pattern={child.docType === 'DNI' || child.docType === 'CE' ? '[0-9]*' : undefined} />
                       </div>
                     </div>
                   </div>

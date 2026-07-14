@@ -2,6 +2,7 @@
 
 import { Search, Filter, Clock, MapPin, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
 
 interface Category {
   id: string;
@@ -33,6 +34,32 @@ interface TourFiltersProps {
 
 export default function TourFilters({ isOpen = true, onClose, categories, destinations, filters, onFilterChange }: TourFiltersProps) {
   const t = useTranslations('tours.filters');
+
+  // Lock body scroll when filters drawer is open on mobile
+  useEffect(() => {
+    if (isOpen && onClose && window.innerWidth < 1024) {
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY, 10) * -1);
+      }
+    }
+    return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, onClose]);
 
   const DURATION_OPTIONS = [
     { label: t('durationOptions.half'), value: 'half' },
@@ -138,7 +165,7 @@ export default function TourFilters({ isOpen = true, onClose, categories, destin
             <h4 className="font-bold text-sm uppercase tracking-wider text-gray-400 mb-4">{t('categoryLabel')}</h4>
             <div className="space-y-3">
               {categories.map((cat) => (
-                <label key={cat.id} className="flex items-center space-x-3 cursor-pointer group py-1">
+                <label key={cat.id} className="flex items-center space-x-3 cursor-pointer group min-h-[48px] py-1">
                   <input 
                     type="checkbox"
                     checked={filters.categories.includes(cat.name)}
@@ -159,7 +186,7 @@ export default function TourFilters({ isOpen = true, onClose, categories, destin
           </h4>
           <div className="space-y-3">
             {DURATION_OPTIONS.map((dur) => (
-              <label key={dur.value} className="flex items-center space-x-3 cursor-pointer group py-1">
+              <label key={dur.value} className="flex items-center space-x-3 cursor-pointer group min-h-[48px] py-1">
                 <input 
                   type="checkbox"
                   checked={filters.durations.includes(dur.value)}
@@ -180,7 +207,7 @@ export default function TourFilters({ isOpen = true, onClose, categories, destin
             </h4>
             <div className="space-y-3">
               {destinations.map((dest) => (
-                <label key={dest.id} className="flex items-center space-x-3 cursor-pointer group py-1">
+                <label key={dest.id} className="flex items-center space-x-3 cursor-pointer group min-h-[48px] py-1">
                   <input 
                     type="checkbox"
                     checked={filters.destinations.includes(dest.name)}

@@ -10,8 +10,8 @@ import { useTranslations } from 'next-intl';
 
 const slideImages = [
   'https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=2600&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1580619305218-8423a7ef79b4?q=80&w=2600&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1587595431973-160d0d94add1?q=80&w=2600&auto=format&fit=crop',
+  '/imagenes/hero-machupicchu-1.png?v=2',
+  '/imagenes/hero-camino-inca.png?v=2',
 ];
 
 const slideCtaLinks = ['/tours', '/tours', '/tours'];
@@ -27,7 +27,7 @@ export default function HeroSlider() {
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   return (
-    <div className="relative w-full h-full" ref={emblaRef}>
+    <div className="relative w-full h-full select-none touch-pan-y" ref={emblaRef}>
       <div className="flex h-full">
         {slideImages.map((image, index) => {
           const title = t(`slides.${index}.title`);
@@ -43,6 +43,7 @@ export default function HeroSlider() {
                 alt={`${title} ${titleAccent}`}
                 fill
                 className="object-cover"
+                style={{ objectPosition: 'center calc(50% + 50px)' }}
                 priority={index === 0}
                 sizes="100vw"
                 quality={85}
@@ -114,7 +115,7 @@ function DotIndicators({ emblaApi, t }: { emblaApi: ReturnType<typeof useEmblaCa
         <button
           key={i}
           onClick={() => emblaApi.scrollTo(i)}
-          className={`h-2 rounded-full transition-all duration-300 ${
+          className={`h-2 rounded-full transition-all duration-300 !min-w-0 !min-h-0 ${
             i === selectedIndex ? 'w-8 bg-white' : 'w-2 bg-white/50 hover:bg-white/70'
           }`}
           aria-label={t('ariaLabels.goToSlide', { number: i + 1 })}

@@ -83,6 +83,11 @@ export default function Navbar() {
 
   const cartItems = useCartStore((state) => state.items);
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -95,7 +100,9 @@ export default function Navbar() {
     } else {
       document.body.classList.remove('menu-open');
     }
-    return () => document.body.classList.remove('menu-open');
+    return () => {
+      document.body.classList.remove('menu-open');
+    };
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
@@ -103,6 +110,31 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const isHome = pathname === '/';
+
+  // Custom variables to determine navbar styling on scroll/page
+  const headerBgClass = isScrolled
+    ? 'bg-primary-dark text-white shadow-lg py-2'
+    : isHome
+      ? 'bg-transparent text-white border-b border-transparent py-3'
+      : 'bg-white/95 backdrop-blur-md text-primary border-b border-gray-100 py-3';
+
+  const logoFilterClass = isScrolled
+    ? 'brightness-0 invert'
+    : isHome
+      ? 'brightness-0 invert'
+      : 'brightness-0';
+
+  const mobileToggleColorClass = isScrolled
+    ? 'text-white hover:bg-white/10'
+    : isHome
+      ? 'text-white hover:bg-white/10'
+      : 'text-primary hover:bg-primary/5';
+
+  const ctaButtonClass = isScrolled || isHome
+    ? 'bg-white text-primary-dark hover:bg-gray-100'
+    : 'bg-primary text-white hover:bg-primary-dark';
 
   const closeMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(false);
@@ -128,24 +160,20 @@ export default function Navbar() {
   const navLinkClass = `text-sm font-semibold hover:text-primary-light transition-colors py-2 flex items-center gap-1`;
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-primary-dark text-white shadow-lg py-2'
-          : 'bg-white/95 backdrop-blur-md text-primary border-b border-gray-100 py-3'
-      }`}
-    >
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerBgClass}`}
+      >
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between">
-
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center">
-            <div className={`relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 transition-all duration-300 ${!isScrolled ? 'brightness-0' : ''}`}>
+            <div className={`relative w-[58px] h-[58px] sm:w-[68px] sm:h-[68px] lg:w-[78px] lg:h-[78px] transition-all duration-300 ${logoFilterClass}`}>
               <Image
-                src="/imagenes/logo.webp"
+                src="/imagenes/logo.png?v=2"
                 alt={t('ariaLabels.logo')}
                 fill
-                sizes="(max-width: 640px) 48px, (max-width: 1024px) 56px, 64px"
+                sizes="(max-width: 640px) 58px, (max-width: 1024px) 68px, 78px"
                 className="object-contain"
                 priority
               />
@@ -310,7 +338,7 @@ export default function Navbar() {
             <LanguageSwitcher />
             <Link href="/cart" className="relative cursor-pointer hover:text-primary-light transition-colors">
               <ShoppingCart className="w-5 h-5" />
-              {cartItems.length > 0 && (
+              {mounted && cartItems.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {cartItems.length}
                 </span>
@@ -318,11 +346,7 @@ export default function Navbar() {
             </Link>
             <Link
               href="/tours"
-              className={`px-5 py-2 rounded-full font-bold text-sm transition-colors ${
-                isScrolled
-                  ? 'bg-white text-primary-dark hover:bg-gray-100'
-                  : 'bg-primary text-white hover:bg-primary-dark'
-              }`}
+              className={`px-5 py-2 rounded-full font-bold text-sm transition-colors ${ctaButtonClass}`}
             >
               {t('planYourTrip')}
             </Link>
@@ -332,7 +356,7 @@ export default function Navbar() {
           <div className="lg:hidden flex items-center space-x-3">
             <Link href="/cart" className="relative cursor-pointer p-2">
               <ShoppingCart className="w-5 h-5" />
-              {cartItems.length > 0 && (
+              {mounted && cartItems.length > 0 && (
                 <span className="absolute top-0 right-0 bg-orange-500 text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {cartItems.length}
                 </span>
@@ -340,9 +364,7 @@ export default function Navbar() {
             </Link>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg transition-colors ${
-                isScrolled ? 'text-white hover:bg-white/10' : 'text-primary hover:bg-primary/5'
-              }`}
+              className={`p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg transition-colors ${mobileToggleColorClass}`}
               aria-label={isMobileMenuOpen ? t('ariaLabels.closeMenu') : t('ariaLabels.openMenu')}
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -350,10 +372,11 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+      </header>
 
       {/* ── Mobile Menu ──────────────────────────────────────────────────── */}
       <div
-        className={`lg:hidden fixed top-0 left-0 right-0 bottom-0 bg-primary z-40 transition-transform duration-300 ease-in-out ${
+        className={`lg:hidden fixed top-0 left-0 right-0 bottom-0 bg-primary z-[60] flex flex-col transition-transform duration-300 ease-in-out ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 80px)' }}
@@ -367,7 +390,7 @@ export default function Navbar() {
           <X className="w-6 h-6" />
         </button>
 
-        <nav className="flex flex-col h-full overflow-y-auto px-6 py-4">
+        <nav className="flex flex-col flex-grow overflow-y-auto px-6 py-4">
           <div className="flex flex-col space-y-1">
 
             {/* Tours Accordion */}
@@ -461,6 +484,6 @@ export default function Navbar() {
           </div>
         </nav>
       </div>
-    </header>
+    </>
   );
 }

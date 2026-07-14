@@ -2,7 +2,7 @@
 
 > **Objetivo**: Llevar el proyecto al nivel de calidad y funcionalidad de [incarail.com](https://incarail.com/)  
 > **Basado en**: Auditoría completa de Ingeniería Senior (Mayo 2026)  
-> **Estado**: 🟡 En progreso  
+> **Estado**: 🟡 En progreso (Fase M: Optimizaciones Móviles y de Responsividad planificadas)  
 > **Progreso detallado**: Ver [task.md](./task.md)
 
 ---
@@ -513,6 +513,74 @@ src/app/admin/layout.tsx
 
 ---
 
+## 📱 Fase M — Optimización Móvil y Responsividad (Vista Móvil)
+
+> Esta fase se enfoca en resolver bugs de solapamiento, elementos inaccesibles en pantallas táctiles (hover-only), desbordamiento horizontal y problemas de scroll en dispositivos móviles.
+
+### M.1 Resolver solapamiento del Buscador Flotante (BookingWidget)
+- **Problema**: El buscador flotante (`BookingWidget`) está posicionado como `absolute` en el Hero con `translate-y-1/2`. En mobile (vertical), se estira a ~400px de altura, solapando el contenido posterior (`SEOBlock`) debido a un espaciador rígido insuficiente (`h-40`).
+- **Solución**:
+  - En `src/components/home/Hero.tsx`, cambiar a flujo `relative` en móviles y `absolute` en desktop (`xl:absolute xl:bottom-0 xl:translate-y-1/2`).
+  - En `src/app/[locale]/(public)/page.tsx`, ajustar el espaciador a `h-6 sm:h-8 xl:h-32` para eliminar el espacio vacío gigante en móviles y mantener la separación adecuada en desktop.
+
+### M.2 Eliminar solapamiento/doble recuadro en Formulario de Contacto
+- **Problema**: En `/contacto`, la página envuelve a `<ContactForm />` en una tarjeta blanca con sombras (`bg-white rounded-3xl p-6 sm:p-10 border...`), y el componente interno vuelve a envolverse en un recuadro idéntico con doble título. Esto desperdicia 48px de ancho útil en teléfonos.
+- **Solución**:
+  - En `src/app/[locale]/(public)/contacto/page.tsx`, eliminar el recuadro contenedor y el título duplicado, permitiendo que el `<ContactForm />` renderice su propio contenedor directamente.
+
+### M.3 Revelar información oculta detrás de estados Hover
+- **Problema**: Varios bloques usan `opacity-0 group-hover:opacity-100` para mostrar información crítica. En teléfonos, como no hay hover, esta información queda permanentemente invisible.
+- **Solución**:
+  - En `src/components/home/PromotionsSlider.tsx` (Cupones) y `src/components/tours/ToursPageClient.tsx` (CTA de WhatsApp del Tren), cambiar la opacidad de los overlays y textos a `opacity-100 lg:opacity-0 lg:group-hover:opacity-100` para que estén siempre visibles en móviles y mantengan el efecto hover en desktop.
+  - En carruseles (`src/components/ui/HeroCarousel.tsx`, `src/components/experiencias/PassengerGallery.tsx`), hacer que las flechas de navegación sean siempre visibles en mobile (`opacity-100 lg:opacity-0 lg:group-hover:opacity-100`).
+
+### M.4 Optimizar menú de navegación móvil (Navbar)
+- **Problema**: El menú móvil (`lg:hidden fixed inset-0`) tiene un `paddingTop` rígido de 80px y su contenedor interno `<nav>` tiene un alto `h-full`. Esto hace que el menú supere el alto de la pantalla en 80px, cortando los enlaces y detalles del pie del menú.
+- **Solución**:
+  - En `src/components/layout/Navbar.tsx`, agregar `flex flex-col` al contenedor del menú móvil y cambiar `h-full` por `flex-1` en el `<nav>` interno para que el scroll se restrinja correctamente al área visible del viewport.
+
+### M.5 Optimizar barra de búsqueda mock y badge de TripAdvisor
+- **Problema**: 
+  - La barra de búsqueda mock en `BlogPageClient.tsx` muestra botones de voz e imagen no funcionales junto al botón "Modo IA", dejando poco espacio para escribir en móviles.
+  - El badge de TripAdvisor en `Testimonials.tsx` causa desbordamiento horizontal en pantallas angostas (~320px).
+- **Solución**:
+  - En `src/components/blog/BlogPageClient.tsx`, ocultar los botones de micrófono y cámara en móviles (`hidden sm:inline-block`).
+  - En `src/components/home/Testimonials.tsx`, usar `flex-wrap` en el badge de TripAdvisor y permitir saltos de línea fluidos.
+
+### M.6 Scroll interactivo al calendario en BookingSidebar
+- **Problema**: Al presionar el botón pegajoso de "Reservar ahora" en mobile sin haber elegido una fecha, el error se muestra de forma silenciosa en el sidebar original en la parte inferior, y el usuario no se entera del problema.
+- **Solución**:
+  - En `src/components/tours/BookingSidebar.tsx`, si se hace click en reservar sin seleccionar fecha en móviles, desplazar la ventana suavemente (`scrollIntoView`) hasta el selector de fecha.
+
+### M.7 Corregir ruta de imagen rota en Nosotros
+- **Problema**: En `nosotros/page.tsx` línea 69, la imagen del fondo de valores apunta a `/public/tours/...`, lo que genera un 404 en Next.js.
+- **Solución**: Cambiar la ruta a `/tours/...` omitiendo la palabra `/public`.
+
+### M.8 Incrementar altura del Hero / Carousel en Homepage
+- **Problema**: Las imágenes del Hero Slider se ven demasiado recortadas en sentido horizontal.
+- **Solución**:
+  - En `src/components/home/Hero.tsx`, incrementar las alturas en todas las resoluciones a: `h-[60vh] sm:h-[70vh] md:h-[75vh] xl:h-[90vh] xl:min-h-[750px]` (antes `h-[80vh]` pero de flujo rígido).
+  - Asegurar que la grilla del carrusel interno tenga el tamaño correcto en flujo normal en mobiles y absoluto en desktop.
+
+### M.9 Usar imagen clásica de Machu Picchu
+- **Problema**: La imagen actual de Machu Picchu no convence tanto como la versión clásica del sitio web previo.
+- **Solución**:
+  - En `src/components/home/HeroSlider.tsx`, actualizar la primera imagen a: `https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=2600&auto=format&fit=crop`.
+
+### M.10 Rediseñar contenedor del CTA de Tren a Machu Picchu
+- **Problema**: La sección de trenes en `ToursPageClient.tsx` se deforma y expande a pantalla completa, estirando la imagen y recortando el tren y paisajes.
+- **Solución**:
+  - En `src/components/tours/ToursPageClient.tsx` (sección Tren CTA), cambiar el contenedor externo para usar un ancho máximo de tarjeta centrada con su resolución de aspecto original: `max-w-4xl mx-auto w-full aspect-[4/3] sm:aspect-[16/10] md:aspect-[16/9] rounded-3xl overflow-hidden mt-16 md:mt-24 group flex items-center justify-center shadow-md`.
+  - Asegurar que el overlay y el botón de WhatsApp se posicionen exactamente al centro del card.
+
+### M.11 Incrementar tamaño y contraste del Logo corporativo
+- **Problema**: El logotipo en el Navbar es pequeño y pierde total contraste al hacer scroll, volviéndose negro (`brightness-0`) sobre el fondo azul verde oscuro (`bg-primary-dark`).
+- **Solución**:
+  - Incrementar un 20% el tamaño del contenedor del logotipo en `src/components/layout/Navbar.tsx` a: `w-[58px] h-[58px] sm:w-[68px] sm:h-[68px] lg:w-[78px] lg:h-[78px]`.
+  - Corregir el contraste en el estado de scroll: cambiar `brightness-0` (negro) a `brightness-0 invert` (blanco puro) para que destaque perfectamente sobre el fondo oscuro de navegación.
+
+---
+
 ## Verificación Global
 
 Después de cada fase, verificar:
@@ -524,3 +592,4 @@ Después de cada fase, verificar:
 - [ ] Formularios funcionales (búsqueda, filtros, checkout)
 - [ ] Admin protegido por middleware
 - [ ] Imágenes optimizadas (WebP, lazy loading)
+

@@ -38,7 +38,8 @@ export default function ContactForm() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Ej: Juan Pérez"
-            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary text-sm font-semibold text-text-main"
+            autoComplete="name"
+            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary text-base font-semibold text-text-main"
           />
         </div>
         
@@ -52,19 +53,21 @@ export default function ContactForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="juan@correo.com"
-              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary text-sm font-semibold text-text-main"
+              autoComplete="email"
+              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary text-base font-semibold text-text-main"
             />
           </div>
           <div>
             <label htmlFor="contact_phone" className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{t('formPhone')}</label>
             <input
               id="contact_phone"
-              type="text"
+              type="tel"
               required
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="Ej: +51 955723329"
-              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary text-sm font-semibold text-text-main"
+              autoComplete="tel"
+              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary text-base font-semibold text-text-main"
             />
           </div>
         </div>
@@ -78,7 +81,7 @@ export default function ContactForm() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Escribe tu mensaje aquí..."
-            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary text-sm font-semibold text-text-main resize-none"
+            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary text-base font-semibold text-text-main resize-none"
           />
         </div>
         

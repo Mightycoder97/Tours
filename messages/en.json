@@ -165,6 +165,31 @@
       "viewAllTours": "View all tours"
     },
 
+    "promotions": {
+      "title": "SAVE ON YOUR TRIP TO PERU",
+      "subtitle": "Discover exclusive offers on the most incredible destinations in Peru, only with us",
+      "cards": {
+        "0": {
+          "tag": "Use coupon MAGIA10",
+          "title": "TRAVEL WITH 10% OFF",
+          "description": "Limited time offer. Terms and conditions apply.",
+          "cta": "Book now"
+        },
+        "1": {
+          "tag": "Applied automatically",
+          "title": "5% OFF Roundtrip",
+          "description": "Automatically applied to round-trip journeys. Terms and conditions apply.",
+          "cta": "Book now"
+        },
+        "2": {
+          "tag": "Coupon: ADVENTURE20",
+          "title": "20% OFF on Treks",
+          "description": "On selected Salkantay and Inca Trail routes. Valid this week.",
+          "cta": "Book now"
+        }
+      }
+    },
+
     "whyUs": {
       "title": "Why Choose Us?",
       "subtitle": "We are experts in creating unforgettable experiences in the heart of the Inca Empire.",
@@ -280,8 +305,8 @@
     },
 
     "seo": {
-      "title": "Live an Unforgettable Adventure with Machu Picchu Travel Adventure",
-      "content": "Live an unforgettable adventure with MachupicchuTravel Adventure. Discover the most impressive destinations in Peru with experiences designed for travelers seeking culture, nature, and excitement. Travel with comfort, safety, and the best service while exploring Machu Picchu, Cusco, and much more. Your next adventure starts here!"
+      "title": "Live unique experiences in Peru's most incredible destinations",
+      "content": "Discover the magic of Peru with Machupicchu Travel Adventure. Travel through extraordinary destinations with tours designed to offer you an authentic, safe experience full of moments you will remember forever."
     }
   },
 
@@ -519,30 +544,203 @@
       "title": "Travel Blog",
       "subtitle": "Tips, guides, and stories to inspire your next adventure.",
       "readMore": "Read more",
+      "recommendedTours": "Recommended Tours",
+      "viewTour": "View Tour",
+      "ticketWidget": {
+        "title": "Do you need your Machu Picchu ticket?",
+        "subtitle": "Tickets sell out months in advance. We can help you secure one if you don't have it yet.",
+        "optionYes": "Yes, I need a ticket",
+        "optionYesSub": "Help me book the complete experience.",
+        "optionNo": "No, I don't need a ticket",
+        "optionNoSub": "I only need the train service and tour guide.",
+        "continue": "Continue",
+        "whatsappYes": "Hello! I am reading the blog and need help booking my Machu Picchu ticket along with the complete experience.",
+        "whatsappNo": "Hello! I already have my Machu Picchu ticket, but I need to book the train service and tour guide."
+      },
       "posts": {
         "0": {
+          "slug": "10-essential-tips-for-visiting-machu-picchu",
           "title": "10 Essential Tips for Visiting Machu Picchu",
           "excerpt": "Everything you need to know before your first visit to the Inca citadel. From acclimatization to what to pack in your backpack.",
           "date": "May 15, 2026",
-          "readTime": "5 min"
+          "readTime": "5 min",
+          "category": "Travel Tips",
+          "author": "Machu Picchu Travel",
+          "intro": "Visiting the magical citadel of Machu Picchu is undoubtedly one of the most desired experiences for travelers worldwide. However, due to its geographic location and conservation regulations, planning this trip requires some preparation. To make your adventure seamless and perfect, we have prepared a list of the 10 most essential tips you should keep in mind.",
+          "sections": [
+            {
+              "title": "1. Book your tickets well in advance",
+              "paragraphs": [
+                "Machu Picchu entrance tickets have a strict daily limit established by the Peruvian government to protect the archaeological heritage. During high season (May to October), tickets can sell out 3 to 4 months in advance. We advise you to book as soon as you decide on your travel dates using a trusted service like our [Machu Picchu Full Day](/tours/machu-picchu-full-day), choosing the circuit that best fits your physical expectations and exploration goals."
+              ]
+            },
+            {
+              "title": "2. Understand the new visiting circuits",
+              "paragraphs": [
+                "Machu Picchu is no longer explored freely. Currently, there are three one-way circuits: Circuit 1 (panoramic and high terraces), Circuit 2 (classic and complete, the most recommended), and Circuit 3 (lower part and royal areas). Make sure to choose the correct ticket, as once inside you cannot change routes or go back on your steps."
+              ]
+            },
+            {
+              "title": "3. Plan for altitude acclimatization",
+              "paragraphs": [
+                "The city of Cusco is located at about 3,400 meters (11,150 feet) above sea level, while Machu Picchu is at about 2,430 meters (7,970 feet). Altitude sickness or 'soroche' is very common upon arrival. The ideal is to spend at least 1 or 2 days in Cusco or the Sacred Valley (which is at a lower altitude) before doing demanding hikes like the famous [Rainbow Mountain (Vinicunca)](/tours/montana-de-colores-vinicunca). Drink plenty of water, sip hot coca tea, and avoid heavy meals for the first few days."
+              ]
+            },
+            {
+              "title": "4. Hire an official tour guide",
+              "paragraphs": [
+                "Exploring Machu Picchu without a guide is missing half the magic. Official guides will reveal the history of the temples, the sophisticated agricultural terrace system, the astronomical alignments, and the theories behind its abandonment. You can hire a certified guide in advance through our agency or at the gates of the sanctuary."
+              ]
+            },
+            {
+              "title": "5. Choose the ideal mode of transportation",
+              "paragraphs": [
+                "To reach Aguas Calientes (Machu Picchu Town), the fastest and most comfortable way is by train from Ollantaytambo or Poroy. If you are looking for a unique and adventurous experience, the classic 4-day Inca Trail or the short 2-day route are excellent choices. Plan your rail connections and bus transfers carefully to avoid missing your entry times."
+              ]
+            },
+            {
+              "title": "6. Dress in layers and prepare for the weather",
+              "paragraphs": [
+                "Machu Picchu is located in a cloud forest zone, meaning the weather is highly changeable. Early in the morning it can be very cold and misty, but by midday the sun can be intense. We recommend dressing in layers: a breathable t-shirt, a light fleece, a windbreaker or rain jacket, and comfortable trousers."
+              ]
+            },
+            {
+              "title": "7. Bring insect repellent and sunscreen",
+              "paragraphs": [
+                "Surrounded by humid subtropical forest, Machu Picchu is home to very small mosquitoes whose bites cause intense itching. Always bring a good insect repellent and apply it regularly. Similarly, the high-altitude sun can burn your skin quickly, so wear a hat and high-factor sunscreen."
+              ]
+            },
+            {
+              "title": "8. Know the luggage restrictions and prohibited items",
+              "paragraphs": [
+                "Machu Picchu regulations prohibit entry with backpacks exceeding 40x35x20 cm, large umbrellas (rain ponchos are allowed), tripods or camera stabilizers, drones, and single-use plastic containers. There is a locker service at the entrance where you can leave your belongings for an extra fee."
+              ]
+            },
+            {
+              "title": "9. Carry cash in Soles",
+              "paragraphs": [
+                "Although many shops in Aguas Calientes accept credit cards, it is essential to carry cash in Peruvian Soles (PEN). You will need it to pay for the public restrooms located only outside the sanctuary, buy reusable water bottles, snacks, or tip your guides."
+              ]
+            },
+            {
+              "title": "10. Get the official Machu Picchu stamp in your passport",
+              "paragraphs": [
+                "As a special keepsake of your visit, don't forget to stamp your passport with the commemorative Machu Picchu stamp. There is a small office with a self-service wooden stamp right next to the exit of the archaeological park. It is free and represents a beautiful souvenir of your journey to Peru."
+              ]
+            }
+          ],
+          "conclusion": "Visiting Machu Picchu is a life-changing experience. Planning every detail ahead of time will not only save you stress but also allow you to fully immerse yourself in the majesty of this sacred place. If you want us to organize your complete trip from start to finish, don't hesitate to contact our travel advisors."
         },
         "1": {
+          "slug": "sacred-valley-the-hidden-gem-of-the-andes",
           "title": "Sacred Valley: The Hidden Gem of the Andes",
           "excerpt": "Discover why the Sacred Valley of the Incas is much more than just a gateway to Machu Picchu.",
           "date": "May 10, 2026",
-          "readTime": "7 min"
+          "readTime": "7 min",
+          "category": "Destinations",
+          "author": "Machu Picchu Travel",
+          "intro": "The Sacred Valley of the Incas is one of the most beautiful and historic destinations in the Cusco region. Stretching along the Vilcanota River, this fertile valley boasts an exceptional mild climate and houses breathtaking archaeological complexes that rival the beauty of Machu Picchu itself. In this guide, we discover the main attractions that make the Sacred Valley an essential stop on your trip.",
+          "sections": [
+            {
+              "title": "Pisac: Imperial ruins and traditional market",
+              "paragraphs": [
+                "Located about 30 kilometers from Cusco, Pisac is famous for its stunning archaeological complex perched high on a mountain. Walking through its agricultural terraces, ceremonial temples, and ancient Inca cemetery is an amazing experience. In the lower town, the Pisac artisan market comes alive with colorful textiles, handmade ceramics, and beautiful silver jewelry."
+              ]
+            },
+            {
+              "title": "Ollantaytambo: The last living Inca town",
+              "paragraphs": [
+                "Ollantaytambo is one of the few places in Peru where residents still live in original Inca constructions. Its cobbled streets, running water channels, and traditional houses will transport you back in time. The imposing military fortress crowning the town was the site of one of the few battles where the Incas defeated the Spanish conquistadors, offering spectacular views of the valley."
+              ]
+            },
+            {
+              "title": "Maras and Moray: Millenary salt pans and agricultural laboratories",
+              "paragraphs": [
+                "The salt pans of Maras are a stunning visual spectacle: over 3,000 pink salt pools fed by a warm underground spring that have been harvested since pre-Inca times. Nearby lies Moray, a set of impressive concentric agricultural terraces resembling an amphitheater. Moray worked as an Inca agricultural research laboratory, where they experimented with different crops under specific microclimates."
+              ]
+            },
+            {
+              "title": "Chinchero: The town of the rainbow and cradle of Andean weaving",
+              "paragraphs": [
+                "Situated at a high altitude, Chinchero retains a very pure Andean charm. It houses a beautiful colonial church built over an Inca palace and extensive agricultural terraces. However, its main attraction lies in its traditional weaving centers, where local women dressed in typical attire demonstrate the washing, spinning, and dyeing of alpaca wool using only local plants, flowers, and minerals."
+              ]
+            }
+          ],
+          "conclusion": "The Sacred Valley offers a fascinating journey through the history, living culture, and natural landscapes of the Andes. We recommend spending at least two full days exploring its wonders before continuing to Machu Picchu. Check out our daily [Sacred Valley VIP](/tours/valle-sagrado-vip) tour or the [Sacred Valley Traditional](/tours/valle-sagrado-tradicional) tour to plan your perfect itinerary."
         },
         "2": {
+          "slug": "complete-guide-rainbow-mountain-vinicunca",
           "title": "Complete Guide: Rainbow Mountain (Vinicunca)",
           "excerpt": "Altitude, difficulty, best season, and everything you need for this one-of-a-kind hike.",
           "date": "May 5, 2026",
-          "readTime": "6 min"
+          "readTime": "6 min",
+          "category": "Travel Tips",
+          "author": "Machu Picchu Travel",
+          "intro": "The Mountain of Seven Colors, also known as Vinicunca, has become the second most visited tourist attraction in Cusco after Machu Picchu. This extraordinary natural landscape, situated at a high altitude, resembles an oil painting with its stripes of reddish, golden, green, and purple hues. To enjoy this demanding but wonderful hike, we present our complete preparation guide.",
+          "sections": [
+            {
+              "title": "Where do the colors of Vinicunca come from?",
+              "paragraphs": [
+                "The surprising coloration of the mountain is due to a complex geological history and the accumulation of different mineral layers deposited over millions of years. The red hue comes from clay rich in iron; pink stripes are caused by red clay and mud; green is the result of phyllites and clays rich in magnesium and iron; golden hues are due to calcareous sandstones rich in sulfur; and purple comes from limonite."
+              ]
+            },
+            {
+              "title": "The Altitude: The real challenge of the trail",
+              "paragraphs": [
+                "The hike to Vinicunca is not technically difficult or steep, but the altitude is the real challenge. The route begins at about 4,600 meters (15,090 feet) high, and the main viewpoint is located at the astonishing altitude of 5,036 meters (16,520 feet) above sea level. At this elevation, the air is thinner and oxygen is scarce. Therefore, it is absolutely mandatory to have spent at least 2 or 3 days acclimatizing in Cusco or the Sacred Valley before attempting this hike."
+              ]
+            },
+            {
+              "title": "Tips for a successful hike",
+              "paragraphs": [
+                "To fully enjoy the hike, we advise you to walk at your own steady, unhurried pace and breathe deeply. Using trekking poles is highly useful for balance and reducing knee strain. Bring coca leaves to chew or pills for soroche. Additionally, you can rent a horse from local residents at the start of the trail if you feel the physical effort is too much."
+              ]
+            },
+            {
+              "title": "What to pack in your daypack",
+              "paragraphs": [
+                "The weather in the high mountains is extremely cold and windy, but the hike will raise your body temperature. Dress in light thermal layers and bring a high-quality windbreaker jacket. Don't forget a wool hat, gloves, high-factor sunscreen (radiation is very high at altitude), sunglasses, and enough water to stay hydrated. Also bring cash to pay for the restrooms along the route."
+              ]
+            }
+          ],
+          "conclusion": "Reaching the Vinicunca viewpoint and contemplating the rainbow earth in front of the imposing Mount Ausangate is an experience you will remember for the rest of your life. With proper preparation and responsible acclimatization, you will conquer this Andean peak safely. Join our daily tour to [Rainbow Mountain](/tours/montana-de-colores-vinicunca) with certified guides and transportation included."
         },
         "3": {
+          "slug": "cusco-cuisine-flavors-you-cant-miss",
           "title": "Cusco Cuisine: Flavors You Can't Miss",
           "excerpt": "A journey through Cusco's traditional dishes that every traveler should try during their stay.",
           "date": "May 1, 2026",
-          "readTime": "4 min"
+          "readTime": "4 min",
+          "category": "Gastronomy",
+          "author": "Machu Picchu Travel",
+          "intro": "Cusco is not only the archaeological capital of America but also an exceptional gastronomic destination that delights the most demanding palates. Cusco cuisine stands out for fusing millenary Andean ingredients (such as quinoa, native potatoes, giant corn, and aromatic herbs) with contemporary Spanish and Creole cooking techniques. In this guide, we invite you to discover the traditional dishes and ingredients you must try during your visit.",
+          "sections": [
+            {
+              "title": "Pachamanca: The sacred feast under the earth",
+              "paragraphs": [
+                "Pachamanca is not just a plate of food; it is an ancient Andean ritual of gratitude to Mother Earth (Pachamama). It consists of cooking different types of meat (chicken, pork, lamb, alpaca) and tubers (potatoes, sweet potatoes, broad beans) using preheated stones placed in an oven dug into the ground. Everything is covered with banana leaves, local aromatic herbs like huacatay, and soil, achieving a slow cook with unmatched smoky flavors."
+              ]
+            },
+            {
+              "title": "Alpaca Lomo Saltado: A Peruvian classic with an Andean twist",
+              "paragraphs": [
+                "Alpaca lomo saltado is the flagship dish of Chinese-Peruvian fusion cuisine. In Cusco, local and gourmet restaurants often prepare this delicacy by substituting beef with alpaca meat, a highly tender, lean, healthy, and low-cholesterol option. Sautéed in a wok over high heat with onions, tomatoes, yellow pepper, and fresh cilantro, it is served with crispy native French fries and hot white rice."
+              ]
+            },
+            {
+              "title": "Cuy Chactado and Roasted: Ancient Andean tradition",
+              "paragraphs": [
+                "The cuy (guinea pig) has been one of the most important sources of protein in the Andean diet since the Inca era. In traditional Cusco picanterías, it is served roasted, seasoned with herbs like huacatay and accompanied by stuffed rocoto pepper and potatoes, or deep-fried under a heavy stone (Cuy Chactado), which gives it a very crispy texture. It is a dish full of tradition and local flavor."
+              ]
+            },
+            {
+              "title": "Chairo and Cusco soups for the cold",
+              "paragraphs": [
+                "For cold Andean nights, there is nothing better than a hot Cusco soup. Chairo is a hearty, thick soup made of chuño (dehydrated potato), mutton, beef, wheat, corn hominy, and vegetables. Another delicious specialty is Quinoa Soup, nutritious and comforting. Always accompany them with a hot cup of coca or muña tea, herbs that significantly aid digestion at high altitude."
+              ]
+            }
+          ],
+          "conclusion": "Exploring Cusco through its flavors is a wonderful cultural experience. From rustic traditional picanterías to the most award-winning gourmet restaurants, Cusco has a culinary proposal that will surprise you. If you want to experience the preparation of traditional Andean Pachamanca up close, book our [Pachamanca Tour in Chinchero](/tours/pachamanca-full-day) today."
         }
       }
     },

@@ -357,9 +357,93 @@
   - [x] page.tsx hero image: tiene `priority` correctamente ✓
 
 - [x] **E.6** Actualizar .env.local con placeholders
-  - [x] Agregadas variables Culqi (pk/sk)
+- [x] Agregadas variables Culqi (pk/sk)
   - [x] Agregado RESEND_FROM_EMAIL
   - [x] Agregados comentarios Sentry + Upstash Redis (opcionales)
 
 ## ✅ Verificación Fase E
 - [x] `npm run build` compila sin errores (38 páginas generadas)
+
+---
+
+## 🎨 Fase F — Rediseño Web y Distribución de Imágenes (Nuevo Diseño)
+
+### F.1 Reubicar e integrar los archivos de imágenes locales
+- [x] Crear la carpeta `public/imagenes/logos` y copiar los 7 logos oficiales de la carpeta `logos/`
+- [x] Copiar `en vez del logo.png` a `public/imagenes/logo.png`
+- [x] Copiar `Machupicchu.png` y `Machupicchu 1.png` a `public/imagenes/hero-machupicchu.png` y `public/imagenes/hero-machupicchu-1.png`
+- [x] Copiar `Camino Inca.png` a `public/imagenes/hero-camino-inca.png`
+- [x] Copiar `Tren a machupicchu.png` a `public/imagenes/tren-machupicchu.png`
+- [x] Copiar `salkantay treek.png` a `public/imagenes/salkantay-trek.png`
+- [x] Copiar `manu ecology.png` a `public/imagenes/manu-ecology.png`
+- [x] Copiar `huaca china.png` a `public/tours/lima/paracas-ica-huacachina-full-day/01.png` (reemplazar)
+- [x] Copiar `palcoyo.png` a `public/tours/cusco/palcoyo-montana-de-colores-alternativa/01.png` (reemplazar)
+- [x] Copiar `matrimonio andino.png` a `public/tours/cusco/matrimonio-andino-kasarakuy/01.png` (reemplazar)
+- [x] Copiar `Pachamanca turismo vivencial.png` a `public/tours/cusco/pachamanca-full-day/01.png` (reemplazar)
+- [x] Correr el script `scripts/upload-to-supabase-storage.ts` para subir las fotos y actualizar los tours correspondientes en la DB
+
+### F.2 Parte 1: Página de Inicio (Home)
+- [x] Actualizar `Navbar.tsx` y `Footer.tsx` para usar `logo.png` en vez de `logo.webp`
+- [x] Modificar `HeroSlider.tsx` para usar las nuevas imágenes de Machu Picchu y Camino Inca, eliminando Unsplash
+- [x] Modificar `src/app/[locale]/(public)/page.tsx` para mover `SEOBlock` inmediatamente debajo de `Hero` y remover `WhyChooseUs` y `DestinationsSection`
+- [x] Crear el componente `PromotionsSlider.tsx` (carrusel de cupones/ofertas) e integrarlo en la Home
+
+### F.3 Parte 2: Página de Tours y Detalles
+- [x] Agregar el bloque de testimonio destacado de TripAdvisor en `ToursPageClient.tsx`
+- [x] Agregar el bloque CTA de WhatsApp con fondo `tren-machupicchu.png` al final de `ToursPageClient.tsx`
+
+### F.4 Parte 3: Página Sobre Nosotros (Nosotros)
+- [x] Modificar `nosotros/page.tsx` para cambiar el layout de Hero
+- [x] Reestructurar los paneles de licencia (RUC, Dircetur, Sernanp) como tarjetas estables en lugar de acordeones
+- [x] Añadir la sección de Valores con fondo de la Montaña de Colores (usando `palcoyo.png` con opacidad/overlay)
+- [x] Reestructurar la sección Quiénes Somos con la imagen de equipo (`Machupicchu.png` o similar)
+- [x] Añadir la sección de asociaciones con los 7 logotipos oficiales desde `public/imagenes/logos/`
+- [x] Añadir el grid estructurado de opiniones (Tripadvisor & Google en un lado, testimonios en el otro)
+
+### F.5 Parte 4: Página de Blog
+- [x] Modificar la estructura del blog para mostrar el buscador local "+ Preguntar a Google" (Modo IA) respetando el diseño básico de filtrado local
+- [x] Añadir el carrusel de paquetes recomendados bajo "Encuentra la aventura ideal para ti"
+- [x] Añadir el widget interactivo "¿Necesitas tu entrada a Machu Picchu?" al final de la página de blog
+
+### F.6 Parte 5: Página de Contacto
+- [x] Rediseñar la página de contacto para usar una estructura de dos columnas: formulario de mensaje a la izquierda y el widget `BookingSidebar` a la derecha
+- [x] Integrar el mapa interactivo de Google Maps y las tres tarjetas de detalles abajo
+- [x] Actualizar la sección de Asesores e integrar la barra flotante de búsqueda al pie de la página de contacto
+
+### F.7 Ajustes Visuales y Layout
+- [x] Escalar las imágenes del Hero del carrusel (`scale-[1.08]`) para ocultar los bordes pre-redondeados transparentes de origen
+- [x] Convertir el carrusel de tours recomendados de la Home en una grilla estática de 6 tarjetas (`FeaturedToursGrid`)
+- [x] Corregir el centrado de las imágenes del slider de cupones (`scale-[1.08]`) y ocultar el overlay/texto hasta el hover
+- [x] Corregir la imagen de fondo del CTA de tren al pie de la página `/tours` (`scale-[1.28]`) y ocultar el overlay/texto hasta el hover
+- [x] Modificar la primera sección del Blog para mostrar una transición faded de fotos principales de tours sin esquinas redondeadas
+
+
+---
+
+## 📱 Fase M — Optimización Móvil y Responsividad (Vista Móvil)
+
+- [x] **M.1** Resolver solapamiento de buscador flotante (BookingWidget)
+  - [x] Hacer BookingWidget relative en mobile en Hero.tsx y absolute en desktop
+  - [x] Reducir el espaciador h-40 a responsivo (h-6 sm:h-8 xl:h-32) en page.tsx
+- [x] **M.2** Eliminar doble recuadro y título en formulario de contacto
+  - [x] Limpiar el div contenedor con sombras y el H3 duplicado en contacto/page.tsx
+- [x] **M.3** Revelar información de overlays en mobile (sustituir hover absoluto)
+  - [x] Mostrar promociones por defecto en PromotionsSlider.tsx (`opacity-100 lg:opacity-0`)
+  - [x] Mostrar CTA WhatsApp en ToursPageClient.tsx (`opacity-100 lg:opacity-0`)
+  - [x] Mostrar flechas de carruseles por defecto en HeroCarousel.tsx y PassengerGallery.tsx
+- [x] **M.4** Corregir altura del menú móvil (Navbar.tsx)
+  - [x] Ajustar flexbox y overflow-y-auto en el nav móvil
+- [x] **M.5** Ocultar micrófonos/cámara mock en blog y corregir badge TripAdvisor
+  - [x] Ocultar iconos mock en BlogPageClient.tsx en pantallas móviles
+  - [x] Permitir flex-wrap en TripAdvisor badge de Testimonials.tsx
+- [x] **M.6** Desplazamiento automático al calendario en errores de BookingSidebar.tsx
+  - [x] Hacer scrollIntoView si el usuario móvil no elige fecha
+- [x] **M.7** Corregir ruta de Cusco background imagen rota en nosotros/page.tsx
+  - [x] Cambiar `/public/tours/...` a `/tours/...`
+- [x] **M.8** Incrementar la altura del Hero en homepage en Hero.tsx
+- [x] **M.9** Usar la imagen clásica de amanecer de Machu Picchu en HeroSlider.tsx
+- [x] **M.10** Rediseñar el CTA de Tren a Machu Picchu en ToursPageClient.tsx (max-w-4xl centrado)
+- [x] **M.11** Incrementar 20% el tamaño del logo en Navbar.tsx y cambiar color en scroll a blanco puro
+
+
+

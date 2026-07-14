@@ -3,8 +3,9 @@
 import { useState, useMemo } from 'react';
 import TourFilters from '@/components/tours/TourFilters';
 import TourCard from '@/components/tours/TourCard';
-import { Filter } from 'lucide-react';
+import { Filter, MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 interface Tour {
   id: string;
@@ -142,6 +143,10 @@ export default function ToursPageClient({
     setSortBy(value);
     setCurrentPage(1);
   };
+
+  const whatsappNumber = '51955723329';
+  const whatsappMsg = encodeURIComponent('¡Hola Machupicchu Travel Adventure! Estoy viendo la lista de tours y me gustaría solicitar información.');
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMsg}`;
 
   return (
     <div className="container mx-auto px-4 lg:px-8">
@@ -296,6 +301,69 @@ export default function ToursPageClient({
 
         </main>
       </div>
+
+      {/* TripAdvisor Review Section */}
+      <section className="mt-16 md:mt-24 max-w-4xl mx-auto bg-white rounded-2xl border border-gray-150 p-6 md:p-10 shadow-sm flex flex-col md:flex-row gap-6 md:gap-10 items-center md:items-start">
+        {/* Left Side: Badge */}
+        <div className="flex flex-col items-center shrink-0 border-b md:border-b-0 md:border-r border-gray-100 pb-6 md:pb-0 md:pr-10 w-full md:w-auto">
+          <div className="flex items-center gap-1.5 mb-2">
+            <span className="font-sans font-bold text-xl tracking-tight text-text-main">Tripadvisor</span>
+          </div>
+          <div className="flex gap-1 mb-2">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <span key={s} className="w-5 h-5 rounded-full bg-green-500 inline-block"></span>
+            ))}
+          </div>
+          <span className="text-xs text-text-light font-medium uppercase tracking-wider">Excelente</span>
+        </div>
+        
+        {/* Right Side: Quote Content */}
+        <div className="flex-1 text-center md:text-left">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-1">
+            <h4 className="font-serif text-lg font-bold text-text-main">“Una experiencia cómoda e ilustrativa”</h4>
+            <span className="text-xs text-text-light">Leonardo Q. • Colombia</span>
+          </div>
+          <p className="text-text-light text-sm sm:text-base leading-relaxed font-light">
+            Esta experiencia está muy bien organizada, muy cómoda y puntual. Jazmine fue muy amable con nosotros, teniendo en cuenta que viajábamos con una adulta mayor. Su calidez y cercanía nos facilitó el tránsito en el servicio bimodal.
+          </p>
+        </div>
+      </section>
+
+      {/* Train WhatsApp CTA Section */}
+      <section className="relative max-w-4xl mx-auto w-full aspect-[4/3] sm:aspect-[16/10] md:aspect-[16/9] rounded-3xl overflow-hidden mt-16 md:mt-24 group flex items-center justify-center shadow-md">
+        {/* Background Image */}
+        <div className="absolute inset-0 overflow-hidden">
+          <Image
+            src="/imagenes/tren-machupicchu.png?v=2"
+            alt="Tren a Machu Picchu"
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 1024px) 100vw, 896px"
+          />
+        </div>
+        {/* Dark overlay - show by default on mobile, only on hover on desktop */}
+        <div className="absolute inset-0 bg-black/60 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300" />
+        
+        {/* Content - show by default on mobile, only on hover on desktop */}
+        <div className="relative z-10 max-w-2xl px-6 py-8 text-center opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-serif text-white mb-4 drop-shadow-md leading-tight">
+            Descubre el Perú con nosotros
+          </h2>
+          <p className="text-white/95 text-xs sm:text-sm md:text-base font-light mb-6 md:mb-8 drop-shadow-sm max-w-xl mx-auto leading-relaxed">
+            Tu próxima aventura comienza aquí. Explora nuestros paquetes turísticos y elige la experiencia ideal para descubrir la riqueza natural, cultural e histórica del Perú.
+          </p>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 bg-[#25D366] hover:bg-[#20BA59] text-white py-3 sm:py-3.5 px-6 sm:px-8 rounded-full font-bold text-xs sm:text-base shadow-lg transition-all active:scale-95 cursor-pointer border-none"
+          >
+            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span>Contáctanos al WhatsApp</span>
+          </a>
+        </div>
+      </section>
+
     </div>
   );
 }

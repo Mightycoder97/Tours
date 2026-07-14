@@ -165,6 +165,31 @@
       "viewAllTours": "Ver todos los tours"
     },
 
+    "promotions": {
+      "title": "AHORRA EN TU VIAJE A PERU",
+      "subtitle": "Descubre ofertas exclusivas en los destinos más increíbles del Perú, solo con nosotros",
+      "cards": {
+        "0": {
+          "tag": "Usa el cupón MAGIA10",
+          "title": "VIAJA CON 10% OFF",
+          "description": "Oferta por tiempo limitado. Aplican términos y condiciones.",
+          "cta": "Reservar ahora"
+        },
+        "1": {
+          "tag": "Aplica automáticamente",
+          "title": "5% OFF Roundtrip",
+          "description": "Aplica automáticamente en viajes de ida y retorno. Aplican términos y condiciones.",
+          "cta": "Reservar ahora"
+        },
+        "2": {
+          "tag": "Cupón: ADVENTURE20",
+          "title": "20% OFF en Caminatas",
+          "description": "En rutas seleccionadas de Salkantay e Inca Trail. Válido esta semana.",
+          "cta": "Reservar ahora"
+        }
+      }
+    },
+
     "whyUs": {
       "title": "¿Por qué elegirnos?",
       "subtitle": "Somos expertos en crear experiencias inolvidables en el corazón del Imperio Inca.",
@@ -280,8 +305,8 @@
     },
 
     "seo": {
-      "title": "Vive una Aventura Inolvidable con Machu Picchu Travel Adventure",
-      "content": "Vive una aventura inolvidable con MachupicchuTravel Adventure. Descubre los destinos más impresionantes del Perú con experiencias diseñadas para viajeros que buscan cultura, naturaleza y emoción. Viaja con comodidad, seguridad y la mejor atención mientras exploras Machu Picchu, Cusco y mucho más. ¡Tu próxima aventura empieza aquí!"
+      "title": "Vive experiencias únicas en los destinos más increíbles del Perú",
+      "content": "Descubre la magia del Perú con Machupicchu Travel Adventure. Recorre destinos extraordinarios con tours diseñados para brindarte una experiencia auténtica, segura y llena de momentos que recordarás para siempre."
     }
   },
 
@@ -519,30 +544,203 @@
       "title": "Blog de Viajes",
       "subtitle": "Consejos, guías y relatos para inspirar tu próxima aventura.",
       "readMore": "Leer más",
+      "recommendedTours": "Tours Recomendados",
+      "viewTour": "Ver Tour",
+      "ticketWidget": {
+        "title": "¿Necesitas tu entrada a Machu Picchu?",
+        "subtitle": "Las entradas se agotan con meses de anticipación. Podemos ayudarte a conseguir una si aún no la tienes.",
+        "optionYes": "Sí, necesito entrada",
+        "optionYesSub": "Ayúdame a reservar la experiencia completa.",
+        "optionNo": "No necesito entrada",
+        "optionNoSub": "Solo necesito el tren y el guía turístico.",
+        "continue": "Continuar",
+        "whatsappYes": "¡Hola! Estoy leyendo el blog y necesito ayuda para reservar mi entrada a Machu Picchu junto con la experiencia completa.",
+        "whatsappNo": "¡Hola! Ya cuento con mi entrada a Machu Picchu, pero necesito reservar el servicio de tren y el guía turístico."
+      },
       "posts": {
         "0": {
+          "slug": "10-consejos-esenciales-para-visitar-machu-picchu",
           "title": "10 Consejos Esenciales para Visitar Machu Picchu",
           "excerpt": "Todo lo que necesitas saber antes de tu primera visita a la ciudadela inca. Desde aclimatación hasta qué llevar en la mochila.",
           "date": "15 Mayo, 2026",
-          "readTime": "5 min"
+          "readTime": "5 min",
+          "category": "Consejos de Viaje",
+          "author": "Machu Picchu Travel",
+          "intro": "Visitar la mágica ciudadela de Machu Picchu es, sin duda, una de las experiencias más deseadas por viajeros de todo el mundo. Sin embargo, debido a su ubicación geográfica y a las regulaciones de conservación, planificar este viaje requiere de cierta preparación. Para que tu aventura sea perfecta y sin contratiempos, hemos preparado una lista con los 10 consejos más esenciales que debes tener en cuenta.",
+          "sections": [
+            {
+              "title": "1. Reserva tus entradas con mucha anticipación",
+              "paragraphs": [
+                "Las entradas para Machu Picchu tienen un límite diario estricto establecido por el gobierno peruano para proteger el patrimonio arqueológico. Durante la temporada alta (de mayo a octubre), las entradas pueden agotarse con 3 o 4 meses de anticipación. Te aconsejamos reservar tan pronto como decidas tus fechas de viaje a través de un servicio de confianza como nuestro [Machu Picchu Full Day](/tours/machu-picchu-full-day), seleccionando el circuito que mejor se adapte a tus expectativas físicas y de exploración."
+              ]
+            },
+            {
+              "title": "2. Entiende los nuevos circuitos de visita",
+              "paragraphs": [
+                "Machu Picchu ya no se recorre libremente. Actualmente existen tres circuitos de visita de sentido único: el Circuito 1 (panorámico y terrazas altas), el Circuito 2 (clásico y completo, el más recomendado) y el Circuito 3 (parte baja y zonas reales). Asegúrate de elegir el boleto correcto, ya que una vez dentro no podrás cambiar de ruta ni regresar sobre tus pasos."
+              ]
+            },
+            {
+              "title": "3. Planifica la aclimatación a la altitud",
+              "paragraphs": [
+                "La ciudad de Cusco se encuentra a unos 3,400 metros sobre el nivel del mar, mientras que Machu Picchu está a unos 2,430 metros. El mal de altura o 'soroche' es muy común al llegar. Lo ideal es pasar al menos 1 o 2 días en Cusco o en el Valle Sagrado (que tiene menor altitud) antes de realizar caminatas exigentes como la famosa [Montaña de Colores (Vinicunca)](/tours/montana-de-colores-vinicunca). Bebe abundante agua, toma mate de coca caliente y evita las comidas pesadas los primeros días."
+              ]
+            },
+            {
+              "title": "4. Contrata un guía turístico oficial",
+              "paragraphs": [
+                "Explorar Machu Picchu sin un guía es perderse la mitad de la magia. Los guías oficiales te revelarán la historia de los templos, el sofisticado sistema de terrazas agrícolas, la alineación astronómica y las teorías sobre su abandono. Puedes contratar un guía certificado con anticipación a través de nuestra agencia o a las puertas del santuario."
+              ]
+            },
+            {
+              "title": "5. Elige el medio de transporte ideal",
+              "paragraphs": [
+                "Para llegar a Aguas Calientes (Machu Picchu Pueblo), la forma más rápida y cómoda es tomar el tren desde Ollantaytambo o Poroy. Si buscas una experiencia única y aventurera, el Camino Inca clásico de 4 días o la ruta corta de 2 días son excelentes opciones. Planifica bien tus conexiones ferroviarias y traslados en autobús para evitar perder tus horarios de ingreso."
+              ]
+            },
+            {
+              "title": "6. Vístete en capas y prepárate para el clima",
+              "paragraphs": [
+                "Machu Picchu se encuentra en una zona de ceja de selva, lo que significa que el clima es muy cambiante. Por la mañana temprano puede hacer mucho frío y neblina, pero a mediodía el sol puede ser muy intenso. Te recomendamos vestir en capas: camiseta transpirable, abrigo polar ligero, casaca cortavientos o impermeable y pantalones cómodos."
+              ]
+            },
+            {
+              "title": "7. Lleva repelente de insectos y protector solar",
+              "paragraphs": [
+                "Al estar rodeado de bosque subtropical húmedo, en Machu Picchu abundan unos mosquitos muy pequeños pero cuyas picaduras causan una intensa picazón. Lleva siempre un buen repelente de insectos y aplícatelo constantemente. Del mismo modo, el sol a gran altitud puede quemar la piel rápidamente, así que usa sombrero y protector solar de alto factor."
+              ]
+            },
+            {
+              "title": "8. Conoce las restricciones de equipaje y objetos prohibidos",
+              "paragraphs": [
+                "El reglamento de Machu Picchu prohíbe el ingreso con mochilas que superen los 40x35x20 cm, paraguas grandes (se permiten ponchos de lluvia), trípodes o estabilizadores para cámaras, drones y envases de plástico de un solo uso. Existe un servicio de casilleros en la entrada donde puedes dejar tus pertenencias por un costo adicional."
+              ]
+            },
+            {
+              "title": "9. Lleva dinero en efectivo en Soles",
+              "paragraphs": [
+                "Aunque muchas tiendas en Aguas Calientes aceptan tarjetas de crédito, es fundamental llevar efectivo en Soles peruanos (PEN). Lo necesitarás para pagar el uso de los baños públicos que se encuentran únicamente en el exterior del santuario, comprar botellas de agua reutilizables, snacks o para dar propina a los guías."
+              ]
+            },
+            {
+              "title": "10. Consigue el sello oficial de Machu Picchu en tu pasaporte",
+              "paragraphs": [
+                "Como un recuerdo especial de tu visita, no olvides sellar tu pasaporte con el sello conmemorativo de Machu Picchu. Hay una pequeña oficina con un sello de madera autogestionado justo al lado de la salida del parque arqueológico. Es una actividad gratuita y representa un hermoso souvenir para atesorar de tu viaje al Perú."
+              ]
+            }
+          ],
+          "conclusion": "Visitar Machu Picchu es una experiencia transformadora. Planificar cada detalle con tiempo no solo te ahorrará estrés, sino que te permitirá sumergirte plenamente en la majestuosidad de este lugar sagrado. Si deseas que organicemos tu viaje completo de principio a fin, no dudes en contactar a nuestros asesores turísticos."
         },
         "1": {
+          "slug": "valle-sagrado-la-joya-oculta-de-los-andes",
           "title": "Valle Sagrado: La Joya Oculta de los Andes",
           "excerpt": "Descubre por qué el Valle Sagrado de los Incas es mucho más que un paso obligado hacia Machu Picchu.",
           "date": "10 Mayo, 2026",
-          "readTime": "7 min"
+          "readTime": "7 min",
+          "category": "Destinos",
+          "author": "Machu Picchu Travel",
+          "intro": "El Valle Sagrado de los Incas es uno de los destinos más hermosos e históricos de la región de Cusco. Extendiéndose a lo largo del río Vilcanota, este fértil valle cuenta con un clima templado excepcional y alberga impresionantes complejos arqueológicos que rivalizan en belleza con el propio Machu Picchu. En esta guía te descubrimos los principales atractivos que hacen del Valle Sagrado una parada imprescindible en tu viaje.",
+          "sections": [
+            {
+              "title": "Pisac: Ruinas imperiales y mercado tradicional",
+              "paragraphs": [
+                "Ubicado a unos 30 kilómetros de la ciudad de Cusco, Pisac es famoso por su impresionante complejo arqueológico situado en lo alto de una montaña. Recorrer sus andenerías agrícolas, sus templos ceremoniales y su antiguo cementerio inca es una experiencia asombrosa. En la parte baja del pueblo, el mercado artesanal de Pisac cobra vida con coloridos textiles, cerámica hecha a mano y hermosas joyas de plata."
+              ]
+            },
+            {
+              "title": "Ollantaytambo: El último pueblo inca viviente",
+              "paragraphs": [
+                "Ollantaytambo es uno de los pocos lugares en el Perú donde sus habitantes aún residen en las construcciones incas originales. Sus calles empedradas, canales de agua corriente y casas tradicionales te transportarán en el tiempo. La imponente fortaleza militar que corona el pueblo fue el escenario de una de las pocas batallas donde los incas derrotaron a los conquistadores españoles, ofreciendo vistas espectaculares del valle."
+              ]
+            },
+            {
+              "title": "Maras y Moray: Salineras milenarias y laboratorios agrícolas",
+              "paragraphs": [
+                "Las salineras de Maras son un espectáculo visual impresionante: más de 3,000 pozas de sal rosada alimentadas por un manantial subterráneo cálido que han sido explotadas desde la época preincaica. Muy cerca se encuentra Moray, un conjunto de impresionantes terrazas agrícolas concéntricas en forma de anfiteatro. Moray funcionó como un laboratorio de investigación agrícola inca, donde experimentaban con diferentes cultivos bajo microclimas específicos."
+              ]
+            },
+            {
+              "title": "Chinchero: El pueblo del arcoíris y cuna del tejido andino",
+              "paragraphs": [
+                "Situado a una gran altitud, Chinchero conserva un encanto andino muy puro. Alberga una hermosa iglesia colonial construida sobre un palacio inca y extensas terrazas agrícolas. Pero su mayor atractivo radica en sus centros de textilería tradicional, donde las mujeres locales vestidas con trajes típicos demuestran el proceso de lavado, hilado y teñido de la lana de alpaca utilizando únicamente plantas, flores y minerales locales."
+              ]
+            }
+          ],
+          "conclusion": "El Valle Sagrado ofrece un viaje fascinante por la historia, la cultura viva y los paisajes naturales de los Andes. Recomendamos pasar al menos dos días completos explorando sus maravillas antes de continuar tu viaje a Machu Picchu. Consulta nuestro tour de un día [Valle Sagrado VIP](/tours/valle-sagrado-vip) o el [Valle Sagrado Tradicional](/tours/valle-sagrado-tradicional) para planificar tu itinerario perfecto."
         },
         "2": {
+          "slug": "guia-completa-montana-de-colores-vinicunca",
           "title": "Guía Completa: Montaña de Colores (Vinicunca)",
           "excerpt": "Altitud, dificultad, mejor época y todo lo que necesitas para esta caminata única en el mundo.",
           "date": "5 Mayo, 2026",
-          "readTime": "6 min"
+          "readTime": "6 min",
+          "category": "Consejos de Viaje",
+          "author": "Machu Picchu Travel",
+          "intro": "La Montaña de Siete Colores, también conocida como Vinicunca, se ha convertido en el segundo atractivo turístico más visitado de Cusco después de Machu Picchu. Este extraordinario paisaje natural, situado a gran altitud, parece una pintura al óleo con sus franjas de tonos rojizos, dorados, verdes y morados. Para disfrutar de esta exigente pero maravillosa caminata, te presentamos nuestra guía completa de preparación.",
+          "sections": [
+            {
+              "title": "¿De dónde provienen los colores de Vinicunca?",
+              "paragraphs": [
+                "Las sorprendentes coloraciones de la montaña se deben a una compleja historia geológica y a la acumulación de diferentes capas de minerales que se depositaron durante millones de años. La tonalidad roja proviene de la arcilla rica en hierro; las franjas rosadas son causadas por la arcilla roja y el fango; el verde es resultado de filitas y arcillas ricas en magnesio y hierro; las doradas se deben a las areniscas calizas ricas en azufre; y las moradas provienen de la limonita."
+              ]
+            },
+            {
+              "title": "La Altitud: El verdadero reto del camino",
+              "paragraphs": [
+                "La caminata a Vinicunca no destaca por ser técnicamente difícil o empinada, sino por la altitud. La ruta comienza a unos 4,600 metros de altura y el mirador principal se ubica a la asombrosa altitud de 5,036 metros sobre el nivel del mar. A esta elevación, el aire es más delgado y el oxígeno escasea. Por ello, es absolutamente obligatorio haber pasado al menos 2 o 3 días aclimatándote en Cusco o en el Valle Sagrado antes de realizar esta caminata."
+              ]
+            },
+            {
+              "title": "Consejos para realizar la caminata con éxito",
+              "paragraphs": [
+                "Para disfrutar plenamente de la caminata, te aconsejamos caminar a tu propio ritmo constante, sin prisa, y respirar profundamente. El uso de bastones de trekking es sumamente útil para mantener el equilibrio y reducir el esfuerzo en las rodillas. Lleva hojas de coca para masticar o pastillas contra el soroche. Además, puedes alquilar un caballo a los pobladores locales al inicio del sendero si sientes que el esfuerzo físico es excesivo."
+              ]
+            },
+            {
+              "title": "Qué llevar en tu mochila de día",
+              "paragraphs": [
+                "El clima en la alta montaña es extremadamente frío y ventoso, pero la caminata elevará tu temperatura corporal. Vístete con ropa térmica ligera y lleva una casaca cortavientos de buena calidad. No olvides usar gorro de lana, guantes, protector solar de alto factor (la radiación es muy alta en altitud), gafas de sol y suficiente agua para mantenerte hidratado. Lleva también dinero en efectivo para pagar los servicios higiénicos a lo largo de la ruta."
+              ]
+            }
+          ],
+          "conclusion": "Llegar al mirador de Vinicunca y contemplar el arcoíris de tierra frente al imponente nevado Ausangate es una experiencia que recordarás toda la vida. Con la preparación adecuada y una aclimatación responsable, conquistarás esta cumbre andina con total seguridad. Únete a nuestro tour diario a la [Montaña de Colores](/tours/montana-de-colores-vinicunca) con guías certificados y transporte incluido."
         },
         "3": {
+          "slug": "gastronomia-cusquena-sabores-que-no-puedes-perderte",
           "title": "Gastronomía Cusqueña: Sabores que No Puedes Perderte",
           "excerpt": "Un recorrido por los platos típicos de Cusco que todo viajero debería probar durante su estadía.",
           "date": "1 Mayo, 2026",
-          "readTime": "4 min"
+          "readTime": "4 min",
+          "category": "Gastronomía",
+          "author": "Machu Picchu Travel",
+          "intro": "Cusco no solo es la capital arqueológica de América, sino también un destino gastronómico excepcional que deleita los paladares más exigentes. La gastronomía cusqueña destaca por fusionar ingredientes andinos milenarios (como la quinua, las papas nativas, el maíz gigante y las hierbas aromáticas) con técnicas de cocina españolas y criollas contemporáneas. En esta guía te invitamos a descubrir los platos típicos e ingredientes que debes probar en tu visita.",
+          "sections": [
+            {
+              "title": "Pachamanca: El banquete sagrado bajo la tierra",
+              "paragraphs": [
+                "La Pachamanca no es solo un plato de comida; es un ritual andino milenario de agradecimiento a la Madre Tierra (Pachamama). Consiste en cocinar diferentes tipos de carnes (pollo, cerdo, cordero, alpaca) y tubérculos (papas, camotes, habas) utilizando piedras precalentadas colocadas en un horno excavado en la tierra. Todo se cubre con hojas de plátano, hierbas aromáticas locales como el huacatay y tierra, logrando una cocción lenta con sabores ahumados inigualables."
+              ]
+            },
+            {
+              "title": "El Lomo Saltado de Alpaca: Un clásico peruano con toque andino",
+              "paragraphs": [
+                "El lomo saltado es el plato bandera de la cocina fusión peruano-china. En Cusco, los restaurantes locales y gourmet suelen preparar esta delicia sustituyendo la carne de res por carne de alpaca, una opción sumamente suave, magra, saludable y baja en colesterol. Salteada al wok a fuego alto con cebolla, tomate, ají amarillo y culantro fresco, se sirve acompañada de crujientes papas fritas nativas y arroz blanco caliente."
+              ]
+            },
+            {
+              "title": "El Cuy Chactado y al Horno: Tradición andina ancestral",
+              "paragraphs": [
+                "El cuy (cobaya) ha sido una de las fuentes de proteína más importantes en la dieta andina desde la época de los incas. En las picanterías cusqueñas tradicionales se sirve cocinado al horno aromatizado con hierbas como el huacatay y acompañado de rocoto relleno y papas, o bien frito bajo una piedra pesada (Cuy Chactado) lo que le confiere una textura sumamente crujiente. Es un plato lleno de tradición y sabor local."
+              ]
+            },
+            {
+              "title": "El Chairo y la Sopa Cusqueña para el frío",
+              "paragraphs": [
+                "Para las frías noches andinas, no hay nada mejor que una sopa caliente cusqueña. El Chairo es una sopa contundente y espesa hecha a base de chuño (papa deshidratada), carne de cordero, res, trigo, mote de maíz y verduras. Otra especialidad deliciosa es la Sopa de Quinua, nutritiva y reconfortante. Acompáñalas siempre con una taza caliente de mate de coca o de muña, hierbas que ayudan notablemente a la digestión en altitud."
+              ]
+            }
+          ],
+          "conclusion": "Explorar Cusco a través de sus sabores es una experiencia cultural maravillosa. Desde las rústicas picanterías tradicionales hasta los restaurantes gourmet más galardonados, Cusco tiene una propuesta culinaria que te sorprenderá. Si deseas vivir de cerca la preparación de la Pachamanca tradicional andina, reserva hoy nuestro [Tour Pachamanca en Chinchero](/tours/pachamanca-full-day)."
         }
       }
     },

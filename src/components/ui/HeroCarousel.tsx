@@ -130,7 +130,7 @@ export default function HeroCarousel({ images, altText }: HeroCarouselProps) {
       {/* Left arrow */}
       <button
         onClick={prev}
-        className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/30 hover:bg-black/55 backdrop-blur-sm flex items-center justify-center text-white transition-all duration-200 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 shadow-lg"
+        className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/30 hover:bg-black/55 backdrop-blur-sm flex items-center justify-center text-white transition-all duration-200 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 focus-visible:opacity-100 shadow-lg"
         aria-label="Foto anterior"
       >
         <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -139,7 +139,7 @@ export default function HeroCarousel({ images, altText }: HeroCarouselProps) {
       {/* Right arrow */}
       <button
         onClick={next}
-        className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/30 hover:bg-black/55 backdrop-blur-sm flex items-center justify-center text-white transition-all duration-200 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 shadow-lg"
+        className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/30 hover:bg-black/55 backdrop-blur-sm flex items-center justify-center text-white transition-all duration-200 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 focus-visible:opacity-100 shadow-lg"
         aria-label="Foto siguiente"
       >
         <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -158,7 +158,7 @@ export default function HeroCarousel({ images, altText }: HeroCarouselProps) {
             role="tab"
             aria-selected={idx === current}
             aria-label={`Foto ${idx + 1}`}
-            className={`transition-all duration-300 rounded-full shadow ${
+            className={`transition-all duration-300 rounded-full shadow !min-w-0 !min-h-0 ${
               idx === current
                 ? 'w-6 h-2 bg-white'
                 : 'w-2 h-2 bg-white/50 hover:bg-white/80'

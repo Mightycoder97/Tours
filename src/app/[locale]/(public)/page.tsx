@@ -1,12 +1,11 @@
 import Hero from '@/components/home/Hero';
 import FeaturedTours from '@/components/home/FeaturedTours';
-import WhyChooseUs from '@/components/home/WhyChooseUs';
 import Testimonials from '@/components/home/Testimonials';
 import FAQ from '@/components/home/FAQ';
 import CTASection from '@/components/home/CTASection';
 import SEOBlock from '@/components/home/SEOBlock';
+import PromotionsSlider from '@/components/home/PromotionsSlider';
 import JsonLd from '@/components/seo/JsonLd';
-import DestinationsSection from '@/components/home/DestinationsSection';
 import { getTranslations } from 'next-intl/server';
 
 
@@ -77,20 +76,16 @@ export default async function Home() {
         ]
       }} />
       <Hero />
-      <div className="h-40 sm:h-28 md:h-32"></div>
+      <div className="h-6 sm:h-8 xl:h-36"></div>
+
+      {/* SEO Content Block */}
+      <SEOBlock />
       
       {/* Tours Destacados */}
       <FeaturedTours />
 
-      {/* Destinos */}
-      <DestinationsSection />
-
-      {/* SEO Content Block */}
-      <SEOBlock />
-
-
-      {/* Por qué elegirnos */}
-      <WhyChooseUs />
+      {/* Promotions Slider / Ahorra en tu viaje */}
+      <PromotionsSlider />
 
       {/* Testimonios */}
       <Testimonials />

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import FeaturedToursCarousel from './FeaturedToursCarousel';
+import FeaturedToursGrid from './FeaturedToursGrid';
 
 interface Tour {
   id: string;
@@ -92,7 +92,7 @@ export default function FeaturedToursTabs({ tours }: FeaturedToursTabsProps) {
         </button>
       </div>
 
-      <FeaturedToursCarousel tours={filtered} />
+      <FeaturedToursGrid tours={filtered} />
     </div>
   );
 }

@@ -41,16 +41,16 @@ export default function Testimonials() {
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         
         {/* TripAdvisor Score Badge */}
-        <div className="flex items-center gap-3 mb-6 bg-white/5 py-2 px-4 rounded-full w-fit border border-white/10">
-          <TripAdvisorLogo className="w-6 h-6 text-[#00aa6c]" />
-          <div className="flex items-center gap-2">
-            <span className="text-white text-xs font-bold uppercase tracking-wider">Excelente 5.0</span>
-            <div className="flex gap-0.5">
+        <div className="flex items-center gap-3 mb-6 bg-white/5 py-2.5 px-4 rounded-2xl sm:rounded-full w-fit border border-white/10 max-w-full">
+          <TripAdvisorLogo className="w-6 h-6 text-[#00aa6c] shrink-0" />
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-white text-xs font-bold uppercase tracking-wider whitespace-nowrap">Excelente 5.0</span>
+            <div className="flex gap-0.5 shrink-0">
               {Array.from({ length: 5 }).map((_, i) => (
                 <span key={i} className="w-2.5 h-2.5 rounded-full bg-[#00aa6c] inline-block border border-white/10" />
               ))}
             </div>
-            <span className="text-white/60 text-xs font-medium">523 opiniones en TripAdvisor</span>
+            <span className="text-white/60 text-xs font-medium whitespace-normal sm:whitespace-nowrap">523 opiniones en TripAdvisor</span>
           </div>
         </div>
 
