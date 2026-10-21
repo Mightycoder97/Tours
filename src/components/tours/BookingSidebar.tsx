@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useCartStore } from '@/store/useCartStore';
+import { useCartStore, TEST_PEN_TOUR_SLUG } from '@/store/useCartStore';
 import { useRouter } from '@/i18n/navigation';
 import { Calendar as CalendarIcon, Users, Check, AlertCircle, ShoppingCart, Loader2, X } from 'lucide-react';
 import { format, addDays } from 'date-fns';
@@ -30,11 +30,14 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
   
   // States
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [adults, setAdults] = useState(2);
+  const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [isAdded, setIsAdded] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const isPenTour = tourSlug === TEST_PEN_TOUR_SLUG;
+  const displayCurrency = isPenTour ? 'S/' : tc('currency');
 
   // Availability states
   const [availableDates, setAvailableDates] = useState<Date[]>([]);
@@ -124,12 +127,13 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
       tourId,
       tourName,
       tourSlug,
-      date: selectedDate.toISOString(),
+      date: format(selectedDate, 'yyyy-MM-dd') + 'T12:00:00.000Z',
       adults,
       children,
       pricePerAdult: priceAdult,
       pricePerChild: childPrice,
       totalPrice,
+      currency: isPenTour ? 'PEN' : 'USD',
       imageUrl
     });
 
@@ -191,7 +195,7 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
         <div className="flex justify-between items-center border border-gray-200 rounded-lg p-3">
            <div>
              <p className="text-sm font-bold text-text-main">{t('adults')}</p>
-             <p className="text-xs text-text-light">{t('pricePerUnit', { price: priceAdult })}</p>
+             <p className="text-xs text-text-light">{isPenTour ? `S/ ${priceAdult} PEN c/u` : t('pricePerUnit', { price: priceAdult })}</p>
            </div>
            <div className="flex items-center space-x-3 bg-gray-50 rounded-lg p-1 border border-gray-100">
              <button 
@@ -210,7 +214,7 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
         <div className="flex justify-between items-center border border-gray-200 rounded-lg p-3">
            <div>
              <p className="text-sm font-bold text-text-main">{t('children')}</p>
-             <p className="text-xs text-text-light">{t('pricePerUnit', { price: childPrice })}</p>
+             <p className="text-xs text-text-light">{isPenTour ? `S/ ${childPrice} PEN c/u` : t('pricePerUnit', { price: childPrice })}</p>
            </div>
            <div className="flex items-center space-x-3 bg-gray-50 rounded-lg p-1 border border-gray-100">
              <button 
@@ -233,7 +237,7 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
     <div className="border-t border-gray-100 pt-6 mb-6">
       <div className="flex justify-between items-center bg-gray-50 p-4 rounded-xl" aria-live="polite" aria-atomic="true">
          <span className="font-bold text-text-main">{t('totalToPay')}</span>
-         <span className="font-serif text-xl sm:text-2xl font-bold text-primary-dark">{tc('currency')} {totalPrice}</span>
+         <span className="font-serif text-xl sm:text-2xl font-bold text-primary-dark">{displayCurrency} {totalPrice}</span>
       </div>
     </div>
   );
@@ -246,7 +250,7 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
           <div>
             <span className="text-xs uppercase text-gray-400 font-bold tracking-wider block mb-1">{t('pricePerAdultFrom')}</span>
             <div className="text-2xl sm:text-3xl font-bold text-primary-dark">
-              <span className="text-base sm:text-lg font-medium text-text-light mr-1">{tc('currency')}</span>
+              <span className="text-base sm:text-lg font-medium text-text-light mr-1">{displayCurrency}</span>
               {priceAdult}
             </div>
           </div>
@@ -335,7 +339,7 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
           <div className="flex-1">
             <p className="text-xs text-gray-500 leading-none mb-1">{t('from')}</p>
             <p className="text-xl font-bold text-primary-dark leading-none">
-              <span className="text-xs font-medium text-text-light mr-1">{tc('currency')}</span>
+              <span className="text-xs font-medium text-text-light mr-1">{displayCurrency}</span>
               {totalPrice}
             </p>
           </div>

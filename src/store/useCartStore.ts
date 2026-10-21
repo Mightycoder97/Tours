@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+export const TEST_PEN_TOUR_SLUG = 'paquete-de-prueba-culqi'
+
 export interface CartItem {
   tourId: string
   tourName: string
@@ -11,6 +13,7 @@ export interface CartItem {
   pricePerAdult: number
   pricePerChild: number
   totalPrice: number
+  currency?: 'USD' | 'PEN'
   imageUrl?: string
 }
 

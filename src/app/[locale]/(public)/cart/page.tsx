@@ -1,6 +1,6 @@
 'use client';
 
-import { useCartStore } from '@/store/useCartStore';
+import { useCartStore, TEST_PEN_TOUR_SLUG } from '@/store/useCartStore';
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import { Trash2, ArrowRight, ArrowLeft } from 'lucide-react';
@@ -70,7 +70,7 @@ export default function CartPage() {
                     
                     <div className="flex justify-between items-end border-t border-gray-50 pt-4 mt-auto">
                        <Link href={`/tours/${item.tourSlug || item.tourId}`} className="text-sm font-bold text-primary hover:underline">{t('edit')}</Link>
-                       <div className="text-2xl font-bold text-primary-dark">{tc('currency')} {item.totalPrice}</div>
+                       <div className="text-2xl font-bold text-primary-dark">{(item.currency === 'PEN' || item.tourSlug === TEST_PEN_TOUR_SLUG) ? 'S/' : tc('currency')} {item.totalPrice}</div>
                     </div>
                   </div>
                 </div>
@@ -89,7 +89,7 @@ export default function CartPage() {
                  <div className="space-y-3 mb-6">
                     <div className="flex justify-between text-sm text-text-main">
                       <span>{t('subtotal', { count: items.length })}</span>
-                      <span className="font-medium">{tc('currency')} {getTotal()}</span>
+                      <span className="font-medium">{items.every(i => i.currency === 'PEN' || i.tourSlug === TEST_PEN_TOUR_SLUG) ? 'S/' : tc('currency')} {getTotal()}</span>
                     </div>
                     <div className="flex justify-between text-sm text-text-main">
                       <span>{t('taxes')}</span>
@@ -100,7 +100,7 @@ export default function CartPage() {
                  <div className="border-t border-gray-100 pt-4 mb-8">
                     <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
                       <span className="font-bold text-lg">{t('total')}</span>
-                      <span className="font-serif text-2xl font-bold text-primary-dark">{tc('currency')} {getTotal()}</span>
+                      <span className="font-serif text-2xl font-bold text-primary-dark">{items.every(i => i.currency === 'PEN' || i.tourSlug === TEST_PEN_TOUR_SLUG) ? 'S/' : tc('currency')} {getTotal()}</span>
                     </div>
                  </div>
 

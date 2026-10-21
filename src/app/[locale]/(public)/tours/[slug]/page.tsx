@@ -6,6 +6,7 @@ import TourItinerary from '@/components/tours/TourItinerary';
 import JsonLd from '@/components/seo/JsonLd';
 import PhotoGallery from '@/components/ui/PhotoGallery';
 import HeroCarousel from '@/components/ui/HeroCarousel';
+import { TEST_PEN_TOUR_SLUG } from '@/store/useCartStore';
 
 import { createClient } from '@/lib/supabase/server';
 import { getTranslations } from 'next-intl/server';
@@ -194,7 +195,7 @@ export default async function TourDetail({
                   </span>
                   {tour.price != null ? (
                     <span className="text-3xl font-bold text-primary-dark">
-                      US$ {Number(tour.price).toFixed(2)}
+                      {tour.slug === TEST_PEN_TOUR_SLUG ? 'S/' : 'US$'} {Number(tour.price).toFixed(2)}
                     </span>
                   ) : (
                     <span className="text-lg text-text-light italic">Consultar precio</span>

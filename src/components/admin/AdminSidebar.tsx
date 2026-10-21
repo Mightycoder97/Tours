@@ -22,11 +22,11 @@ export default function AdminSidebar({ userEmail }: { userEmail: string }) {
   return (
     <>
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-30 bg-primary text-white flex items-center justify-between px-4 py-3 shadow-lg">
-        <h2 className="font-serif text-lg font-bold text-accent">Admin Portal</h2>
+      <div className="md:hidden fixed top-0 left-0 right-0 z-30 bg-primary-dark text-white flex items-center justify-between px-4 py-3 shadow-lg">
+        <h2 className="font-serif text-lg font-bold text-white">Admin Portal</h2>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-primary-light transition-colors"
+          className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-primary transition-colors"
           aria-label={isOpen ? 'Cerrar menú' : 'Abrir menú'}
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -43,13 +43,13 @@ export default function AdminSidebar({ userEmail }: { userEmail: string }) {
 
       {/* Sidebar */}
       <aside className={`
-        fixed md:relative z-40 h-full w-64 bg-primary text-white flex flex-col shadow-xl
+        fixed md:relative z-40 h-full w-64 bg-primary-dark text-white flex flex-col shadow-xl
         transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         md:translate-x-0
       `}>
         <div className="p-6">
-          <h2 className="text-xl font-serif font-bold text-accent">Admin Portal</h2>
+          <h2 className="text-xl font-serif font-bold text-white">Admin Portal</h2>
           <p className="text-xs text-white/50 truncate mt-1">{userEmail}</p>
         </div>
 
@@ -63,8 +63,8 @@ export default function AdminSidebar({ userEmail }: { userEmail: string }) {
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                   isActive
-                    ? 'bg-primary-light text-white'
-                    : 'text-white/90 hover:text-white hover:bg-primary-light'
+                    ? 'bg-primary text-white'
+                    : 'text-white/90 hover:text-white hover:bg-primary/40'
                 }`}
               >
                 <item.icon className="w-5 h-5 mr-3" />

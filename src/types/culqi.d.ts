@@ -138,6 +138,8 @@ export interface CulqiInstance {
    * Dentro del callback, `this.token` o `this.error` estarán disponibles.
    */
   culqi: ((this: CulqiInstance) => void) | null;
+  /** Callback que se invoca cuando el usuario cierra el modal */
+  closeCheckout?: ((this: CulqiInstance) => void) | null;
   /** Token generado al tokenizar con éxito */
   token?: CulqiToken;
   /** Error si la tokenización falla */
@@ -157,5 +159,7 @@ declare global {
       publicKey: string,
       config: CulqiCheckoutConfig
     ) => CulqiInstance;
+    /** Callback global de compatibilidad */
+    culqi?: (() => void) | null;
   }
 }

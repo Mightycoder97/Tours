@@ -3,7 +3,7 @@
 // Culqi Checkout Custom v1.0 — tipos cargados desde src/types/culqi.d.ts
 // La declaración global de window.CulqiCheckout vive en ese archivo.
 
-import { useCartStore } from '@/store/useCartStore';
+import { useCartStore, TEST_PEN_TOUR_SLUG } from '@/store/useCartStore';
 import { useRouter } from '@/i18n/navigation';
 import { useEffect, useRef, useState, FormEvent } from 'react';
 import { ShieldCheck, User, CreditCard, Smartphone } from 'lucide-react';
@@ -12,6 +12,7 @@ import Script from 'next/script';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useTranslations } from 'next-intl';
 import type { CulqiInstance } from '@/types/culqi';
+import { getBrandConfig } from '@/lib/brand';
 
 interface PassengerForm {
   firstName: string;
@@ -25,24 +26,31 @@ interface PassengerForm {
 /** Método de pago seleccionado: tarjeta usa USD, yape usa PEN */
 type PaymentMethod = 'card' | 'yape' | 'paypal';
 
-/** Colores de marca para personalizar Culqi Checkout Custom */
-const BRAND_COLORS = {
-  primary: '#06C0B8',
-  primaryDark: '#049993',
-  white: '#ffffff',
-} as const;
-
 /** Llave pública de Culqi (debe tener prefijo NEXT_PUBLIC_) */
 const CULQI_PUBLIC_KEY = process.env.NEXT_PUBLIC_CULQI_PUBLIC_KEY ?? '';
+
+/** Tasa de cambio referencial USD a PEN para cobros en Soles (Yape) */
+const USD_TO_PEN_RATE = 3.80;
+
+const COUNTRY_CODES: Record<string, string> = {
+  'Perú': 'PE',
+  'Estados Unidos': 'US',
+  'España': 'ES',
+  'Colombia': 'CO',
+  'México': 'MX',
+  'Chile': 'CL',
+};
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, getTotal, clearCart, removeItem } = useCartStore();
   const t = useTranslations('checkout');
   const tc = useTranslations('common');
+  const brand = getBrandConfig();
 
   const [mounted, setMounted] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card');
+  const [cardCurrency, setCardCurrency] = useState<'USD' | 'PEN'>('USD');
   const [isProcessing, setIsProcessing] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   /** true = el script de Culqi ya cargó */
@@ -53,8 +61,29 @@ export default function CheckoutPage() {
   const [contactPhone, setContactPhone] = useState('');
   const [contactPhonePrefix, setContactPhonePrefix] = useState('+51');
 
-  /** Instancia persistente de CulqiCheckout (se crea una sola vez por montaje) */
+  /** Instancia activa de CulqiCheckout */
   const culqiRef = useRef<CulqiInstance | null>(null);
+
+  const isPenCart = items.length > 0 && items.every(
+    item => item.currency === 'PEN' || item.tourSlug === TEST_PEN_TOUR_SLUG
+  );
+
+  // Totales calculados en PEN y USD respetando tours nativos en PEN (ej. Paquete de prueba S/ 10.00)
+  const totalInPen = Math.round(
+    items.reduce((sum, item) => {
+      const isPen = item.currency === 'PEN' || item.tourSlug === TEST_PEN_TOUR_SLUG;
+      return sum + (isPen ? item.totalPrice : item.totalPrice * USD_TO_PEN_RATE);
+    }, 0) * 100
+  ) / 100;
+
+  const totalInUsd = Math.round(
+    items.reduce((sum, item) => {
+      const isPen = item.currency === 'PEN' || item.tourSlug === TEST_PEN_TOUR_SLUG;
+      return sum + (isPen ? item.totalPrice / USD_TO_PEN_RATE : item.totalPrice);
+    }, 0) * 100
+  ) / 100;
+
+  const activeCardCurrency: 'PEN' | 'USD' = isPenCart ? 'PEN' : cardCurrency;
 
   const paypalOptions = {
     clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test',
@@ -69,9 +98,12 @@ export default function CheckoutPage() {
   const [adultsInfo,   setAdultsInfo]   = useState<PassengerForm[]>([]);
   const [childrenInfo, setChildrenInfo] = useState<PassengerForm[]>([]);
 
-  // ── Inicializar formularios de pasajeros ───────────────────────────────────
+  // ── Inicializar formularios de pasajeros y detectar Culqi en SPA ───────────
   useEffect(() => {
     setMounted(true);
+    if (typeof window !== 'undefined' && typeof window.CulqiCheckout !== 'undefined') {
+      setCulqiReady(true);
+    }
     if (maxAdults > 0 && adultsInfo.length === 0) {
       setAdultsInfo(
         Array.from({ length: maxAdults }, () => ({
@@ -91,55 +123,16 @@ export default function CheckoutPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maxAdults, maxChildren]);
 
-  // ── Inicializar instancia de Culqi Checkout Custom cuando el script carga ──
+  // Cerrar instancia de Culqi al desmontar la página
   useEffect(() => {
-    if (!culqiReady || typeof window.CulqiCheckout === 'undefined') return;
-    if (!CULQI_PUBLIC_KEY) {
-      console.warn('[Culqi] Llave pública no configurada (NEXT_PUBLIC_CULQI_PUBLIC_KEY).');
-      return;
-    }
-
-    // Creamos la instancia con configuración base; el monto y email
-    // se actualizan justo antes de abrir (ver handleCulqiPay).
-    culqiRef.current = new window.CulqiCheckout(CULQI_PUBLIC_KEY, {
-      settings: {
-        title: 'Machu Picchu Travel Adventures',
-        currency: 'PEN',   // se sobreescribe antes de open()
-        amount: 0,          // se sobreescribe antes de open()
-      },
-      options: {
-        lang: 'auto',
-        installments: false, // Tours no aplican cuotas
-        modal: true,
-        paymentMethods: {
-          tarjeta:    true,
-          yape:       true,
-          billetera:  false,
-          bancaMovil: false,
-          agente:     false,
-          cuotealo:   false,
-        },
-        paymentMethodsSort: ['tarjeta', 'yape'],
-      },
-      appearance: {
-        theme: 'default',
-        hiddenCulqiLogo: false,
-        hiddenBanner: false,
-        hiddenEmail: false,
-        menuType: 'sidebar',
-        buttonCardPayText: 'Confirmar pago',
-        logo: null,
-        defaultStyle: {
-          bannerColor:     BRAND_COLORS.primary,
-          buttonBackground: BRAND_COLORS.primaryDark,
-          menuColor:       BRAND_COLORS.primary,
-          linksColor:      BRAND_COLORS.primary,
-          buttonTextColor: BRAND_COLORS.white,
-          priceColor:      BRAND_COLORS.primary,
-        },
-      },
-    });
-  }, [culqiReady]);
+    return () => {
+      if (culqiRef.current) {
+        try {
+          culqiRef.current.close();
+        } catch {}
+      }
+    };
+  }, []);
 
   if (!mounted) return <div className="min-h-screen" />;
   if (items.length === 0) {
@@ -159,7 +152,12 @@ export default function CheckoutPage() {
     setChildrenInfo(newChildren);
   };
 
-  const registerBooking = async (paymentRef: string, method: string, paymentStatus: 'PAID' | 'PENDING') => {
+  const registerBooking = async (
+    paymentRef: string,
+    method: string,
+    paymentStatus: 'PAID' | 'PENDING',
+    paidCurrency: 'USD' | 'PEN' = isPenCart ? 'PEN' : 'USD'
+  ) => {
     const allPassengers = [
       ...adultsInfo.map(a => ({ ...a, isChild: false })),
       ...childrenInfo.map(c => ({ ...c, isChild: true }))
@@ -169,13 +167,22 @@ export default function CheckoutPage() {
     let allSuccess = true;
 
     for (const item of items) {
+      const isPenItem = item.currency === 'PEN' || item.tourSlug === TEST_PEN_TOUR_SLUG;
+      const itemCurrency: 'USD' | 'PEN' = isPenItem ? 'PEN' : paidCurrency;
+      const itemAmountPaid =
+        itemCurrency === 'PEN' && !isPenItem
+          ? Math.round(item.totalPrice * USD_TO_PEN_RATE * 100) / 100
+          : item.totalPrice;
+
       const bookingData = {
+        tenant: brand.id,
         tourId: item.tourId,
         tourName: item.tourName,
         date: item.date,
         adults: item.adults,
         children: item.children,
-        totalPrice: item.totalPrice,
+        totalPrice: itemAmountPaid,
+        currency: itemCurrency,
         contactName: adultsInfo[0]?.firstName ? `${adultsInfo[0].firstName} ${adultsInfo[0].lastName}` : tc('client'),
         contactEmail,
         contactPhone: contactPhonePrefix + contactPhone,
@@ -237,23 +244,32 @@ export default function CheckoutPage() {
     if (validationError) { setFormError(validationError); return; }
     setFormError(null);
 
-    if (!culqiRef.current) {
-      setFormError('El sistema de pago no está disponible. Recarga la página.');
+    if (typeof window === 'undefined' || typeof window.CulqiCheckout === 'undefined') {
+      setFormError('El sistema de pago aún se está cargando. Por favor espera un momento e intenta nuevamente.');
       return;
     }
 
-    const culqi = culqiRef.current;
+    if (!CULQI_PUBLIC_KEY) {
+      setFormError('Error de configuración: Llave pública de Culqi no configurada.');
+      return;
+    }
 
-    // Moneda dinámica: PEN para Yape, USD para tarjeta
-    const currency = paymentMethod === 'yape' ? 'PEN' : 'USD';
-    const total    = getTotal();
-    const amountInCents = Math.round(total * 100);
+    // Moneda dinámica: PEN para Yape o cuando se selecciona PEN / paquete en Soles
+    const isYape = paymentMethod === 'yape';
+    const currency: 'PEN' | 'USD' = isYape ? 'PEN' : activeCardCurrency;
+    const finalAmount = currency === 'PEN' ? totalInPen : totalInUsd;
+    const amountInCents = Math.round(finalAmount * 100);
 
-    // Actualizar configuración antes de abrir (monto, email, moneda)
-    // La API permite re-crear la instancia con nueva config
+    // Cerrar modal previo si existiera
+    if (culqiRef.current) {
+      try {
+        culqiRef.current.close();
+      } catch {}
+    }
+
     const updatedInstance = new window.CulqiCheckout(CULQI_PUBLIC_KEY, {
       settings: {
-        title: 'Machu Picchu Travel Adventures',
+        title: brand.name,
         currency,
         amount: amountInCents,
       },
@@ -283,49 +299,90 @@ export default function CheckoutPage() {
         buttonCardPayText: 'Confirmar pago',
         logo: null,
         defaultStyle: {
-          bannerColor:      BRAND_COLORS.primary,
-          buttonBackground: BRAND_COLORS.primaryDark,
-          menuColor:        BRAND_COLORS.primary,
-          linksColor:       BRAND_COLORS.primary,
-          buttonTextColor:  BRAND_COLORS.white,
-          priceColor:       BRAND_COLORS.primary,
+          bannerColor:      brand.colors.primary,
+          buttonBackground: brand.colors.primaryDark,
+          menuColor:        brand.colors.primary,
+          linksColor:       brand.colors.primary,
+          buttonTextColor:  brand.colors.white,
+          priceColor:       brand.colors.primary,
         },
       },
     });
 
     culqiRef.current = updatedInstance;
 
-    // Definir el callback de respuesta ANTES de open()
-    updatedInstance.culqi = async function (this: CulqiInstance) {
-      if (this.token) {
+    // Resetear spinner si el usuario cierra el checkout sin pagar
+    updatedInstance.closeCheckout = function () {
+      setIsProcessing(false);
+    };
+
+    const handleSuccessOrError = async (instance: CulqiInstance) => {
+      if (instance.token) {
         setIsProcessing(true);
         setFormError(null);
         try {
+          try {
+            instance.close();
+          } catch {}
+
+          const primaryPassenger = adultsInfo[0];
+          const fullPhone = (contactPhonePrefix + contactPhone).replace(/\s+/g, '');
+          const digitsOnlyPhone = fullPhone.replace(/\D/g, '').slice(0, 14);
+          const actualMethod =
+            paymentMethod === 'yape' || instance.token.id?.startsWith('ype_') ? 'yape' : 'culqi';
+
           const res = await fetch('/api/checkout/culqi', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              token_id: this.token.id,
-              email:    this.token.email || contactEmail,
-              amount:   total,
+              token_id: instance.token.id,
+              email:    instance.token.email || contactEmail,
+              amount:   finalAmount,
               currency,
+              description: items.map(i => i.tourName).join(', ').slice(0, 80),
+              metadata: {
+                contactName: primaryPassenger ? `${primaryPassenger.firstName} ${primaryPassenger.lastName}` : '',
+                contactPhone: fullPhone,
+                tourCount: items.length.toString(),
+                paymentMethod: actualMethod,
+              },
+              antifraud_details: primaryPassenger ? {
+                first_name: primaryPassenger.firstName.trim(),
+                last_name: primaryPassenger.lastName.trim(),
+                phone_number: digitsOnlyPhone,
+                country_code: COUNTRY_CODES[primaryPassenger.nationality] || 'PE',
+              } : undefined,
             }),
           });
+
           const chargeData = await res.json();
           if (chargeData.success) {
-            await registerBooking(chargeData.chargeId, paymentMethod === 'yape' ? 'yape' : 'culqi', 'PAID');
+            await registerBooking(chargeData.chargeId, actualMethod, 'PAID', currency);
           } else {
             setFormError(`Error de pago: ${chargeData.error || 'Error desconocido'}`);
             setIsProcessing(false);
           }
         } catch {
-          setFormError('Error de red. Intenta nuevamente.');
+          setFormError('Error de red al conectar con la pasarela. Intenta nuevamente.');
           setIsProcessing(false);
         }
-      } else if (this.error) {
-        setFormError(this.error.user_message || 'Datos incorrectos. Verifica e intenta nuevamente.');
+      } else if (instance.error) {
+        setFormError(instance.error.user_message || 'Datos incorrectos. Verifica e intenta nuevamente.');
+        setIsProcessing(false);
       }
     };
+
+    // Definir callback en la instancia
+    updatedInstance.culqi = async function (this: CulqiInstance) {
+      await handleSuccessOrError(this || updatedInstance);
+    };
+
+    // Callback en window para compatibilidad
+    if (typeof window !== 'undefined') {
+      window.culqi = function () {
+        handleSuccessOrError(updatedInstance);
+      };
+    }
 
     updatedInstance.open();
   };
@@ -339,6 +396,7 @@ export default function CheckoutPage() {
         src="https://js.culqi.com/checkout-js"
         strategy="afterInteractive"
         onLoad={() => setCulqiReady(true)}
+        onReady={() => setCulqiReady(true)}
       />
       <div className="bg-background-alt min-h-screen pt-24 sm:pt-28 pb-20">
         <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
@@ -496,10 +554,44 @@ export default function CheckoutPage() {
                         </div>
                       </div>
                       {paymentMethod === 'card' && (
-                        <div className="mt-4 pl-9">
+                        <div className="mt-4 pl-9 space-y-3">
+                          {!isPenCart && (
+                            <div className="flex items-center gap-2 text-xs">
+                              <span className="text-text-light font-medium">Moneda de cobro:</span>
+                              <button
+                                type="button"
+                                onClick={(e) => { e.preventDefault(); setCardCurrency('USD'); }}
+                                className={`px-3 py-1 rounded-full font-bold transition-colors ${
+                                  activeCardCurrency === 'USD'
+                                    ? 'bg-primary text-white'
+                                    : 'bg-gray-100 text-text-main hover:bg-gray-200'
+                                }`}
+                              >
+                                USD (US$ {totalInUsd.toFixed(2)})
+                              </button>
+                              <button
+                                type="button"
+                                onClick={(e) => { e.preventDefault(); setCardCurrency('PEN'); }}
+                                className={`px-3 py-1 rounded-full font-bold transition-colors ${
+                                  activeCardCurrency === 'PEN'
+                                    ? 'bg-primary text-white'
+                                    : 'bg-gray-100 text-text-main hover:bg-gray-200'
+                                }`}
+                              >
+                                PEN (S/ {totalInPen.toFixed(2)})
+                              </button>
+                            </div>
+                          )}
                           <p className="text-sm text-text-light bg-gray-50 rounded-lg p-4 flex items-center gap-2">
                             <ShieldCheck className="w-5 h-5 shrink-0 text-green-600" />
-                            Se abrirá el formulario seguro de Culqi. Pago en <strong>USD</strong>.
+                            <span>
+                              Se abrirá el formulario seguro de Culqi. Pago en{' '}
+                              <strong>
+                                {activeCardCurrency === 'PEN'
+                                  ? `Soles (S/ ${totalInPen.toFixed(2)} PEN)`
+                                  : `Dólares (US$ ${totalInUsd.toFixed(2)} USD)`}
+                              </strong>.
+                            </span>
                           </p>
                         </div>
                       )}
@@ -533,10 +625,16 @@ export default function CheckoutPage() {
                       </div>
                       {paymentMethod === 'yape' && (
                         <div className="mt-4 pl-9">
-                          <p className="text-sm text-text-light bg-purple-50 rounded-lg p-4 flex items-center gap-2">
-                            <ShieldCheck className="w-5 h-5 shrink-0 text-green-600" />
-                            Necesitarás el código de aprobación de <strong>6 dígitos</strong> de tu app Yape. Pago en <strong>PEN</strong>.
-                          </p>
+                          <div className="text-sm text-text-light bg-purple-50 rounded-lg p-4 space-y-2">
+                            <p className="flex items-center gap-2">
+                              <ShieldCheck className="w-5 h-5 shrink-0 text-[#6E2ED6]" />
+                              Necesitarás el código de aprobación de <strong>6 dígitos</strong> de tu app Yape.
+                            </p>
+                            <p className="text-xs text-purple-900 font-medium">
+                              Total a pagar: <strong>S/ {totalInPen.toFixed(2)} PEN</strong>
+                              {!isPenCart && ` (T.C. ref: S/ ${USD_TO_PEN_RATE.toFixed(2)} por USD)`}
+                            </p>
+                          </div>
                         </div>
                       )}
                     </label>
@@ -560,11 +658,20 @@ export default function CheckoutPage() {
                            <div className="relative z-0">
                              <PayPalScriptProvider options={paypalOptions}>
                                <PayPalButtons
+                                 onClick={(_data, actions) => {
+                                   const validationError = validatePassengers();
+                                   if (validationError) {
+                                     setFormError(validationError);
+                                     return actions.reject();
+                                   }
+                                   setFormError(null);
+                                   return actions.resolve();
+                                 }}
                                  createOrder={async () => {
                                    const res = await fetch('/api/checkout/paypal/create', {
                                      method: 'POST',
                                      headers: { 'Content-Type': 'application/json' },
-                                     body: JSON.stringify({ amount: getTotal() }),
+                                     body: JSON.stringify({ amount: totalInUsd }),
                                    });
                                    const order = await res.json();
                                    return order.id;
@@ -587,7 +694,7 @@ export default function CheckoutPage() {
                                  onError={() => {
                                    setFormError(t('errors.paypalError'));
                                  }}
-                               />
+                                />
                              </PayPalScriptProvider>
                            </div>
                         </div>
@@ -625,7 +732,11 @@ export default function CheckoutPage() {
                           ? t('payment.processing')
                           : !culqiReady
                           ? 'Cargando sistema de pago…'
-                          : t('payment.continueToPay', { total: getTotal() })}
+                          : paymentMethod === 'yape'
+                          ? `Pagar S/ ${totalInPen.toFixed(2)} con Yape`
+                          : activeCardCurrency === 'PEN'
+                          ? `Pagar S/ ${totalInPen.toFixed(2)} con Tarjeta`
+                          : `Pagar US$ ${totalInUsd.toFixed(2)} con Tarjeta`}
                       </button>
                     </div>
                   )}
@@ -652,7 +763,7 @@ export default function CheckoutPage() {
                           <h4 className="text-sm font-bold text-text-main line-clamp-2 leading-tight mb-2">{item.tourName}</h4>
                           <p className="text-xs text-text-light flex items-center mb-1">
                              <span className="w-3 h-3 border rounded-sm mr-1 flex items-center justify-center font-mono text-[8px]">📅</span> 
-                             {item.date}
+                             {item.date?.split('T')[0] || item.date}
                           </p>
                           <p className="text-xs text-text-light flex items-center">
                              <span className="w-3 h-3 border rounded-sm mr-1 flex items-center justify-center font-mono text-[8px]">👥</span> 
@@ -675,7 +786,7 @@ export default function CheckoutPage() {
                                  {t('sidebar.delete')}
                                </button>
                              </div>
-                             <span className="text-sm font-bold text-text-main">{tc('currency')} {item.totalPrice}</span>
+                             <span className="text-sm font-bold text-text-main">{(item.currency === 'PEN' || item.tourSlug === TEST_PEN_TOUR_SLUG) ? 'S/' : tc('currency')} {item.totalPrice}</span>
                           </div>
                         </div>
                       </div>
@@ -685,7 +796,7 @@ export default function CheckoutPage() {
                   <div className="border-t border-gray-200 pt-4 mt-2">
                     <div className="flex justify-between items-center p-2">
                       <span className="font-bold text-lg text-primary-dark">{t('sidebar.total')}</span>
-                      <span className="font-serif text-2xl font-bold text-primary-dark">{tc('currency')} {getTotal()}</span>
+                      <span className="font-serif text-2xl font-bold text-primary-dark">{isPenCart ? 'S/' : tc('currency')} {getTotal()}</span>
                     </div>
                   </div>
                </div>

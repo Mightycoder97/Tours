@@ -1,5 +1,6 @@
 'use client';
 import Image, { ImageProps } from 'next/image';
+import { getBrandConfig } from '@/lib/brand';
 
 interface ProtectedImageProps extends ImageProps {
   showCopyright?: boolean;
@@ -15,6 +16,7 @@ interface ProtectedImageProps extends ImageProps {
  * When `fill` is NOT used the wrapper is relative and sized by the image.
  */
 export function ProtectedImage({ showCopyright = false, fill, className, ...props }: ProtectedImageProps) {
+  const brand = getBrandConfig();
   const wrapperClass = fill
     ? 'absolute inset-0 select-none'
     : 'relative select-none';
@@ -35,7 +37,7 @@ export function ProtectedImage({ showCopyright = false, fill, className, ...prop
           className="absolute bottom-1 right-1 text-white/60 text-[9px] font-sans pointer-events-none select-none z-10 bg-black/30 px-1 py-0.5 rounded"
           aria-hidden="true"
         >
-          © Machu Picchu Travel Adventures
+          © {brand.name}
         </div>
       )}
     </div>

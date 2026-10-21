@@ -1,24 +1,27 @@
 import type { Metadata } from "next";
-import { Montserrat, DM_Serif_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Outfit } from "next/font/google";
 import { getLocale, getTranslations } from "next-intl/server";
 import "./globals.css";
 import ImageProtectionProvider from "@/components/ui/ImageProtectionProvider";
+import { getBrandConfig } from "@/lib/brand";
 
 
-const montserrat = Montserrat({
+const montserrat = Plus_Jakarta_Sans({
   variable: "--font-montserrat",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const dmSerif = DM_Serif_Display({
+const dmSerif = Outfit({
   variable: "--font-dm-serif",
-  weight: "400",
+  weight: ["600", "700", "800"],
   subsets: ["latin"],
 });
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('meta.home');
   const locale = await getLocale();
+  const brand = getBrandConfig();
 
   return {
     title: {
@@ -27,13 +30,13 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: t('description'),
     keywords: t('keywords').split(', '),
-    authors: [{ name: 'Machu Picchu Travel Adventures' }],
-    creator: 'Machu Picchu Travel Adventures',
+    authors: [{ name: brand.name }],
+    creator: brand.name,
     openGraph: {
       type: 'website',
       locale: locale === 'en' ? 'en_US' : 'es_PE',
-      url: 'https://machupicchutravel.com',
-      siteName: 'Machu Picchu Travel Adventures',
+      url: brand.domain,
+      siteName: brand.name,
       title: t('ogTitle'),
       description: t('ogDescription'),
       images: [
@@ -47,7 +50,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Machu Picchu Travel Adventures',
+      title: brand.name,
       description: t('twitterDescription'),
     },
     robots: {
@@ -55,7 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
       follow: true,
     },
     alternates: {
-      canonical: 'https://machupicchutravel.com',
+      canonical: brand.domain,
     },
   };
 }
@@ -66,10 +69,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getLocale();
+  const brand = getBrandConfig();
 
   return (
     <html
       lang={locale}
+      data-brand={brand.id}
       suppressHydrationWarning
       className={`${montserrat.variable} ${dmSerif.variable} h-full antialiased`}
     >

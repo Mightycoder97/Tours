@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Sparkles, Clock, ArrowRight } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import { getBrandConfig } from '@/lib/brand';
 
 interface Tour {
   id: string;
@@ -27,7 +28,7 @@ export default function BlogSidebarClient({ tours }: BlogSidebarClientProps) {
   const handleTicketContinue = () => {
     if (!selectedTicketOption) return;
     
-    const whatsappNumber = '51955723329';
+    const whatsappNumber = getBrandConfig().contact.cleanPhone;
     const message = selectedTicketOption === 'yes'
       ? t('ticketWidget.whatsappYes')
       : t('ticketWidget.whatsappNo');

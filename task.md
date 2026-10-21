@@ -356,13 +356,15 @@
   - [x] GallerySection.tsx: sin `priority` en thumbnails ✓
   - [x] page.tsx hero image: tiene `priority` correctamente ✓
 
-- [x] **E.6** Actualizar .env.local con placeholders
-- [x] Agregadas variables Culqi (pk/sk)
-  - [x] Agregado RESEND_FROM_EMAIL
-  - [x] Agregados comentarios Sentry + Upstash Redis (opcionales)
+- [x] **E.6** Actualizar variables de entorno Culqi
+  - [x] Agregadas llaves oficiales Culqi de prueba (`pk_test_...` y `sk_test_...`) en `.env` y `.env.local`
+  - [x] Creado template `.env.example`
+  - [x] Endpoint `/api/checkout/culqi` verificado y testeado con cargos reales en modo test (USD y PEN)
+  - [x] Flujo de Checkout con Culqi Checkout Custom y Yape conectado y funcional
 
-## ✅ Verificación Fase E
-- [x] `npm run build` compila sin errores (38 páginas generadas)
+## ✅ Verificación Fase E & Pasarela de Pagos Culqi
+- [x] `npm run build` compila sin errores (46 páginas generadas)
+- [x] Test end-to-end de tokenización y cobro Culqi exitoso (Descriptor: "MACHUPICCHU TRAVEL ADVENTURE")
 
 ---
 
@@ -445,5 +447,23 @@
 - [x] **M.10** Rediseñar el CTA de Tren a Machu Picchu en ToursPageClient.tsx (max-w-4xl centrado)
 - [x] **M.11** Incrementar 20% el tamaño del logo en Navbar.tsx y cambiar color en scroll a blanco puro
 
+---
 
+## 🦙 Fase T — Arquitectura Multi-Marca / Multi-Tenant (Sonqo Perú Travel)
 
+- [x] **T.1** Procesar logo de Sonqo Perú Travel (`logo-sonqo.png` transparente + recorte óptimo) y configurar `src/lib/brand.ts`
+- [x] **T.2** Configurar sistema de tema dinámico en `src/app/globals.css` (`#8B66E8`, `#213E4C`, `#FFFFFF`) y `src/app/layout.tsx`
+- [x] **T.3** Parametrizar traducciones (`src/i18n/request.ts`), `Navbar`, `Footer`, `WhatsAppButton`, `ContactForm`, `Blog` y páginas públicas
+- [x] **T.4** Implementar soporte Multi-Tenant en Checkout (`checkout/page.tsx`), API de Reservas (`/api/bookings/route.ts`), migración SQL (`0005_multi_tenant_bookings.sql`) y Panel Admin (`/admin/bookings/page.tsx`)
+- [x] **T.5** Verificar compilación (`npm run build`) y validar interfaz visual
+
+---
+
+## 💳 Fase P — Paquete de Prueba S/ 10.00 y Auditoría Integral de Pasarela de Pagos (Culqi / PayPal)
+
+- [x] **P.1** Crear paquete de prueba en Supabase (`paquete-de-prueba-culqi` — *"Paquete de Prueba Culqi (S/ 10.00)"*) con precio exacto de `S/ 10.00 PEN` (`1000` céntimos en Culqi)
+- [x] **P.2** Soporte nativo para cobro directo en Soles (`PEN`) sin conversión cambiaria en `BookingSidebar`, `CartPage`, `CheckoutPage`, `TourCard` y `TourDetail` para el paquete de prueba, además de selector de moneda (`USD` / `PEN`) con Tarjeta para paquetes regulares
+- [x] **P.3** Corregir sanitización de `antifraud_details.phone_number` y `description` en `/api/checkout/culqi/route.ts` (evita error HTTP 400 de Culqi cuando el teléfono incluye espacios o caracteres no numéricos)
+- [x] **P.4** Corregir estado `culqiReady` en navegación SPA (`onReady` + verificación en `useEffect`) y eliminar instancia duplicada con `amount: 0` en `CheckoutPage`
+- [x] **P.5** Aislar envío de correo Resend en `try/catch` dentro de `/api/checkout/bookings` y normalizar zona horaria de fechas seleccionadas (`T12:00:00.000Z`)
+- [x] **P.6** Unificar variables de entorno y validación de pasajeros en PayPal (`/api/checkout/paypal/create` y `capture`)

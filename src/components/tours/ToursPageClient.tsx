@@ -6,6 +6,7 @@ import TourCard from '@/components/tours/TourCard';
 import { Filter, MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { getBrandConfig } from '@/lib/brand';
 
 interface Tour {
   id: string;
@@ -144,8 +145,9 @@ export default function ToursPageClient({
     setCurrentPage(1);
   };
 
-  const whatsappNumber = '51955723329';
-  const whatsappMsg = encodeURIComponent('¡Hola Machupicchu Travel Adventure! Estoy viendo la lista de tours y me gustaría solicitar información.');
+  const brand = getBrandConfig();
+  const whatsappNumber = brand.contact.cleanPhone;
+  const whatsappMsg = encodeURIComponent(`¡Hola ${brand.name}! Estoy viendo la lista de tours y me gustaría solicitar información.`);
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMsg}`;
 
   return (

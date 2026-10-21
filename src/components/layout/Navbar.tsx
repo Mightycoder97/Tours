@@ -12,6 +12,7 @@ import { useCartStore } from '@/store/useCartStore';
 import { usePathname } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import LanguageSwitcher from './LanguageSwitcher';
+import { getBrandConfig } from '@/lib/brand';
 
 // ── Destinos reales de la empresa ─────────────────────────────────────────────
 const DESTINOS = [
@@ -29,8 +30,8 @@ const DESTINOS = [
     label: 'Cusco',
     desc: 'Ciudad Imperial Inca',
     icon: Landmark,
-    color: 'text-teal-600',
-    bg: 'bg-teal-50',
+    color: 'text-primary',
+    bg: 'bg-primary/10',
     href: '/tours?destino=cusco',
   },
   {
@@ -75,6 +76,7 @@ const TOURS_DESTACADOS = [
 
 export default function Navbar() {
   const t = useTranslations('nav');
+  const brand = getBrandConfig();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -112,19 +114,22 @@ export default function Navbar() {
   }, []);
 
   const isHome = pathname === '/';
+  const isDarkHeader = isScrolled || isHome;
 
   // Custom variables to determine navbar styling on scroll/page
   const headerBgClass = isScrolled
-    ? 'bg-primary-dark text-white shadow-lg py-2'
+    ? 'bg-primary/95 backdrop-blur-md text-white shadow-lg shadow-primary/20 py-2'
     : isHome
       ? 'bg-transparent text-white border-b border-transparent py-3'
-      : 'bg-white/95 backdrop-blur-md text-primary border-b border-gray-100 py-3';
+      : 'bg-white/95 backdrop-blur-md text-secondary border-b border-gray-100 py-3';
 
-  const logoFilterClass = isScrolled
-    ? 'brightness-0 invert'
-    : isHome
-      ? 'brightness-0 invert'
-      : 'brightness-0';
+  const logoFilterClass = isDarkHeader
+    ? brand.logo.filterOnDark
+    : brand.logo.filterOnLight;
+
+  const logoSrc = isDarkHeader
+    ? brand.logo.darkBgSrc
+    : brand.logo.lightBgSrc;
 
   const mobileToggleColorClass = isScrolled
     ? 'text-white hover:bg-white/10'
@@ -132,9 +137,11 @@ export default function Navbar() {
       ? 'text-white hover:bg-white/10'
       : 'text-primary hover:bg-primary/5';
 
-  const ctaButtonClass = isScrolled || isHome
-    ? 'bg-white text-primary-dark hover:bg-gray-100'
-    : 'bg-primary text-white hover:bg-primary-dark';
+  const ctaButtonClass = isScrolled
+    ? 'bg-secondary text-white hover:bg-secondary-light shadow-md'
+    : isHome
+      ? 'bg-primary text-white hover:bg-primary-dark shadow-lg shadow-primary/30'
+      : 'bg-primary text-white hover:bg-primary-dark shadow-md shadow-primary/20';
 
   const closeMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(false);
@@ -157,7 +164,7 @@ export default function Navbar() {
     setMobileAccordion((prev) => (prev === key ? null : key));
   }, []);
 
-  const navLinkClass = `text-sm font-semibold hover:text-primary-light transition-colors py-2 flex items-center gap-1`;
+  const navLinkClass = `text-sm font-semibold hover:opacity-80 transition-opacity py-2 flex items-center gap-1`;
 
   return (
     <>
@@ -168,12 +175,12 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center">
-            <div className={`relative w-[58px] h-[58px] sm:w-[68px] sm:h-[68px] lg:w-[78px] lg:h-[78px] transition-all duration-300 ${logoFilterClass}`}>
+            <div className={`relative ${brand.logo.sizeClass} transition-all duration-300 ${logoFilterClass}`}>
               <Image
-                src="/imagenes/logo.png?v=2"
+                src={logoSrc}
                 alt={t('ariaLabels.logo')}
                 fill
-                sizes="(max-width: 640px) 58px, (max-width: 1024px) 68px, 78px"
+                sizes={brand.logo.sizesAttr}
                 className="object-contain"
                 priority
               />
@@ -376,7 +383,7 @@ export default function Navbar() {
 
       {/* ── Mobile Menu ──────────────────────────────────────────────────── */}
       <div
-        className={`lg:hidden fixed top-0 left-0 right-0 bottom-0 bg-primary z-[60] flex flex-col transition-transform duration-300 ease-in-out ${
+        className={`lg:hidden fixed top-0 left-0 right-0 bottom-0 bg-primary-dark z-[60] flex flex-col transition-transform duration-300 ease-in-out ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 80px)' }}
@@ -469,7 +476,7 @@ export default function Navbar() {
           </div>
 
           <div className="mt-8 flex flex-col space-y-4">
-            <Link href="/tours" onClick={closeMobileMenu} className="bg-white text-primary-dark w-full py-4 rounded-full text-center font-bold text-lg">
+            <Link href="/tours" onClick={closeMobileMenu} className="bg-primary text-white w-full py-4 rounded-full text-center font-bold text-lg shadow-lg">
               {t('planYourTrip')}
             </Link>
           </div>

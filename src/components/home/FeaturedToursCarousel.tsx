@@ -176,7 +176,7 @@ export default function FeaturedToursCarousel({ tours }: FeaturedToursCarouselPr
                     </Link>
                     <Link
                       href={`/tours/${tour.slug}?book=true`}
-                      className="flex-1 text-center py-2 px-3 bg-[#ff7a00] hover:bg-[#e06b00] text-white transition-colors text-xs font-bold rounded-lg cursor-pointer flex items-center justify-center gap-1 shadow-sm"
+                      className="flex-1 text-center py-2 px-3 bg-cta hover:bg-cta-hover text-white transition-colors text-xs font-bold rounded-lg cursor-pointer flex items-center justify-center gap-1 shadow-sm"
                     >
                       <span>Reservar ahora</span>
                     </Link>

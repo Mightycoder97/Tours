@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Calendar, Clock, ArrowRight, Search, Mic, Camera, Sparkles, AlertCircle } from 'lucide-react';
 import { Link, useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import { getBrandConfig } from '@/lib/brand';
 
 interface Tour {
   id: string;
@@ -68,7 +69,7 @@ export default function BlogPageClient({ tours }: BlogPageClientProps) {
   const handleTicketContinue = () => {
     if (!selectedTicketOption) return;
     
-    const whatsappNumber = '51955723329';
+    const whatsappNumber = getBrandConfig().contact.cleanPhone;
     let message = '';
     if (selectedTicketOption === 'yes') {
       message = '¡Hola! Estoy leyendo el blog y necesito ayuda para reservar mi entrada a Machu Picchu junto con la experiencia completa.';
@@ -113,7 +114,7 @@ export default function BlogPageClient({ tours }: BlogPageClientProps) {
             >
               <Image
                 src={img}
-                alt="Machu Picchu Travel Adventure Banner"
+                alt={`${getBrandConfig().name} Banner`}
                 fill
                 className="object-cover scale-[1.08]"
                 sizes="100vw"
@@ -126,7 +127,7 @@ export default function BlogPageClient({ tours }: BlogPageClientProps) {
 
         {/* Recommended Tours Horizontal Slider */}
         <div className="mb-6 flex justify-between items-center">
-          <h3 className="text-xs font-bold uppercase tracking-widest text-primary">Blog MachuPicchuTravel Adventure</h3>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-primary">Blog {getBrandConfig().name}</h3>
           <Link href="/tours" className="text-xs font-bold text-primary hover:text-primary-dark uppercase tracking-wider flex items-center gap-1">
             <span>Ver todos los tours</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -177,7 +178,7 @@ export default function BlogPageClient({ tours }: BlogPageClientProps) {
                 </Link>
                 <Link
                   href={`/tours/${tour.slug}?book=true`}
-                  className="bg-[#ff7a00] hover:bg-[#e06b00] text-white text-xs font-bold py-2 rounded-lg text-center transition-colors shadow-sm"
+                  className="bg-cta hover:bg-cta-hover text-white text-xs font-bold py-2 rounded-lg text-center transition-colors shadow-sm"
                 >
                   Reservar ahora
                 </Link>

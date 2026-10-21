@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { checkRateLimit } from '@/lib/ratelimit';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
+import { getBrandConfig } from '@/lib/brand';
 
 interface PassengerInput {
   firstName: string;
@@ -14,12 +15,14 @@ interface PassengerInput {
 }
 
 interface BookingPayload {
+  tenant?: string;
   tourId: string;
   tourName: string;
   date: string;
   adults: number;
   children: number;
   totalPrice: number;
+  currency?: 'USD' | 'PEN';
   contactName: string;
   contactEmail: string;
   contactPhone: string;
@@ -38,6 +41,7 @@ const supabase = createClient(
 export async function POST(req: Request) {
   try {
     const bookingData = await req.json() as BookingPayload;
+    const brand = getBrandConfig(bookingData.tenant);
 
     // Rate limiting
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
@@ -73,11 +77,10 @@ export async function POST(req: Request) {
       }
     }
 
-    // Generate a reference code
-    const bookingCode = 'MTP-' + crypto.randomUUID().split('-')[0].toUpperCase();
+    // Generate a reference code using the active brand's prefix (e.g., SNQ-XXXX or MTP-XXXX)
+    const bookingCode = `${brand.bookingPrefix}-` + crypto.randomUUID().split('-')[0].toUpperCase();
     
-    // 1. Insert Booking to Supabase (DB trigger will auto-increment booked_count)
-    const { data: booking, error: bookingError } = await supabase.from('bookings').insert({
+    const baseInsertPayload = {
       booking_code: bookingCode,
       tour_id: bookingData.tourId,
       selected_date: selectedDate,
@@ -91,13 +94,29 @@ export async function POST(req: Request) {
       
       payment_method: bookingData.paymentMethod,
       payment_status: (bookingData.paymentStatus as 'PAID' | 'PENDING' | 'CANCELLED') || 'PENDING',
-      payment_ref: bookingData.paymentRef
-    }).select().single();
+      payment_ref: bookingData.paymentRef,
+    };
+
+    // 1. Insert Booking to Supabase (with automatic fallback if `tenant` column migration hasn't been executed yet)
+    let { data: booking, error: bookingError } = await supabase
+      .from('bookings')
+      .insert({ ...baseInsertPayload, tenant: brand.id })
+      .select()
+      .single();
+
+    if (bookingError && bookingError.message?.includes('tenant')) {
+      const fallbackRes = await supabase
+        .from('bookings')
+        .insert(baseInsertPayload)
+        .select()
+        .single();
+      booking = fallbackRes.data;
+      bookingError = fallbackRes.error;
+    }
 
     if (bookingError) throw bookingError;
 
     // 2. Insert Passengers
-    // Usually we would insert the passenger array here:
     if (bookingData.passengers && bookingData.passengers.length > 0) {
       const passengersToInsert = bookingData.passengers.map((p: PassengerInput) => ({
         booking_id: booking.id,
@@ -111,29 +130,35 @@ export async function POST(req: Request) {
       await supabase.from('passengers').insert(passengersToInsert);
     }
 
-    // 3. Send Email
+    // 3. Send Branded Email (non-blocking so email errors never break a paid booking)
     if (process.env.RESEND_API_KEY) {
-      await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL || 'Reservas <reservas@machupicchutravel.com>',
-        to: bookingData.contactEmail,
-        subject: `Confirmación de Reserva #${bookingCode} - Machu Picchu Travel`,
-        html: `
-          <div style="font-family: Arial, sans-serif; color: #333; max-w: 600px; margin: 0 auto;">
-            <h2 style="color: #06C0B8;">¡Tu reserva está confirmada!</h2>
-            <p>Hola ${bookingData.contactName},</p>
-            <p>Gracias por tu compra. Aquí tienes los detalles de tu viaje:</p>
-            <div style="background-color: #F5F5E9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <p><strong>Código de Reserva:</strong> ${bookingCode}</p>
-              <p><strong>Tour:</strong> ${bookingData.tourName}</p>
-              <p><strong>Fecha:</strong> ${bookingData.date}</p>
-              <p><strong>Pasajeros:</strong> ${bookingData.adults} Adulto(s), ${bookingData.children} Niño(s)</p>
-              <p><strong>Total Pagado:</strong> USD ${bookingData.totalPrice}</p>
+      const displayCurrency = bookingData.currency === 'PEN' ? 'PEN (S/)' : 'USD';
+      try {
+        await resend.emails.send({
+          from: process.env.RESEND_FROM_EMAIL || `${brand.name} <reservas@${brand.emailDomain}>`,
+          to: bookingData.contactEmail,
+          subject: `Confirmación de Reserva #${bookingCode} - ${brand.name}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; color: ${brand.colors.primaryDark}; max-w: 600px; margin: 0 auto;">
+              <h2 style="color: ${brand.colors.primary};">¡Tu reserva en ${brand.name} está confirmada!</h2>
+              <p>Hola ${bookingData.contactName},</p>
+              <p>Gracias por tu compra. Aquí tienes los detalles de tu viaje:</p>
+              <div style="background-color: #F6F4FC; border-left: 4px solid ${brand.colors.primary}; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <p><strong>Marca / Operador:</strong> ${brand.name}</p>
+                <p><strong>Código de Reserva:</strong> ${bookingCode}</p>
+                <p><strong>Tour:</strong> ${bookingData.tourName}</p>
+                <p><strong>Fecha:</strong> ${selectedDate}</p>
+                <p><strong>Pasajeros:</strong> ${bookingData.adults} Adulto(s), ${bookingData.children} Niño(s)</p>
+                <p><strong>Total Pagado:</strong> ${displayCurrency} ${Number(bookingData.totalPrice).toFixed(2)}</p>
+              </div>
+              <p>Por favor, preséntate 30 minutos antes en el punto de encuentro con los documentos originales de todos los pasajeros.</p>
+              <p>¡Buen viaje!</p>
             </div>
-            <p>Por favor, preséntate 30 minutos antes en el punto de encuentro con los documentos originales de todos los pasajeros.</p>
-            <p>¡Buen viaje!</p>
-          </div>
-        `
-      });
+          `
+        });
+      } catch (emailError) {
+        console.error('[Bookings] Error enviando correo de confirmación:', emailError);
+      }
     }
 
     return NextResponse.json({ success: true, bookingCode });

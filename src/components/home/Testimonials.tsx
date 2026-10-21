@@ -31,49 +31,34 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="bg-primary-dark py-20 lg:py-28 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-white/20 blur-3xl" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
+    <section className="bg-secondary py-20 lg:py-28 relative overflow-hidden">
+      {/* Vibrant Violet & Petrol Mesh Glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-24 -left-20 w-[420px] h-[420px] rounded-full bg-primary/35 blur-[110px]" />
+        <div className="absolute -bottom-24 right-0 w-[500px] h-[500px] rounded-full bg-primary/25 blur-[130px]" />
       </div>
       
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        
-        {/* TripAdvisor Score Badge */}
-        <div className="flex items-center gap-3 mb-6 bg-white/5 py-2.5 px-4 rounded-2xl sm:rounded-full w-fit border border-white/10 max-w-full">
-          <TripAdvisorLogo className="w-6 h-6 text-[#00aa6c] shrink-0" />
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-white text-xs font-bold uppercase tracking-wider whitespace-nowrap">Excelente 5.0</span>
-            <div className="flex gap-0.5 shrink-0">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <span key={i} className="w-2.5 h-2.5 rounded-full bg-[#00aa6c] inline-block border border-white/10" />
-              ))}
-            </div>
-            <span className="text-white/60 text-xs font-medium whitespace-normal sm:whitespace-nowrap">523 opiniones en TripAdvisor</span>
-          </div>
-        </div>
-
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
           <div className="max-w-2xl mb-6 md:mb-0">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-extrabold text-white mb-4 tracking-tight">
               {t('title')}
             </h2>
-            <p className="text-white/70 text-lg font-light">
+            <p className="text-white/75 text-base sm:text-lg">
               {t('subtitle')}
             </p>
           </div>
           <div className="flex gap-3">
             <button
               onClick={() => scroll('left')}
-              className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-primary-dark transition-all cursor-pointer"
+              className="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-primary hover:border-primary transition-all cursor-pointer"
               aria-label={t('ariaLabels.previous')}
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={() => scroll('right')}
-              className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-primary-dark transition-all cursor-pointer"
+              className="w-12 h-12 rounded-2xl bg-primary border border-primary flex items-center justify-center text-white hover:bg-white hover:text-secondary transition-all cursor-pointer shadow-lg shadow-primary/30"
               aria-label={t('ariaLabels.next')}
             >
               <ChevronRight className="w-5 h-5" />
@@ -90,35 +75,34 @@ export default function Testimonials() {
           {Array.from({ length: testimonialCount }).map((_, index) => (
             <div
               key={index}
-              className="snap-start shrink-0 w-[85%] sm:w-[45%] lg:w-[30%] bg-white/5 backdrop-blur-sm rounded-2xl p-7 border border-white/10 flex flex-col justify-between"
+              className="snap-start shrink-0 w-[85%] sm:w-[45%] lg:w-[31%] bg-white rounded-[28px] p-7 border border-white/20 shadow-[0_14px_35px_rgba(0,0,0,0.2)] flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
             >
               <div>
-                {/* TripAdvisor Review header */}
-                <div className="flex justify-between items-center mb-4">
-                  {/* Green TripAdvisor bubbles */}
-                  <div className="flex gap-1">
+                {/* Review header */}
+                <div className="flex justify-between items-center mb-5">
+                  <div className="flex gap-1.5 bg-cream px-3 py-1.5 rounded-full">
                     {Array.from({ length: testimonialRatings[index] }).map((_, i) => (
-                      <span key={i} className="w-3.5 h-3.5 rounded-full bg-[#00aa6c] inline-block border border-white/20" />
+                      <span key={i} className="w-3 h-3 rounded-full bg-primary inline-block" />
                     ))}
                   </div>
-                  <TripAdvisorLogo className="w-5 h-5 text-white/40" />
+                  <TripAdvisorLogo className="w-5 h-5 text-secondary/40" />
                 </div>
                 
-                <h4 className="font-serif text-lg text-white mb-3 font-semibold leading-snug">
-                  "{t(`items.${index}.title`)}"
+                <h4 className="font-serif text-lg sm:text-xl text-secondary mb-3 font-extrabold leading-snug">
+                  &ldquo;{t(`items.${index}.title`)}&rdquo;
                 </h4>
-                <p className="text-white/80 text-sm leading-relaxed mb-6 font-light">
+                <p className="text-text-light text-sm leading-relaxed mb-6">
                   {t(`items.${index}.text`)}
                 </p>
               </div>
               
-              <div className="border-t border-white/10 pt-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white font-bold text-sm">
+              <div className="border-t border-gray-100 pt-4 flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl bg-primary text-white flex items-center justify-center font-extrabold text-sm shadow-md shadow-primary/25">
                   {t(`items.${index}.name`).charAt(0)}
                 </div>
                 <div>
-                  <p className="font-bold text-white text-xs">{t(`items.${index}.name`)}</p>
-                  <p className="text-white/50 text-[10px] uppercase tracking-wider">{t(`items.${index}.country`)}</p>
+                  <p className="font-extrabold text-secondary text-sm">{t(`items.${index}.name`)}</p>
+                  <p className="text-primary text-[11px] font-bold uppercase tracking-wider">{t(`items.${index}.country`)}</p>
                 </div>
               </div>
             </div>
