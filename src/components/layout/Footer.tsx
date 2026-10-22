@@ -1,7 +1,6 @@
 import { Link } from '@/i18n/navigation';
 import { MapPin, Phone, Mail, Clock, ShieldCheck, HeartHandshake } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
-import { getBrandConfig } from '@/lib/brand';
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -37,50 +36,49 @@ function TripAdvisorIcon({ className }: { className?: string }) {
 
 export default async function Footer() {
   const t = await getTranslations('footer');
-  const brand = getBrandConfig();
-  const rucValue = brand.ruc;
+  const rucValue = '20564458385';
 
   return (
-    <footer className="bg-footer-bg text-white border-t border-white/10">
+    <footer className="bg-footer-bg text-white border-t border-gray-800">
       {/* Main Footer */}
       <div className="container mx-auto px-4 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-sm">
           
           {/* Column 1: Brand & Contacts */}
           <div className="sm:col-span-2 md:col-span-3 lg:col-span-2">
-            <h3 className="font-serif text-2xl text-primary-light mb-4 leading-tight">{t('brand.name')}</h3>
-            <p className="text-gray-300 text-xs sm:text-sm leading-relaxed mb-6 font-light">
+            <h3 className="font-serif text-2xl text-primary mb-4 leading-tight">{t('brand.name')}</h3>
+            <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-light">
               {t('brand.description')}
             </p>
             
             {/* Direct Contact info */}
             <div className="space-y-3 mb-6">
               <div className="flex items-center gap-2.5 text-gray-300">
-                <Phone className="w-4 h-4 text-primary-light shrink-0" />
-                <a href={`tel:+${brand.contact.cleanPhone}`} className="hover:text-primary-light transition-colors font-medium">{t('contact.phone')}</a>
+                <Phone className="w-4 h-4 text-primary shrink-0" />
+                <a href="tel:+51955723329" className="hover:text-primary transition-colors font-medium">{t('contact.phone')}</a>
               </div>
               <div className="flex items-center gap-2.5 text-gray-300">
-                <Mail className="w-4 h-4 text-primary-light shrink-0" />
-                <a href={`mailto:${brand.contact.email}`} className="hover:text-primary-light transition-colors font-medium break-all">{t('contact.email')}</a>
+                <Mail className="w-4 h-4 text-primary shrink-0" />
+                <a href="mailto:reservasmtaperu@gmail.com" className="hover:text-primary transition-colors font-medium break-all">{t('contact.email')}</a>
               </div>
               <div className="flex items-center gap-2.5 text-gray-400 text-xs">
-                <Clock className="w-4 h-4 text-primary-light shrink-0" />
+                <Clock className="w-4 h-4 text-primary shrink-0" />
                 <span>{t('contact.hours')}</span>
               </div>
             </div>
 
             {/* Social media Links */}
             <div className="flex gap-2.5">
-              <a href={brand.social.facebook} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.facebook')}>
+              <a href="https://www.facebook.com/MachupicchuTravelAdventure/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.facebook')}>
                 <FacebookIcon className="w-4.5 h-4.5" />
               </a>
-              <a href={brand.social.instagram} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.instagram')}>
+              <a href="https://www.instagram.com/machupicchutraveladventure/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.instagram')}>
                 <InstagramIcon className="w-4.5 h-4.5" />
               </a>
-              <a href={brand.social.tiktok} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.tiktok')}>
+              <a href="https://www.tiktok.com/@machupicchutraveladventu?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.tiktok')}>
                 <TiktokIcon className="w-4.5 h-4.5" />
               </a>
-              <a href={brand.social.tripadvisor} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label="TripAdvisor">
+              <a href="https://www.tripadvisor.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label="TripAdvisor">
                 <TripAdvisorIcon className="w-4.5 h-4.5" />
               </a>
             </div>

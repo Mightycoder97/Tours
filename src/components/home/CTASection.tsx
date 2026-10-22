@@ -1,4 +1,4 @@
-import { ArrowRight, Mail, Sparkles } from 'lucide-react';
+import { ArrowRight, Mail } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
 
@@ -6,45 +6,40 @@ export default async function CTASection() {
   const t = await getTranslations('home.cta');
 
   return (
-    <section className="py-16 lg:py-24 bg-white">
-      <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
-        <div className="relative rounded-[36px] overflow-hidden py-16 lg:py-20 px-6 sm:px-12 shadow-[0_25px_60px_rgba(139,102,232,0.28)]">
-          {/* Vibrant Violet (#8B66E8) to Deep Petrol (#213E4C) Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-dark to-secondary" />
-          
-          {/* Decorative glow */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-white/15 blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-secondary/50 blur-3xl" />
-          </div>
+    <section className="relative py-20 lg:py-28 overflow-hidden">
+      {/* Gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-dark via-primary to-primary-light" />
+      
+      {/* Decorative elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.15),transparent_50%)]" />
+        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_bottom_left,rgba(0,0,0,0.1),transparent_50%)]" />
+      </div>
 
-          <div className="relative z-10 text-center max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-extrabold text-white mb-5 leading-tight tracking-tight">
-              {t('title')}
-            </h2>
-            <p className="text-white/85 text-base sm:text-lg mb-9 max-w-2xl mx-auto">
-              {t('subtitle')}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link 
-                href="/tours" 
-                className="bg-secondary text-white px-8 py-4 rounded-full font-extrabold text-base sm:text-lg hover:bg-white hover:text-secondary hover:shadow-xl transition-all inline-flex items-center gap-2.5 group shadow-lg"
-              >
-                {t('exploreTours')}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="/contacto"
-                className="bg-white/15 backdrop-blur-md border-2 border-white/35 text-white px-8 py-4 rounded-full font-extrabold text-base sm:text-lg hover:bg-white hover:text-primary transition-all inline-flex items-center gap-2.5"
-              >
-                <Mail className="w-5 h-5" />
-                {t('contactUs')}
-              </Link>
-            </div>
-          </div>
+      <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6 max-w-3xl mx-auto leading-tight">
+          {t('title')}
+        </h2>
+        <p className="text-white/80 text-lg font-light max-w-2xl mx-auto mb-10">
+          {t('subtitle')}
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Link 
+            href="/tours" 
+            className="bg-white text-primary-dark px-8 py-4 rounded-full font-bold text-lg hover:bg-cream hover:shadow-xl transition-all inline-flex items-center gap-2 group"
+          >
+            {t('exploreTours')}
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Link>
+          <Link
+            href="/tours"
+            className="border-2 border-white/40 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all inline-flex items-center gap-2"
+          >
+            <Mail className="w-5 h-5" />
+            {t('contactUs')}
+          </Link>
         </div>
       </div>
     </section>
   );
 }
-

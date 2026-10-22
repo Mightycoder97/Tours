@@ -3,11 +3,9 @@
 import { useState } from 'react';
 import { MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { getBrandConfig } from '@/lib/brand';
 
 export default function AdvisorContact() {
   const t = useTranslations('pages.experiences');
-  const brand = getBrandConfig();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [interest, setInterest] = useState('');
@@ -15,8 +13,8 @@ export default function AdvisorContact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanPhone = brand.contact.cleanPhone;
-    const textMessage = `¡Hola ${brand.name}! Deseo solicitar asesoría personalizada.\n\n` +
+    const cleanPhone = '51955723329';
+    const textMessage = `¡Hola Machupicchu Travel Adventure! Deseo solicitar asesoría personalizada.\n\n` +
       `👤 Nombre: ${name || 'No provisto'}\n` +
       `✉️ Correo: ${email || 'No provisto'}\n` +
       `📍 Destino de interés: ${interest || 'Varios / No especificado'}\n` +
@@ -28,7 +26,7 @@ export default function AdvisorContact() {
   };
 
   return (
-    <div className="bg-cream rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm max-w-lg mx-auto">
+    <div className="bg-accent rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm max-w-lg mx-auto">
       <h3 className="font-serif text-xl sm:text-2xl font-bold text-primary-dark mb-2 text-center">{t('formTitle')}</h3>
       <p className="text-text-light text-xs sm:text-sm text-center mb-6 font-light">{t('formSubtitle')}</p>
       

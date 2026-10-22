@@ -4,11 +4,9 @@ import { useState } from 'react';
 import { useRouter, Link } from '@/i18n/navigation';
 import { Calendar as CalendarIcon, Users, MapPin, Search, MessageCircle, Compass, Tag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { getBrandConfig } from '@/lib/brand';
 
 export default function BookingWidget() {
   const t = useTranslations('home.booking');
-  const brand = getBrandConfig();
   const router = useRouter();
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
@@ -30,10 +28,10 @@ export default function BookingWidget() {
 
   const handleWhatsApp = (e: React.MouseEvent) => {
     e.preventDefault();
-    const cleanPhone = brand.contact.cleanPhone;
+    const cleanPhone = '51955723329';
     const selectedTripType = tripType ? t(`tripTypes.${tripType}`) : 'Cualquiera';
     
-    const textMessage = `¡Hola ${brand.name}! Me interesa planificar un viaje.\n\n` +
+    const textMessage = `¡Hola Machupicchu Travel Adventure! Me interesa planificar un viaje.\n\n` +
       `📍 Destino/Tour: ${destination || 'Por definir'}\n` +
       `📅 Fecha: ${date || 'Por definir'}\n` +
       `👥 Pasajeros: ${passengers}\n` +
@@ -46,16 +44,14 @@ export default function BookingWidget() {
   };
 
   return (
-    <div className="bg-white rounded-[24px] sm:rounded-[32px] shadow-[0_20px_50px_rgba(33,62,76,0.16)] p-4 sm:p-6 mx-auto max-w-5xl xl:max-w-7xl relative z-20 mt-[-50px] border-2 border-primary/20">
+    <div className="bg-white rounded-2xl sm:rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-4 sm:p-5 mx-auto max-w-5xl xl:max-w-7xl relative z-20 mt-[-50px] border border-gray-100">
       {/* Upper bar with quick link to all packages */}
-      <div className="flex items-center justify-between border-b border-gray-100 pb-3.5 mb-4">
+      <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
         <Link 
           href="/tours" 
-          className="text-xs sm:text-sm font-extrabold text-secondary hover:text-primary transition-colors flex items-center gap-2 uppercase tracking-wider"
+          className="text-xs sm:text-sm font-bold text-primary hover:text-primary-dark transition-colors flex items-center gap-1.5 uppercase tracking-wider"
         >
-          <span className="w-7 h-7 rounded-full bg-primary/15 text-primary flex items-center justify-center">
-            <Compass className="w-4 h-4" />
-          </span>
+          <Compass className="w-4.5 h-4.5" />
           {t('availabilityHeader')}
         </Link>
       </div>

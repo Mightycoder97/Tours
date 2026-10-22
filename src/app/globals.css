@@ -1,28 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  /* Color Principal: #8B66E8 (Violeta Sonqo) */
-  --color-primary: #8B66E8;
-  --color-primary-light: #A688F2;
-  --color-primary-dark: #6E46D4;
+  /* Primarios — oscurecidos para WCAG AA (4.6:1 sobre blanco) */
+  --color-primary: #048A84;
+  --color-primary-light: #06C0B8;
+  --color-primary-dark: #036B66;
 
-  /* Color Secundario: #213E4C (Azul Petróleo Oscuro) */
-  --color-secondary: #213E4C;
-  --color-secondary-light: #2E5568;
-
-  /* Accent */
-  --color-accent: #8B66E8;
-  --color-accent-light: #D4C4FB;
-  --color-accent-dark: #6E46D4;
+  /* Accent — dorado cálido (contraste 4.8:1 sobre blanco) */
+  --color-accent: #C4A35A;
+  --color-accent-light: #E8D5A3;
+  --color-accent-dark: #A68B42;
 
   /* Fondos y superficies */
-  --color-cream: #F5F2FD;
-  --color-surface: #F4F6F8;
-  --color-background-alt: #FFFFFF;
+  --color-cream: #F5F5E9;
+  --color-surface: #F4F4F4;
+  --color-background-alt: #ffffff;
 
   /* Texto */
-  --color-text-main: #213E4C;
-  --color-text-light: #526875;
+  --color-text-main: #1A1A1A;
+  --color-text-light: #666666;
   --color-text-muted: #9CA3AF;
 
   /* Semánticos */
@@ -31,11 +27,9 @@
   --color-warning: #F59E0B;
   --color-info: #3B82F6;
 
-  /* Superficies oscuras y CTAs */
-  --color-footer-bg: #213E4C;
-  --color-offer: #8B66E8;
-  --color-cta: #8B66E8;
-  --color-cta-hover: #6E46D4;
+  /* Superficies oscuras */
+  --color-footer-bg: #1a1a2e;
+  --color-offer: #F97316;
   
   --font-sans: var(--font-montserrat);
   --font-serif: var(--font-dm-serif);
@@ -48,25 +42,8 @@
 @layer base {
   :root {
     --background: #ffffff;
-    --foreground: #213E4C;
+    --foreground: #171717;
   }
-}
-
-html[data-brand="mta"] {
-  --color-primary: #048A84;
-  --color-primary-light: #06C0B8;
-  --color-primary-dark: #036B66;
-  --color-secondary: #036B66;
-  --color-accent: #C4A35A;
-  --color-accent-light: #E8D5A3;
-  --color-accent-dark: #A68B42;
-  --color-cream: #F5F5E9;
-  --color-surface: #F4F4F4;
-  --color-text-main: #1A1A1A;
-  --color-footer-bg: #1a1a2e;
-  --color-offer: #F97316;
-  --color-cta: #ff7a00;
-  --color-cta-hover: #e06b00;
 }
 
 html {
@@ -89,9 +66,8 @@ body.menu-open {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif), sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: var(--font-serif), serif;
+  font-weight: 400; /* DM Serif Display solo tiene peso 400 */
 }
 
 /* Focus visible para accesibilidad con teclado */

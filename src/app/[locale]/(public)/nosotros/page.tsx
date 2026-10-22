@@ -3,20 +3,18 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
-import { getBrandConfig } from '@/lib/brand';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('meta');
-  const brand = getBrandConfig();
   return {
     title: t('aboutPage.title'),
     description: t('aboutPage.description'),
     alternates: {
-      canonical: `${brand.domain}/es/nosotros`,
+      canonical: 'https://machupicchutravel.com/es/nosotros',
       languages: {
-        'es': `${brand.domain}/es/nosotros`,
-        'en': `${brand.domain}/en/nosotros`,
-        'x-default': `${brand.domain}/es/nosotros`,
+        'es': 'https://machupicchutravel.com/es/nosotros',
+        'en': 'https://machupicchutravel.com/en/nosotros',
+        'x-default': 'https://machupicchutravel.com/es/nosotros',
       },
     },
   };
@@ -24,14 +22,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function NosotrosPage() {
   const t = await getTranslations('pages.about');
-  const brand = getBrandConfig();
 
   return (
     <div className="bg-white min-h-screen">
       
       {/* 1. Hero Banner */}
-      <div className="bg-secondary text-white py-20 sm:py-28 pt-32 sm:pt-36">
+      <div className="bg-primary-dark text-white py-20 sm:py-28 pt-32 sm:pt-36">
         <div className="container mx-auto px-4 lg:px-8 text-center max-w-4xl">
+          <span className="bg-white/15 text-xs font-bold uppercase tracking-wider py-1 px-3.5 rounded-full inline-block mb-4 border border-white/10">
+            Agencia de Viajes Certificada
+          </span>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif mb-4 leading-tight">
             Sobre Nosotros
           </h1>
@@ -44,22 +44,22 @@ export default async function NosotrosPage() {
       {/* 2. Intro Section */}
       <section className="py-16 sm:py-20 max-w-4xl mx-auto px-4 text-center">
         <div className="flex justify-center mb-6">
-          <div className="relative w-40 h-20">
+          <div className="relative w-20 h-20">
             <Image
-              src={brand.logo.lightBgSrc}
-              alt={brand.logo.alt}
+              src="/imagenes/logo.png"
+              alt="Logo Machu Picchu Travel Adventure"
               fill
               className="object-contain"
-              sizes="160px"
+              sizes="80px"
               priority
             />
           </div>
         </div>
-        <h2 className="font-serif text-3xl sm:text-4xl text-secondary mb-6 leading-snug">
+        <h2 className="font-serif text-3xl sm:text-4xl text-text-main mb-6 leading-snug">
           Vive experiencias únicas en los destinos más increíbles del Perú
         </h2>
         <p className="text-text-light text-base sm:text-lg leading-relaxed font-light">
-          Descubre la magia del Perú con {brand.name}. Recorre destinos inolvidables, sumérgete en su historia, cultura y paisajes extraordinarios con tours diseñados para brindarte una experiencia auténtica, segura y llena de momentos que recordarás para siempre.
+          Descubre la magia del Perú con Machupicchu Travel Adventure. Recorre destinos inolvidables, sumérgete en su historia, cultura y paisajes extraordinarios con tours diseñados para brindarte una experiencia auténtica, segura y llena de momentos que recordarás para siempre.
         </p>
       </section>
 
@@ -72,7 +72,7 @@ export default async function NosotrosPage() {
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-primary-dark/90" />
+        <div className="absolute inset-0 bg-[#036B66]/90" />
         
         <div className="relative z-10 container mx-auto lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -83,7 +83,7 @@ export default async function NosotrosPage() {
             <div className="lg:col-span-8 text-white">
               <h2 className="text-sm font-bold uppercase tracking-widest text-accent-light mb-2">Nuestros Valores</h2>
               <p className="text-white/95 text-base sm:text-lg leading-relaxed font-light mb-8 max-w-2xl border-b border-white/20 pb-6">
-                {t('companyNameVal')} opera con un conjunto de valores fundamentales que guían todos los aspectos de nuestro servicio, compromiso comunitario y esfuerzos de sostenibilidad.
+                Machu Picchu Travel Adventure opera con un conjunto de valores fundamentales que guían todos los aspectos de nuestro servicio, compromiso comunitario y esfuerzos de sostenibilidad.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">

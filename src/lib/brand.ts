@@ -133,16 +133,16 @@ export const BRANDS: Record<BrandId, BrandConfig> = {
   },
 };
 
-export const DEFAULT_BRAND_ID: BrandId = 'sonqo';
+export const DEFAULT_BRAND_ID: BrandId = 'mta';
 
 export function getBrandConfig(tenantOverride?: string | null): BrandConfig {
   const raw = (tenantOverride || process.env.NEXT_PUBLIC_BRAND_TENANT || DEFAULT_BRAND_ID)
     .toLowerCase()
     .trim();
-  if (raw === 'mta' || raw === 'machupicchu') {
-    return BRANDS.mta;
+  if (raw === 'sonqo') {
+    return BRANDS.sonqo;
   }
-  return BRANDS.sonqo;
+  return BRANDS.mta;
 }
 
 export function resolveTenantFromBooking(booking: {

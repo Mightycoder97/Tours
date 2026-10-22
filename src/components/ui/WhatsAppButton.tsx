@@ -3,10 +3,9 @@
 import { MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
-import { getBrandConfig } from '@/lib/brand';
 
 export default function WhatsAppButton() {
-  const phoneNumber = getBrandConfig().contact.cleanPhone;
+  const phoneNumber = '51955723329'; // Peru phone number
   const t = useTranslations('whatsapp');
   const message = encodeURIComponent(t('defaultMessage'));
   const pathname = usePathname();

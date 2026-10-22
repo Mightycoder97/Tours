@@ -7,7 +7,6 @@ import SEOBlock from '@/components/home/SEOBlock';
 import PromotionsSlider from '@/components/home/PromotionsSlider';
 import JsonLd from '@/components/seo/JsonLd';
 import { getTranslations } from 'next-intl/server';
-import { getBrandConfig } from '@/lib/brand';
 
 
 export const revalidate = 60;
@@ -15,17 +14,16 @@ export const revalidate = 60;
 export default async function Home() {
   const tFaq = await getTranslations('home.faq');
   const tCommon = await getTranslations('common');
-  const brand = getBrandConfig();
 
   return (
     <>
       <JsonLd data={{
         '@context': 'https://schema.org',
         '@type': 'TravelAgency',
-        name: brand.name,
+        name: 'Machu Picchu Travel Adventures',
         description: tCommon('jsonLdDescription'),
-        url: brand.domain,
-        telephone: `+${brand.contact.cleanPhone}`,
+        url: 'https://machupicchutravel.com',
+        telephone: '+51955723329',
         address: {
           '@type': 'PostalAddress',
           addressLocality: 'Cusco',

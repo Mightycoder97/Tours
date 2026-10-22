@@ -58,40 +58,38 @@ export default function FeaturedToursTabs({ tours }: FeaturedToursTabsProps) {
 
   return (
     <div>
-      {/* Modern Pill Switcher Tabs Header */}
-      <div className="flex justify-center mb-10 overflow-x-auto whitespace-nowrap scrollbar-hide -mx-4 px-4">
-        <div className="inline-flex bg-cream p-1.5 rounded-2xl border border-primary/15 gap-1.5">
-          <button
-            onClick={() => setActiveTab('recommended')}
-            className={`py-2.5 px-5 text-xs sm:text-sm rounded-xl transition-all cursor-pointer font-bold tracking-wide ${
-              activeTab === 'recommended' 
-                ? 'bg-primary text-white shadow-md shadow-primary/30' 
-                : 'text-secondary hover:text-primary'
-            }`}
-          >
-            Recomendados
-          </button>
-          <button
-            onClick={() => setActiveTab('individual')}
-            className={`py-2.5 px-5 text-xs sm:text-sm rounded-xl transition-all cursor-pointer font-bold tracking-wide ${
-              activeTab === 'individual' 
-                ? 'bg-primary text-white shadow-md shadow-primary/30' 
-                : 'text-secondary hover:text-primary'
-            }`}
-          >
-            Individuales
-          </button>
-          <button
-            onClick={() => setActiveTab('promotions')}
-            className={`py-2.5 px-5 text-xs sm:text-sm rounded-xl transition-all cursor-pointer font-bold tracking-wide ${
-              activeTab === 'promotions' 
-                ? 'bg-primary text-white shadow-md shadow-primary/30' 
-                : 'text-secondary hover:text-primary'
-            }`}
-          >
-            Promociones
-          </button>
-        </div>
+      {/* Tabs Header */}
+      <div className="flex justify-center border-b border-gray-100 mb-8 overflow-x-auto whitespace-nowrap scrollbar-hide -mx-4 px-4 gap-2 sm:gap-6">
+        <button
+          onClick={() => setActiveTab('recommended')}
+          className={`py-3 px-4 font-serif text-base sm:text-lg border-b-2 transition-all cursor-pointer font-medium tracking-wide uppercase ${
+            activeTab === 'recommended' 
+              ? 'border-primary text-primary font-bold' 
+              : 'border-transparent text-text-light hover:text-text-main'
+          }`}
+        >
+          PAQUETES RECOMENDADOS
+        </button>
+        <button
+          onClick={() => setActiveTab('individual')}
+          className={`py-3 px-4 font-serif text-base sm:text-lg border-b-2 transition-all cursor-pointer font-medium tracking-wide uppercase ${
+            activeTab === 'individual' 
+              ? 'border-primary text-primary font-bold' 
+              : 'border-transparent text-text-light hover:text-text-main'
+          }`}
+        >
+          PAQUETES INDIVIDUALES
+        </button>
+        <button
+          onClick={() => setActiveTab('promotions')}
+          className={`py-3 px-4 font-serif text-base sm:text-lg border-b-2 transition-all cursor-pointer font-medium tracking-wide uppercase ${
+            activeTab === 'promotions' 
+              ? 'border-primary text-primary font-bold' 
+              : 'border-transparent text-text-light hover:text-text-main'
+          }`}
+        >
+          PROMOCIONES
+        </button>
       </div>
 
       <FeaturedToursGrid tours={filtered} />

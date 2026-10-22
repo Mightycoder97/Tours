@@ -3,11 +3,9 @@
 import { useState } from 'react';
 import { MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { getBrandConfig } from '@/lib/brand';
 
 export default function ContactForm() {
   const t = useTranslations('pages.contact');
-  const brand = getBrandConfig();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -15,8 +13,8 @@ export default function ContactForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanPhone = brand.contact.cleanPhone;
-    const textMessage = `¡Hola ${brand.name}! Deseo enviar un mensaje desde la web.\n\n` +
+    const cleanPhone = '51955723329';
+    const textMessage = `¡Hola Machupicchu Travel Adventure! Deseo enviar un mensaje desde la web.\n\n` +
       `👤 Nombre: ${name}\n` +
       `✉️ Correo: ${email}\n` +
       `📞 Teléfono: ${phone || 'No provisto'}\n` +
@@ -89,7 +87,7 @@ export default function ContactForm() {
         
         <button
           type="submit"
-          className="w-full bg-cta hover:bg-cta-hover text-white font-bold py-3 px-6 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer mt-6 text-sm sm:text-base border-none"
+          className="w-full bg-[#ff7a00] hover:bg-[#e06b00] text-white font-bold py-3 px-6 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer mt-6 text-sm sm:text-base border-none"
         >
           <MessageCircle className="w-5 h-5" />
           <span>{t('formSubmit')}</span>
