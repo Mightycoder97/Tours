@@ -218,16 +218,16 @@ export default function CheckoutPage() {
   };
 
   const validatePassengers = (): string | null => {
-    if (!contactEmail || !contactPhone) return 'Email y teléfono son requeridos';
+    if (!contactEmail || !contactPhone) return t('errors.emailPhoneRequired');
     for (const p of adultsInfo) {
-      if (!p.firstName.trim() || !p.lastName.trim()) return 'Nombre completo requerido para todos los pasajeros';
-      if (!p.docNumber.trim()) return 'Número de documento requerido';
-      if (p.docType === 'DNI' && !/^\d{8}$/.test(p.docNumber)) return 'DNI debe tener exactamente 8 dígitos';
-      if (!p.birthDate) return 'Fecha de nacimiento requerida';
+      if (!p.firstName.trim() || !p.lastName.trim()) return t('errors.adultNameRequired');
+      if (!p.docNumber.trim()) return t('errors.docNumberRequired');
+      if (p.docType === 'DNI' && !/^\d{8}$/.test(p.docNumber)) return t('errors.dniLengthInvalid');
+      if (!p.birthDate) return t('errors.birthDateRequired');
     }
     for (const p of childrenInfo) {
-      if (!p.firstName.trim() || !p.lastName.trim()) return 'Nombre completo requerido para todos los niños';
-      if (!p.docNumber.trim()) return 'Número de documento requerido para niños';
+      if (!p.firstName.trim() || !p.lastName.trim()) return t('errors.childNameRequired');
+      if (!p.docNumber.trim()) return t('errors.childDocRequired');
     }
     if (!acceptTerms) return t('policies.mustAcceptTerms');
     return null;
@@ -247,12 +247,12 @@ export default function CheckoutPage() {
     setFormError(null);
 
     if (typeof window === 'undefined' || typeof window.CulqiCheckout === 'undefined') {
-      setFormError('El sistema de pago aún se está cargando. Por favor espera un momento e intenta nuevamente.');
+      setFormError(t('errors.paymentSystemLoading'));
       return;
     }
 
     if (!CULQI_PUBLIC_KEY) {
-      setFormError('Error de configuración: Llave pública de Culqi no configurada.');
+      setFormError(t('errors.culqiKeyMissing'));
       return;
     }
 
@@ -298,7 +298,7 @@ export default function CheckoutPage() {
         hiddenBanner: false,
         hiddenEmail: false,
         menuType: 'sidebar',
-        buttonCardPayText: 'Confirmar pago',
+        buttonCardPayText: t('payment.confirmPayButton'),
         logo: null,
         defaultStyle: {
           bannerColor:      brand.colors.primary,
@@ -361,15 +361,15 @@ export default function CheckoutPage() {
           if (chargeData.success) {
             await registerBooking(chargeData.chargeId, actualMethod, 'PAID', currency);
           } else {
-            setFormError(`Error de pago: ${chargeData.error || 'Error desconocido'}`);
+            setFormError(t('errors.paymentRejected', { error: chargeData.error || t('errors.unknownError') }));
             setIsProcessing(false);
           }
         } catch {
-          setFormError('Error de red al conectar con la pasarela. Intenta nuevamente.');
+          setFormError(t('errors.networkError'));
           setIsProcessing(false);
         }
       } else if (instance.error) {
-        setFormError(instance.error.user_message || 'Datos incorrectos. Verifica e intenta nuevamente.');
+        setFormError(instance.error.user_message || t('errors.invalidPaymentData'));
         setIsProcessing(false);
       }
     };
@@ -559,7 +559,7 @@ export default function CheckoutPage() {
                         <div className="mt-4 pl-9 space-y-3">
                           {!isPenCart && (
                             <div className="flex items-center gap-2 text-xs">
-                              <span className="text-text-light font-medium">Moneda de cobro:</span>
+                              <span className="text-text-light font-medium">{t('payment.billingCurrency')}</span>
                               <button
                                 type="button"
                                 onClick={(e) => { e.preventDefault(); setCardCurrency('USD'); }}
@@ -587,11 +587,11 @@ export default function CheckoutPage() {
                           <p className="text-sm text-text-light bg-gray-50 rounded-lg p-4 flex items-center gap-2">
                             <ShieldCheck className="w-5 h-5 shrink-0 text-green-600" />
                             <span>
-                              Se abrirá el formulario seguro de Culqi. Pago en{' '}
+                              {t('payment.culqiSecureNotice')}{' '}
                               <strong>
                                 {activeCardCurrency === 'PEN'
-                                  ? `Soles (S/ ${totalInPen.toFixed(2)} PEN)`
-                                  : `Dólares (US$ ${totalInUsd.toFixed(2)} USD)`}
+                                  ? t('payment.currencyPenAmount', { amount: totalInPen.toFixed(2) })
+                                  : t('payment.currencyUsdAmount', { amount: totalInUsd.toFixed(2) })}
                               </strong>.
                             </span>
                           </p>
@@ -621,7 +621,7 @@ export default function CheckoutPage() {
                         <Smartphone className="w-5 h-5 ml-3 text-[#6E2ED6]" />
                         <span className="ml-2 font-medium flex-1">
                           <span className="text-[#6E2ED6] font-bold">Yape</span>
-                          <span className="ml-2 text-xs text-gray-400 font-normal">Solo para residentes en Perú</span>
+                          <span className="ml-2 text-xs text-gray-400 font-normal">{t('payment.yapePeruOnly')}</span>
                         </span>
                         <span className="text-xs font-semibold bg-purple-100 text-purple-700 px-2 py-1 rounded">PEN</span>
                       </div>
@@ -630,11 +630,13 @@ export default function CheckoutPage() {
                           <div className="text-sm text-text-light bg-purple-50 rounded-lg p-4 space-y-2">
                             <p className="flex items-center gap-2">
                               <ShieldCheck className="w-5 h-5 shrink-0 text-[#6E2ED6]" />
-                              Necesitarás el código de aprobación de <strong>6 dígitos</strong> de tu app Yape.
+                              <span>
+                                {t('payment.yapeOtpPrefix')} <strong>{t('payment.yapeOtpDigits')}</strong> {t('payment.yapeOtpSuffix')}
+                              </span>
                             </p>
                             <p className="text-xs text-purple-900 font-medium">
-                              Total a pagar: <strong>S/ {totalInPen.toFixed(2)} PEN</strong>
-                              {!isPenCart && ` (T.C. ref: S/ ${USD_TO_PEN_RATE.toFixed(2)} por USD)`}
+                              {t('payment.yapeTotalLabel')}: <strong>S/ {totalInPen.toFixed(2)} PEN</strong>
+                              {!isPenCart && ` (${t('payment.exchangeRateRef', { rate: USD_TO_PEN_RATE.toFixed(2) })})`}
                             </p>
                           </div>
                         </div>
@@ -771,12 +773,12 @@ export default function CheckoutPage() {
                         {isProcessing
                           ? t('payment.processing')
                           : !culqiReady
-                          ? 'Cargando sistema de pago…'
+                          ? t('payment.loadingSystem')
                           : paymentMethod === 'yape'
-                          ? `Pagar S/ ${totalInPen.toFixed(2)} con Yape`
+                          ? t('payment.payWithYape', { amount: totalInPen.toFixed(2) })
                           : activeCardCurrency === 'PEN'
-                          ? `Pagar S/ ${totalInPen.toFixed(2)} con Tarjeta`
-                          : `Pagar US$ ${totalInUsd.toFixed(2)} con Tarjeta`}
+                          ? t('payment.payWithCardPen', { amount: totalInPen.toFixed(2) })
+                          : t('payment.payWithCardUsd', { amount: totalInUsd.toFixed(2) })}
                       </button>
                     </div>
                   )}

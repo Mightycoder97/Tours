@@ -7,6 +7,7 @@ import { getBrandConfig } from '@/lib/brand';
 
 export interface ReclamacionPayload {
   tenant?: string;
+  locale?: 'es' | 'en';
   consumerName: string;
   consumerDocType: 'DNI' | 'CE' | 'PASSPORT' | 'RUC';
   consumerDocNumber: string;
@@ -46,21 +47,27 @@ export async function POST(req: Request) {
       req.headers.get('x-real-ip') ??
       '127.0.0.1';
 
-    const { allowed } = checkRateLimit(`reclamaciones:${ip}`);
-    if (!allowed) {
-      return NextResponse.json(
-        { error: 'Demasiadas solicitudes. Por favor espera unos minutos antes de intentar nuevamente.' },
-        { status: 429 }
-      );
-    }
-
     let body: ReclamacionPayload;
     try {
       body = (await req.json()) as ReclamacionPayload;
     } catch {
       return NextResponse.json(
-        { error: 'Formato de solicitud inválido.' },
+        { error: 'Invalid request format. / Formato de solicitud inválido.' },
         { status: 400 }
+      );
+    }
+
+    const isEn = body.locale === 'en';
+
+    const { allowed } = checkRateLimit(`reclamaciones:${ip}`);
+    if (!allowed) {
+      return NextResponse.json(
+        {
+          error: isEn
+            ? 'Too many requests. Please wait a few minutes before trying again.'
+            : 'Demasiadas solicitudes. Por favor espera unos minutos antes de intentar nuevamente.',
+        },
+        { status: 429 }
       );
     }
 
@@ -85,59 +92,120 @@ export async function POST(req: Request) {
     const consumerSignature = (body.consumerSignature || '').trim();
 
     if (!consumerName || consumerName.length < 3) {
-      return NextResponse.json({ error: 'Ingrese sus nombres y apellidos completos.' }, { status: 400 });
+      return NextResponse.json(
+        { error: isEn ? 'Please enter your full first and last name.' : 'Ingrese sus nombres y apellidos completos.' },
+        { status: 400 }
+      );
     }
     if (!VALID_DOC_TYPES.has(consumerDocType)) {
-      return NextResponse.json({ error: 'Tipo de documento inválido.' }, { status: 400 });
+      return NextResponse.json(
+        { error: isEn ? 'Invalid document type.' : 'Tipo de documento inválido.' },
+        { status: 400 }
+      );
     }
     if (!consumerDocNumber) {
-      return NextResponse.json({ error: 'Ingrese el número de su documento de identidad.' }, { status: 400 });
+      return NextResponse.json(
+        { error: isEn ? 'Please enter your identity document number.' : 'Ingrese el número de su documento de identidad.' },
+        { status: 400 }
+      );
     }
     if (consumerDocType === 'DNI' && !/^\d{8}$/.test(consumerDocNumber)) {
-      return NextResponse.json({ error: 'El DNI debe tener exactamente 8 dígitos numéricos.' }, { status: 400 });
+      return NextResponse.json(
+        { error: isEn ? 'DNI must contain exactly 8 numeric digits.' : 'El DNI debe tener exactamente 8 dígitos numéricos.' },
+        { status: 400 }
+      );
     }
     if (consumerDocType === 'RUC' && !/^\d{11}$/.test(consumerDocNumber)) {
-      return NextResponse.json({ error: 'El RUC debe tener exactamente 11 dígitos numéricos.' }, { status: 400 });
+      return NextResponse.json(
+        { error: isEn ? 'RUC must contain exactly 11 numeric digits.' : 'El RUC debe tener exactamente 11 dígitos numéricos.' },
+        { status: 400 }
+      );
     }
     if (!consumerAddress || consumerAddress.length < 5) {
-      return NextResponse.json({ error: 'Ingrese su domicilio completo.' }, { status: 400 });
+      return NextResponse.json(
+        { error: isEn ? 'Please enter your full address.' : 'Ingrese su domicilio completo.' },
+        { status: 400 }
+      );
     }
     if (!consumerPhone || consumerPhone.length < 6) {
-      return NextResponse.json({ error: 'Ingrese un número de teléfono válido.' }, { status: 400 });
+      return NextResponse.json(
+        { error: isEn ? 'Please enter a valid phone number.' : 'Ingrese un número de teléfono válido.' },
+        { status: 400 }
+      );
     }
     if (!consumerEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(consumerEmail)) {
-      return NextResponse.json({ error: 'Ingrese un correo electrónico válido.' }, { status: 400 });
+      return NextResponse.json(
+        { error: isEn ? 'Please enter a valid email address.' : 'Ingrese un correo electrónico válido.' },
+        { status: 400 }
+      );
     }
     if (isMinor && !guardianName) {
       return NextResponse.json(
-        { error: 'Si el consumidor es menor de edad, debe indicar el nombre del padre, madre o apoderado.' },
+        {
+          error: isEn
+            ? 'If the consumer is a minor, you must provide the full name of the parent or legal guardian.'
+            : 'Si el consumidor es menor de edad, debe indicar el nombre del padre, madre o apoderado.',
+        },
         { status: 400 }
       );
     }
     if (!VALID_GOOD_TYPES.has(goodType)) {
-      return NextResponse.json({ error: 'Seleccione el tipo de bien contratado (Producto o Servicio).' }, { status: 400 });
+      return NextResponse.json(
+        {
+          error: isEn
+            ? 'Please select the type of contracted good (Product or Service).'
+            : 'Seleccione el tipo de bien contratado (Producto o Servicio).',
+        },
+        { status: 400 }
+      );
     }
     if (!goodDescription || goodDescription.length < 3) {
-      return NextResponse.json({ error: 'Describa el producto o servicio involucrado.' }, { status: 400 });
+      return NextResponse.json(
+        {
+          error: isEn
+            ? 'Please describe the product or service involved.'
+            : 'Describa el producto o servicio involucrado.',
+        },
+        { status: 400 }
+      );
     }
     if (!VALID_REQUIREMENT_TYPES.has(requirementType)) {
-      return NextResponse.json({ error: 'Seleccione el tipo de requerimiento (Reclamo o Queja).' }, { status: 400 });
+      return NextResponse.json(
+        {
+          error: isEn
+            ? 'Please select the requirement type (Claim or Complaint).'
+            : 'Seleccione el tipo de requerimiento (Reclamo o Queja).',
+        },
+        { status: 400 }
+      );
     }
     if (!detail || detail.length < 10) {
       return NextResponse.json(
-        { error: 'Ingrese el detalle del motivo de su reclamo o queja (mínimo 10 caracteres).' },
+        {
+          error: isEn
+            ? 'Please provide the detailed reason for your claim or complaint (minimum 10 characters).'
+            : 'Ingrese el detalle del motivo de su reclamo o queja (mínimo 10 caracteres).',
+        },
         { status: 400 }
       );
     }
     if (!consumerRequest || consumerRequest.length < 5) {
       return NextResponse.json(
-        { error: 'Ingrese el pedido o solución esperada por el consumidor.' },
+        {
+          error: isEn
+            ? 'Please enter the consumer request or expected solution.'
+            : 'Ingrese el pedido o solución esperada por el consumidor.',
+        },
         { status: 400 }
       );
     }
     if (!consumerSignature || consumerSignature.length < 3) {
       return NextResponse.json(
-        { error: 'Ingrese su nombre completo en el campo de Firma del Consumidor.' },
+        {
+          error: isEn
+            ? 'Please enter your full name in the Consumer Signature field.'
+            : 'Ingrese su nombre completo en el campo de Firma del Consumidor.',
+        },
         { status: 400 }
       );
     }
@@ -147,7 +215,11 @@ export async function POST(req: Request) {
       const num = Number(body.claimedAmount);
       if (!Number.isFinite(num) || num < 0 || num > 99999999.99) {
         return NextResponse.json(
-          { error: 'El monto reclamado debe ser un valor numérico válido (entre 0 y 99,999,999.99).' },
+          {
+            error: isEn
+              ? 'The claimed amount must be a valid number (between 0 and 99,999,999.99).'
+              : 'El monto reclamado debe ser un valor numérico válido (entre 0 y 99,999,999.99).',
+          },
           { status: 400 }
         );
       }
@@ -175,8 +247,15 @@ export async function POST(req: Request) {
     }).format(deadlineDate);
     const createdAtIso = now.toISOString();
 
-    const defaultCompanyResponseText =
-      'Hoja de Reclamación recibida y registrada satisfactoriamente. El área de Atención al Usuario evaluará su caso y enviará una respuesta formal a su correo electrónico en un plazo máximo de treinta (30) días calendario improrrogables, conforme a la Ley N° 29571.';
+    const defaultCompanyResponseText = isEn
+      ? 'Complaint Sheet received and registered satisfactorily. Our Customer Care Department will evaluate your case and send a formal response to your email address within a non-extendable maximum period of thirty (30) calendar days, pursuant to Peruvian Law N° 29571.'
+      : 'Hoja de Reclamación recibida y registrada satisfactoriamente. El área de Atención al Usuario evaluará su caso y enviará una respuesta formal a su correo electrónico en un plazo máximo de treinta (30) días calendario improrrogables, conforme a la Ley N° 29571.';
+    const defaultStatusText = isEn
+      ? 'PENDING RESPONSE (MAX. 30 CALENDAR DAYS)'
+      : 'PENDIENTE DE RESPUESTA (MÁX. 30 DÍAS CALENDARIO)';
+    const defaultRepSignature = isEn
+      ? `${brand.legalName} (RUC ${brand.ruc}) — Customer Care Representative`
+      : `${brand.legalName} (RUC ${brand.ruc}) — Representante de Atención al Usuario`;
 
     // 1. Intentar guardar en Supabase con fallback seguro si la tabla aún no fue migrada
     let persistedInDb = false;
@@ -231,9 +310,88 @@ export async function POST(req: Request) {
       try {
         const resend = new Resend(process.env.RESEND_API_KEY);
         const formattedAmount =
-          parsedAmount !== null ? `${claimedCurrency === 'PEN' ? 'S/' : 'US$'} ${parsedAmount.toFixed(2)}` : 'No especificado';
+          parsedAmount !== null
+            ? `${claimedCurrency === 'PEN' ? 'S/' : 'US$'} ${parsedAmount.toFixed(2)}`
+            : isEn
+            ? 'Not specified'
+            : 'No especificado';
+        const formattedGoodType =
+          goodType === 'SERVICIO'
+            ? isEn
+              ? 'SERVICE (TOUR)'
+              : 'SERVICIO'
+            : isEn
+            ? 'PRODUCT'
+            : 'PRODUCTO';
+        const formattedRequirementType =
+          requirementType === 'RECLAMO'
+            ? isEn
+              ? 'CLAIM (RECLAMO)'
+              : 'RECLAMO'
+            : isEn
+            ? 'COMPLAINT (QUEJA)'
+            : 'QUEJA';
+        const formattedRegDate = now.toLocaleDateString(isEn ? 'en-US' : 'es-PE', {
+          timeZone: 'America/Lima',
+        });
 
-        const emailHtml = `
+        const emailHtml = isEn
+          ? `
+          <div style="font-family: Arial, sans-serif; color: #1A1A1A; max-width: 680px; margin: 0 auto; border: 1px solid #E5E7EB; border-radius: 12px; overflow: hidden;">
+            <div style="background-color: ${brand.colors.primaryDark}; color: #FFFFFF; padding: 24px;">
+              <p style="margin: 0; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9;">
+                Virtual Complaints Book (Libro de Reclamaciones) — Law N° 29571 &amp; D.S. N° 011-2011-PCM
+              </p>
+              <h1 style="margin: 8px 0 4px; font-size: 22px;">Official Complaint Sheet N° ${escapeHtml(complaintCode)}</h1>
+              <p style="margin: 0; font-size: 13px; opacity: 0.9;">
+                Registration date: ${escapeHtml(formattedRegDate)} | Maximum response deadline: ${escapeHtml(responseDeadlineIso)} (30 calendar days)
+              </p>
+            </div>
+
+            <div style="padding: 24px; font-size: 14px; line-height: 1.5;">
+              <h3 style="margin-top: 0; color: ${brand.colors.primaryDark}; border-bottom: 1px solid #E5E7EB; padding-bottom: 6px;">
+                1. Provider Information
+              </h3>
+              <p style="margin: 4px 0;"><strong>Legal Name:</strong> ${escapeHtml(brand.legalName)} (${escapeHtml(brand.name)})</p>
+              <p style="margin: 4px 0;"><strong>Tax ID (RUC):</strong> ${escapeHtml(brand.ruc)}</p>
+              <p style="margin: 4px 0;"><strong>Address:</strong> ${escapeHtml(brand.contact.address)}</p>
+              <p style="margin: 4px 0;"><strong>Phone / Email:</strong> ${escapeHtml(brand.contact.phone)} | ${escapeHtml(brand.contact.email)}</p>
+
+              <h3 style="margin-top: 20px; color: ${brand.colors.primaryDark}; border-bottom: 1px solid #E5E7EB; padding-bottom: 6px;">
+                2. Claimant Consumer Identification
+              </h3>
+              <p style="margin: 4px 0;"><strong>Full Name:</strong> ${escapeHtml(consumerName)}</p>
+              <p style="margin: 4px 0;"><strong>Identity Document:</strong> ${escapeHtml(consumerDocType)} N° ${escapeHtml(consumerDocNumber)}</p>
+              <p style="margin: 4px 0;"><strong>Address:</strong> ${escapeHtml(consumerAddress)}</p>
+              <p style="margin: 4px 0;"><strong>Phone / Email:</strong> ${escapeHtml(consumerPhone)} | ${escapeHtml(consumerEmail)}</p>
+              ${isMinor ? `<p style="margin: 4px 0;"><strong>Parent / Legal Guardian:</strong> ${escapeHtml(guardianName)}</p>` : ''}
+
+              <h3 style="margin-top: 20px; color: ${brand.colors.primaryDark}; border-bottom: 1px solid #E5E7EB; padding-bottom: 6px;">
+                3. Identification of the Contracted Good
+              </h3>
+              <p style="margin: 4px 0;"><strong>Type of Good:</strong> ${escapeHtml(formattedGoodType)}</p>
+              <p style="margin: 4px 0;"><strong>Claimed Amount:</strong> ${escapeHtml(formattedAmount)}</p>
+              ${bookingCode ? `<p style="margin: 4px 0;"><strong>Booking Code:</strong> ${escapeHtml(bookingCode)}</p>` : ''}
+              <p style="margin: 4px 0;"><strong>Description:</strong> ${escapeHtml(goodDescription)}</p>
+
+              <h3 style="margin-top: 20px; color: ${brand.colors.primaryDark}; border-bottom: 1px solid #E5E7EB; padding-bottom: 6px;">
+                4. Details of the Claim and Consumer&apos;s Request
+              </h3>
+              <p style="margin: 4px 0;"><strong>Requirement Type:</strong> ${escapeHtml(formattedRequirementType)}</p>
+              <p style="margin: 8px 0;"><strong>Detailed Reason:</strong><br/>${escapeHtml(detail)}</p>
+              <p style="margin: 8px 0;"><strong>Consumer&apos;s Request:</strong><br/>${escapeHtml(consumerRequest)}</p>
+
+              <h3 style="margin-top: 20px; color: ${brand.colors.primaryDark}; border-bottom: 1px solid #E5E7EB; padding-bottom: 6px;">
+                5. Company Response and Signatures
+              </h3>
+              <p style="margin: 4px 0;"><strong>Maximum response timeframe:</strong> 30 calendar days (until ${escapeHtml(responseDeadlineIso)})</p>
+              <p style="margin: 4px 0;"><strong>Initial status / measures:</strong> ${escapeHtml(defaultCompanyResponseText)}</p>
+              <p style="margin: 8px 0;"><strong>Consumer Signature:</strong> ${escapeHtml(consumerSignature)}</p>
+              <p style="margin: 4px 0;"><strong>Business Representative Signature:</strong> ${escapeHtml(brand.legalName)} — Customer Care Department</p>
+            </div>
+          </div>
+        `
+          : `
           <div style="font-family: Arial, sans-serif; color: #1A1A1A; max-width: 680px; margin: 0 auto; border: 1px solid #E5E7EB; border-radius: 12px; overflow: hidden;">
             <div style="background-color: ${brand.colors.primaryDark}; color: #FFFFFF; padding: 24px;">
               <p style="margin: 0; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9;">
@@ -241,7 +399,7 @@ export async function POST(req: Request) {
               </p>
               <h1 style="margin: 8px 0 4px; font-size: 22px;">Hoja de Reclamación N° ${escapeHtml(complaintCode)}</h1>
               <p style="margin: 0; font-size: 13px; opacity: 0.9;">
-                Fecha de registro: ${escapeHtml(now.toLocaleDateString('es-PE', { timeZone: 'America/Lima' }))} | Plazo máximo de respuesta: ${escapeHtml(responseDeadlineIso)} (30 días calendario)
+                Fecha de registro: ${escapeHtml(formattedRegDate)} | Plazo máximo de respuesta: ${escapeHtml(responseDeadlineIso)} (30 días calendario)
               </p>
             </div>
 
@@ -266,7 +424,7 @@ export async function POST(req: Request) {
               <h3 style="margin-top: 20px; color: ${brand.colors.primaryDark}; border-bottom: 1px solid #E5E7EB; padding-bottom: 6px;">
                 3. Identificación del Bien Contratado
               </h3>
-              <p style="margin: 4px 0;"><strong>Tipo de Bien:</strong> ${escapeHtml(goodType)}</p>
+              <p style="margin: 4px 0;"><strong>Tipo de Bien:</strong> ${escapeHtml(formattedGoodType)}</p>
               <p style="margin: 4px 0;"><strong>Monto Reclamado:</strong> ${escapeHtml(formattedAmount)}</p>
               ${bookingCode ? `<p style="margin: 4px 0;"><strong>Código de Reserva:</strong> ${escapeHtml(bookingCode)}</p>` : ''}
               <p style="margin: 4px 0;"><strong>Descripción:</strong> ${escapeHtml(goodDescription)}</p>
@@ -274,7 +432,7 @@ export async function POST(req: Request) {
               <h3 style="margin-top: 20px; color: ${brand.colors.primaryDark}; border-bottom: 1px solid #E5E7EB; padding-bottom: 6px;">
                 4. Detalle de la Reclamación y Pedido del Consumidor
               </h3>
-              <p style="margin: 4px 0;"><strong>Tipo de Requerimiento:</strong> ${escapeHtml(requirementType)}</p>
+              <p style="margin: 4px 0;"><strong>Tipo de Requerimiento:</strong> ${escapeHtml(formattedRequirementType)}</p>
               <p style="margin: 8px 0;"><strong>Detalle del Motivo:</strong><br/>${escapeHtml(detail)}</p>
               <p style="margin: 8px 0;"><strong>Pedido del Consumidor:</strong><br/>${escapeHtml(consumerRequest)}</p>
 
@@ -292,7 +450,9 @@ export async function POST(req: Request) {
         await resend.emails.send({
           from: process.env.RESEND_FROM_EMAIL || `${brand.name} <reservas@${brand.emailDomain}>`,
           to: [consumerEmail, brand.contact.email],
-          subject: `Constancia de Hoja de Reclamación N° ${complaintCode} - ${brand.name}`,
+          subject: isEn
+            ? `Official Complaint Sheet Receipt N° ${complaintCode} - ${brand.name}`
+            : `Constancia de Hoja de Reclamación N° ${complaintCode} - ${brand.name}`,
           html: emailHtml,
         });
       } catch (emailErr) {
@@ -341,18 +501,18 @@ export async function POST(req: Request) {
           maxDays: 30,
           deadline: responseDeadlineIso,
           measuresAdopted: defaultCompanyResponseText,
-          status: 'PENDIENTE DE RESPUESTA (MÁX. 30 DÍAS CALENDARIO)',
+          status: defaultStatusText,
         },
         signatures: {
           consumer: consumerSignature,
-          representative: `${brand.legalName} (RUC ${brand.ruc}) — Representante de Atención al Usuario`,
+          representative: defaultRepSignature,
         },
       },
     });
   } catch (error) {
     console.error('[LibroReclamaciones] Error procesando reclamo:', error);
     return NextResponse.json(
-      { error: 'Ocurrió un error al procesar la Hoja de Reclamación. Intente nuevamente.' },
+      { error: 'An error occurred while processing the Complaint Sheet. / Ocurrió un error al procesar la Hoja de Reclamación.' },
       { status: 500 }
     );
   }
