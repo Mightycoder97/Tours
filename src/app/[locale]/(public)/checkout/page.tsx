@@ -4,7 +4,7 @@
 // La declaración global de window.CulqiCheckout vive en ese archivo.
 
 import { useCartStore, TEST_PEN_TOUR_SLUG } from '@/store/useCartStore';
-import { useRouter } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { useEffect, useRef, useState, FormEvent } from 'react';
 import { ShieldCheck, User, CreditCard, Smartphone } from 'lucide-react';
 import Image from 'next/image';
@@ -60,6 +60,7 @@ export default function CheckoutPage() {
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhone, setContactPhone] = useState('');
   const [contactPhonePrefix, setContactPhonePrefix] = useState('+51');
+  const [acceptTerms, setAcceptTerms] = useState(false);
 
   /** Instancia activa de CulqiCheckout */
   const culqiRef = useRef<CulqiInstance | null>(null);
@@ -228,6 +229,7 @@ export default function CheckoutPage() {
       if (!p.firstName.trim() || !p.lastName.trim()) return 'Nombre completo requerido para todos los niños';
       if (!p.docNumber.trim()) return 'Número de documento requerido para niños';
     }
+    if (!acceptTerms) return t('policies.mustAcceptTerms');
     return null;
   };
 
@@ -705,8 +707,46 @@ export default function CheckoutPage() {
                   {/* Policies */}
                   <div className="mt-8 space-y-3">
                      <label className="flex items-start cursor-pointer group">
-                        <input required type="checkbox" className="mt-1 w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary" />
-                        <span className="ml-3 text-sm text-text-main group-hover:text-primary transition-colors">{t('policies.acceptTerms')}</span>
+                        <input
+                          required
+                          type="checkbox"
+                          checked={acceptTerms}
+                          onChange={(e) => {
+                            setAcceptTerms(e.target.checked);
+                            if (e.target.checked && formError) setFormError(null);
+                          }}
+                          className="mt-1 w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
+                        />
+                        <span className="ml-3 text-sm text-text-main leading-relaxed">
+                          {t('policies.acceptPrefix')}{' '}
+                          <Link
+                            href="/condiciones"
+                            target="_blank"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-primary font-semibold underline hover:text-primary-dark"
+                          >
+                            {t('policies.termsAndConditions')}
+                          </Link>
+                          {t('policies.acceptMiddle')}{' '}
+                          <Link
+                            href="/cambios-y-devoluciones"
+                            target="_blank"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-primary font-semibold underline hover:text-primary-dark"
+                          >
+                            {t('policies.changesAndReturns')}
+                          </Link>{' '}
+                          {t('policies.acceptAnd')}{' '}
+                          <Link
+                            href="/politicas"
+                            target="_blank"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-primary font-semibold underline hover:text-primary-dark"
+                          >
+                            {t('policies.privacyPolicy')}
+                          </Link>
+                          .
+                        </span>
                      </label>
                      <label className="flex items-start cursor-pointer group">
                         <input type="checkbox" className="mt-1 w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary" />

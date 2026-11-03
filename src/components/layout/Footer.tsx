@@ -1,6 +1,7 @@
 import { Link } from '@/i18n/navigation';
-import { MapPin, Phone, Mail, Clock, ShieldCheck, HeartHandshake } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, BookOpen } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
+import { getBrandConfig } from '@/lib/brand';
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -36,7 +37,8 @@ function TripAdvisorIcon({ className }: { className?: string }) {
 
 export default async function Footer() {
   const t = await getTranslations('footer');
-  const rucValue = '20564458385';
+  const brand = getBrandConfig();
+  const rucValue = brand.ruc;
 
   return (
     <footer className="bg-footer-bg text-white border-t border-gray-800">
@@ -46,20 +48,27 @@ export default async function Footer() {
           
           {/* Column 1: Brand & Contacts */}
           <div className="sm:col-span-2 md:col-span-3 lg:col-span-2">
-            <h3 className="font-serif text-2xl text-primary mb-4 leading-tight">{t('brand.name')}</h3>
+            <h3 className="font-serif text-2xl text-primary mb-1 leading-tight">{brand.name}</h3>
+            <p className="text-gray-300 text-xs font-semibold mb-3">
+              {brand.legalName} — RUC: {rucValue}
+            </p>
             <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-light">
               {t('brand.description')}
             </p>
             
             {/* Direct Contact info */}
             <div className="space-y-3 mb-6">
+              <div className="flex items-start gap-2.5 text-gray-300 text-xs sm:text-sm">
+                <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                <span>{brand.contact.address}</span>
+              </div>
               <div className="flex items-center gap-2.5 text-gray-300">
                 <Phone className="w-4 h-4 text-primary shrink-0" />
-                <a href="tel:+51955723329" className="hover:text-primary transition-colors font-medium">{t('contact.phone')}</a>
+                <a href={`tel:+${brand.contact.cleanPhone}`} className="hover:text-primary transition-colors font-medium">{brand.contact.phone}</a>
               </div>
               <div className="flex items-center gap-2.5 text-gray-300">
                 <Mail className="w-4 h-4 text-primary shrink-0" />
-                <a href="mailto:reservasmtaperu@gmail.com" className="hover:text-primary transition-colors font-medium break-all">{t('contact.email')}</a>
+                <a href={`mailto:${brand.contact.email}`} className="hover:text-primary transition-colors font-medium break-all">{brand.contact.email}</a>
               </div>
               <div className="flex items-center gap-2.5 text-gray-400 text-xs">
                 <Clock className="w-4 h-4 text-primary shrink-0" />
@@ -69,16 +78,16 @@ export default async function Footer() {
 
             {/* Social media Links */}
             <div className="flex gap-2.5">
-              <a href="https://www.facebook.com/MachupicchuTravelAdventure/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.facebook')}>
+              <a href={brand.social.facebook} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.facebook')}>
                 <FacebookIcon className="w-4.5 h-4.5" />
               </a>
-              <a href="https://www.instagram.com/machupicchutraveladventure/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.instagram')}>
+              <a href={brand.social.instagram} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.instagram')}>
                 <InstagramIcon className="w-4.5 h-4.5" />
               </a>
-              <a href="https://www.tiktok.com/@machupicchutraveladventu?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.tiktok')}>
+              <a href={brand.social.tiktok} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label={t('social.tiktok')}>
                 <TiktokIcon className="w-4.5 h-4.5" />
               </a>
-              <a href="https://www.tripadvisor.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label="TripAdvisor">
+              <a href={brand.social.tripadvisor} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-colors text-gray-300 hover:text-white" aria-label="TripAdvisor">
                 <TripAdvisorIcon className="w-4.5 h-4.5" />
               </a>
             </div>
@@ -115,9 +124,10 @@ export default async function Footer() {
           <div>
             <h4 className="font-bold text-xs uppercase tracking-wider text-white mb-4 border-b border-gray-800 pb-2">{t('legales.title')}</h4>
             <ul className="space-y-2.5 font-light text-gray-400 text-xs sm:text-sm">
-              <li><Link href="/nosotros" className="hover:text-primary transition-colors">{t('legales.terminos')}</Link></li>
-              <li><Link href="/nosotros" className="hover:text-primary transition-colors">{t('legales.privacidad')}</Link></li>
-              <li><Link href="/nosotros" className="hover:text-primary transition-colors">{t('legales.cookies')}</Link></li>
+              <li><Link href="/condiciones" className="hover:text-primary transition-colors">{t('legales.terminos')}</Link></li>
+              <li><Link href="/cambios-y-devoluciones" className="hover:text-primary transition-colors">{t('ayuda.cambios')}</Link></li>
+              <li><Link href="/politicas" className="hover:text-primary transition-colors">{t('legales.privacidad')}</Link></li>
+              <li><Link href="/politicas#cookies" className="hover:text-primary transition-colors">{t('legales.cookies')}</Link></li>
               <li><Link href="/nosotros" className="hover:text-primary transition-colors">{t('legales.compromiso')}</Link></li>
             </ul>
           </div>
@@ -126,16 +136,26 @@ export default async function Footer() {
           <div>
             <h4 className="font-bold text-xs uppercase tracking-wider text-white mb-4 border-b border-gray-800 pb-2">{t('ayuda.title')}</h4>
             <ul className="space-y-2.5 font-light text-gray-400 text-xs sm:text-sm mb-4">
-              <li><Link href="/contacto" className="hover:text-primary transition-colors">{t('ayuda.cambios')}</Link></li>
-              <li><Link href="/contacto" className="hover:text-primary transition-colors">{t('ayuda.faq')}</Link></li>
+              <li><Link href="/cambios-y-devoluciones" className="hover:text-primary transition-colors">{t('ayuda.cambios')}</Link></li>
+              <li><Link href="/#faq" className="hover:text-primary transition-colors">{t('ayuda.faq')}</Link></li>
               <li><Link href="/contacto" className="hover:text-primary transition-colors">{t('ayuda.centroAyuda')}</Link></li>
             </ul>
             
-            {/* Libro de reclamaciones digital */}
+            {/* Libro de reclamaciones digital (INDECOPI) */}
             <div className="mt-4 pt-3 border-t border-gray-800">
-              <Link href="/contacto" className="group flex items-center gap-2 p-2.5 bg-white/5 border border-white/10 rounded-lg hover:border-primary transition-colors text-xs font-semibold">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
-                <span className="text-gray-300 group-hover:text-primary transition-colors">{t('ayuda.libroReclamaciones')}</span>
+              <Link
+                href="/libro-de-reclamaciones"
+                className="group flex items-center gap-2.5 p-3 bg-white/5 border border-white/15 rounded-xl hover:border-primary hover:bg-white/10 transition-colors text-xs font-semibold"
+              >
+                <BookOpen className="w-5 h-5 text-primary shrink-0" />
+                <div className="leading-tight">
+                  <span className="block text-white group-hover:text-primary transition-colors">
+                    {t('ayuda.libroReclamaciones')}
+                  </span>
+                  <span className="block text-[10px] text-gray-400 font-normal mt-0.5">
+                    Virtual — INDECOPI
+                  </span>
+                </div>
               </Link>
             </div>
           </div>
@@ -145,6 +165,7 @@ export default async function Footer() {
             <h4 className="font-bold text-xs uppercase tracking-wider text-white mb-4 border-b border-gray-800 pb-2">{t('corporativo.title')}</h4>
             <ul className="space-y-2.5 font-light text-gray-400 text-xs sm:text-sm mb-5">
               <li><Link href="/nosotros" className="hover:text-primary transition-colors">{t('corporativo.ayudaSocial')}</Link></li>
+              <li className="text-gray-300 font-semibold">{brand.legalName}</li>
               <li className="text-gray-300 font-semibold">{t('corporativo.rucLabel', { ruc: rucValue })}</li>
             </ul>
 
@@ -170,12 +191,11 @@ export default async function Footer() {
             <div className="flex flex-col sm:flex-row items-center gap-3">
               <span className="text-gray-500 text-xs font-semibold">{t('bottom.paymentMethods')}</span>
               <div className="flex flex-wrap justify-center gap-1.5 text-[10px] font-bold text-gray-400">
+                <span className="bg-white/5 rounded px-2 py-1 border border-white/10">CULQI</span>
                 <span className="bg-white/5 rounded px-2 py-1 border border-white/10">VISA</span>
                 <span className="bg-white/5 rounded px-2 py-1 border border-white/10">MASTERCARD</span>
+                <span className="bg-white/5 rounded px-2 py-1 border border-white/10">YAPE</span>
                 <span className="bg-white/5 rounded px-2 py-1 border border-white/10">PAYPAL</span>
-                <span className="bg-white/5 rounded px-2 py-1 border border-white/10">IZIPAY</span>
-                <span className="bg-white/5 rounded px-2 py-1 border border-white/10">WESTERN UNION</span>
-                <span className="bg-white/5 rounded px-2 py-1 border border-white/10">MONEYGRAM</span>
               </div>
             </div>
           </div>
@@ -184,3 +204,4 @@ export default async function Footer() {
     </footer>
   );
 }
+

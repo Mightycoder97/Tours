@@ -68,7 +68,7 @@
     },
     "ayuda": {
       "title": "Help Center",
-      "cambios": "Changes & rescheduling",
+      "cambios": "Changes & returns policy",
       "faq": "Frequently asked questions",
       "centroAyuda": "Help center",
       "libroReclamaciones": "Complaints book"
@@ -454,9 +454,14 @@
       "continueToPay": "Continue to pay USD {total}"
     },
     "policies": {
-      "acceptTerms": "I accept the Terms & Conditions and Privacy Policy",
+      "acceptPrefix": "I have read and accept the",
+      "acceptMiddle": ", the",
+      "acceptAnd": "and the",
+      "acceptTerms": "I accept the Terms & Conditions, Changes & Returns Policy, and Privacy Policy",
       "termsAndConditions": "Terms & Conditions",
+      "changesAndReturns": "Changes & Returns Policy",
       "privacyPolicy": "Privacy Policy",
+      "mustAcceptTerms": "You must accept the Terms & Conditions, Changes & Returns Policy, and Privacy Policy to continue.",
       "acceptMarketing": "I agree to receive exclusive discounts, promotions, and updates (Optional)"
     },
     "sidebar": {

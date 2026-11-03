@@ -60,6 +60,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...buildLocalizedUrls('/rutas', { changeFrequency: 'monthly', priority: 0.5 }),
     ...buildLocalizedUrls('/faq', { changeFrequency: 'monthly', priority: 0.4 }),
     ...buildLocalizedUrls('/condiciones', { changeFrequency: 'yearly', priority: 0.3 }),
+    ...buildLocalizedUrls('/cambios-y-devoluciones', { changeFrequency: 'yearly', priority: 0.3 }),
+    ...buildLocalizedUrls('/libro-de-reclamaciones', { changeFrequency: 'yearly', priority: 0.3 }),
     ...buildLocalizedUrls('/politicas', { changeFrequency: 'yearly', priority: 0.3 }),
     ...tourUrls,
   ];

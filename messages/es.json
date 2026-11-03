@@ -68,7 +68,7 @@
     },
     "ayuda": {
       "title": "Centro de Ayuda",
-      "cambios": "Cambios y reprogramaciones",
+      "cambios": "Políticas de cambios y devoluciones",
       "faq": "Preguntas frecuentes",
       "centroAyuda": "Centro de ayuda",
       "libroReclamaciones": "Libro de reclamaciones"
@@ -454,9 +454,14 @@
       "continueToPay": "Continuar a pagar USD {total}"
     },
     "policies": {
-      "acceptTerms": "Acepto Términos y Condiciones y Política de Privacidad",
+      "acceptPrefix": "He leído y acepto los",
+      "acceptMiddle": ", las",
+      "acceptAnd": "y la",
+      "acceptTerms": "Acepto Términos y Condiciones, Políticas de Cambios y Devoluciones y Política de Privacidad",
       "termsAndConditions": "Términos y Condiciones",
+      "changesAndReturns": "Políticas de Cambios y Devoluciones",
       "privacyPolicy": "Política de Privacidad",
+      "mustAcceptTerms": "Debes aceptar los Términos y Condiciones, las Políticas de Cambios y Devoluciones y la Política de Privacidad para continuar.",
       "acceptMarketing": "Acepto recibir descuentos exclusivos, promociones y novedades (Opcional)"
     },
     "sidebar": {
