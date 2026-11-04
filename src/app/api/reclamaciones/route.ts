@@ -40,6 +40,25 @@ function escapeHtml(unsafe: string): string {
     .replace(/'/g, '&#039;');
 }
 
+/**
+ * Adds business days (skipping Saturdays and Sundays) to a starting Date.
+ * Under Peruvian administrative and consumer protection law (Ley N° 29571 Art. 24,
+ * amended by Ley N° 31435 and D.S. N° 101-2022-PCM), the statutory response deadline
+ * is fifteen (15) non-extendable business days (quince (15) días hábiles improrrogables).
+ */
+export function addBusinessDays(startDate: Date, businessDays: number): Date {
+  const result = new Date(startDate);
+  let daysAdded = 0;
+  while (daysAdded < businessDays) {
+    result.setDate(result.getDate() + 1);
+    const dayOfWeek = result.getDay(); // 0 is Sunday, 6 is Saturday
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+      daysAdded++;
+    }
+  }
+  return result;
+}
+
 export async function POST(req: Request) {
   try {
     const ip =
@@ -237,8 +256,8 @@ export async function POST(req: Request) {
     const randomCode = crypto.randomUUID().split('-')[0].slice(0, 6).toUpperCase();
     const complaintCode = `LR-${year}-${randomCode}`;
 
-    // Plazo máximo legal de respuesta: 30 días calendario (Ley N° 29571 / D.S. N° 101-2022-PCM)
-    const deadlineDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+    // Plazo máximo legal de respuesta: 15 días hábiles improrrogables (Ley N° 29571, Ley N° 31435 / D.S. N° 101-2022-PCM)
+    const deadlineDate = addBusinessDays(now, 15);
     const responseDeadlineIso = new Intl.DateTimeFormat('en-CA', {
       timeZone: 'America/Lima',
       year: 'numeric',
@@ -248,11 +267,11 @@ export async function POST(req: Request) {
     const createdAtIso = now.toISOString();
 
     const defaultCompanyResponseText = isEn
-      ? 'Complaint Sheet received and registered satisfactorily. Our Customer Care Department will evaluate your case and send a formal response to your email address within a non-extendable maximum period of thirty (30) calendar days, pursuant to Peruvian Law N° 29571.'
-      : 'Hoja de Reclamación recibida y registrada satisfactoriamente. El área de Atención al Usuario evaluará su caso y enviará una respuesta formal a su correo electrónico en un plazo máximo de treinta (30) días calendario improrrogables, conforme a la Ley N° 29571.';
+      ? 'Complaint Sheet received and registered satisfactorily. Our Customer Care Department will evaluate your case and send a formal response to your email address within a non-extendable maximum period of fifteen (15) business days, pursuant to Peruvian Law N° 29571, Law N° 31435, and Supreme Decree N° 101-2022-PCM.'
+      : 'Hoja de Reclamación recibida y registrada satisfactoriamente. El área de Atención al Usuario evaluará su caso y enviará una respuesta formal a su correo electrónico en un plazo máximo de quince (15) días hábiles improrrogables, conforme a la Ley N° 29571, Ley N° 31435 y D.S. N° 101-2022-PCM.';
     const defaultStatusText = isEn
-      ? 'PENDING RESPONSE (MAX. 30 CALENDAR DAYS)'
-      : 'PENDIENTE DE RESPUESTA (MÁX. 30 DÍAS CALENDARIO)';
+      ? 'PENDING RESPONSE (MAX. 15 BUSINESS DAYS)'
+      : 'PENDIENTE DE RESPUESTA (MÁX. 15 DÍAS HÁBILES)';
     const defaultRepSignature = isEn
       ? `${brand.legalName} (RUC ${brand.ruc}) — Customer Care Representative`
       : `${brand.legalName} (RUC ${brand.ruc}) — Representante de Atención al Usuario`;
@@ -344,7 +363,7 @@ export async function POST(req: Request) {
               </p>
               <h1 style="margin: 8px 0 4px; font-size: 22px;">Official Complaint Sheet N° ${escapeHtml(complaintCode)}</h1>
               <p style="margin: 0; font-size: 13px; opacity: 0.9;">
-                Registration date: ${escapeHtml(formattedRegDate)} | Maximum response deadline: ${escapeHtml(responseDeadlineIso)} (30 calendar days)
+                Registration date: ${escapeHtml(formattedRegDate)} | Maximum response deadline: ${escapeHtml(responseDeadlineIso)} (15 business days)
               </p>
             </div>
 
@@ -384,7 +403,7 @@ export async function POST(req: Request) {
               <h3 style="margin-top: 20px; color: ${brand.colors.primaryDark}; border-bottom: 1px solid #E5E7EB; padding-bottom: 6px;">
                 5. Company Response and Signatures
               </h3>
-              <p style="margin: 4px 0;"><strong>Maximum response timeframe:</strong> 30 calendar days (until ${escapeHtml(responseDeadlineIso)})</p>
+              <p style="margin: 4px 0;"><strong>Maximum response timeframe:</strong> 15 business days (until ${escapeHtml(responseDeadlineIso)})</p>
               <p style="margin: 4px 0;"><strong>Initial status / measures:</strong> ${escapeHtml(defaultCompanyResponseText)}</p>
               <p style="margin: 8px 0;"><strong>Consumer Signature:</strong> ${escapeHtml(consumerSignature)}</p>
               <p style="margin: 4px 0;"><strong>Business Representative Signature:</strong> ${escapeHtml(brand.legalName)} — Customer Care Department</p>
@@ -399,7 +418,7 @@ export async function POST(req: Request) {
               </p>
               <h1 style="margin: 8px 0 4px; font-size: 22px;">Hoja de Reclamación N° ${escapeHtml(complaintCode)}</h1>
               <p style="margin: 0; font-size: 13px; opacity: 0.9;">
-                Fecha de registro: ${escapeHtml(formattedRegDate)} | Plazo máximo de respuesta: ${escapeHtml(responseDeadlineIso)} (30 días calendario)
+                Fecha de registro: ${escapeHtml(formattedRegDate)} | Plazo máximo de respuesta: ${escapeHtml(responseDeadlineIso)} (15 días hábiles improrrogables)
               </p>
             </div>
 
@@ -439,7 +458,7 @@ export async function POST(req: Request) {
               <h3 style="margin-top: 20px; color: ${brand.colors.primaryDark}; border-bottom: 1px solid #E5E7EB; padding-bottom: 6px;">
                 5. Respuesta de la Empresa y Firmas
               </h3>
-              <p style="margin: 4px 0;"><strong>Plazo máximo de respuesta:</strong> 30 días calendario (hasta el ${escapeHtml(responseDeadlineIso)})</p>
+              <p style="margin: 4px 0;"><strong>Plazo máximo de respuesta:</strong> 15 días hábiles improrrogables (hasta el ${escapeHtml(responseDeadlineIso)})</p>
               <p style="margin: 4px 0;"><strong>Medidas / Estado inicial:</strong> ${escapeHtml(defaultCompanyResponseText)}</p>
               <p style="margin: 8px 0;"><strong>Firma del Consumidor:</strong> ${escapeHtml(consumerSignature)}</p>
               <p style="margin: 4px 0;"><strong>Firma del Representante del Negocio:</strong> ${escapeHtml(brand.legalName)} — Área de Atención al Usuario</p>
@@ -498,7 +517,7 @@ export async function POST(req: Request) {
           consumerRequest,
         },
         response: {
-          maxDays: 30,
+          maxDays: 15,
           deadline: responseDeadlineIso,
           measuresAdopted: defaultCompanyResponseText,
           status: defaultStatusText,

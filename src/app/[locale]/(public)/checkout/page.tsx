@@ -6,11 +6,11 @@
 import { useCartStore, TEST_PEN_TOUR_SLUG } from '@/store/useCartStore';
 import { Link, useRouter } from '@/i18n/navigation';
 import { useEffect, useRef, useState, FormEvent } from 'react';
-import { ShieldCheck, User, CreditCard, Smartphone } from 'lucide-react';
+import { ShieldCheck, User, CreditCard, Smartphone, AlertTriangle, ShieldAlert } from 'lucide-react';
 import Image from 'next/image';
 import Script from 'next/script';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import type { CulqiInstance } from '@/types/culqi';
 import { getBrandConfig } from '@/lib/brand';
 
@@ -46,6 +46,8 @@ export default function CheckoutPage() {
   const { items, getTotal, clearCart, removeItem } = useCartStore();
   const t = useTranslations('checkout');
   const tc = useTranslations('common');
+  const locale = useLocale();
+  const isEn = locale === 'en';
   const brand = getBrandConfig();
 
   const [mounted, setMounted] = useState(false);
@@ -98,6 +100,7 @@ export default function CheckoutPage() {
 
   const [adultsInfo,   setAdultsInfo]   = useState<PassengerForm[]>([]);
   const [childrenInfo, setChildrenInfo] = useState<PassengerForm[]>([]);
+  const hasMinors = maxChildren > 0 || childrenInfo.length > 0;
 
   // ── Inicializar formularios de pasajeros y detectar Culqi en SPA ───────────
   useEffect(() => {
@@ -228,6 +231,8 @@ export default function CheckoutPage() {
     for (const p of childrenInfo) {
       if (!p.firstName.trim() || !p.lastName.trim()) return t('errors.childNameRequired');
       if (!p.docNumber.trim()) return t('errors.childDocRequired');
+      if (p.docType === 'DNI' && !/^\d{8}$/.test(p.docNumber.trim())) return t('errors.dniLengthInvalid');
+      if (!p.birthDate) return t('errors.birthDateRequired');
     }
     if (!acceptTerms) return t('policies.mustAcceptTerms');
     return null;
@@ -490,6 +495,78 @@ export default function CheckoutPage() {
                   </div>
                 ))}
 
+                {/* Children Form Header & Legal Safeguard Banner (Ley N° 30802) */}
+                {hasMinors && (
+                  <div
+                    role="alert"
+                    aria-label={isEn ? "Legal requirement for minor passengers" : "Requisito legal para menores de edad"}
+                    className="bg-amber-50/95 border-2 border-amber-400 rounded-2xl p-5 sm:p-6 shadow-sm text-amber-950 space-y-3.5 my-6"
+                  >
+                    <div className="flex items-start gap-3">
+                      <ShieldAlert className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <div className="flex flex-wrap items-center gap-2 mb-1">
+                          <span className="px-2.5 py-0.5 bg-amber-500 text-white text-[11px] font-bold uppercase tracking-wider rounded-full">
+                            {isEn ? "Mandatory Legal Notice" : "Aviso Legal Obligatorio"}
+                          </span>
+                          <span className="text-xs font-semibold text-amber-800">
+                            {isEn ? "Peruvian Law N° 30802 & Transport Safeguards" : "Ley N° 30802 y Normativa de Transporte"}
+                          </span>
+                        </div>
+                        <h4 className="font-serif font-bold text-base sm:text-lg text-amber-950 leading-snug">
+                          {isEn
+                            ? "Requirements & Authorizations for Minor Passengers (Under 18)"
+                            : "Requisitos y Autorizaciones para Pasajeros Menores de Edad"}
+                        </h4>
+                      </div>
+                    </div>
+
+                    <div className="text-xs sm:text-sm text-amber-900 leading-relaxed space-y-2.5 pl-0 sm:pl-9">
+                      {isEn ? (
+                        <>
+                          <p>
+                            Pursuant to <strong>Peruvian Law N° 30802</strong> (Mandatory Conditions for the Entry and Transport of Children and Adolescents in Tourist Services and Lodging), all passengers under 18 years of age must travel accompanied by their parents and carry their <strong>original physical identity document</strong>:
+                          </p>
+                          <ul className="list-disc pl-5 space-y-1">
+                            <li>
+                              <strong>Original physical DNI</strong> (for Peruvian citizens) or <strong>original valid physical Passport</strong> (for foreign visitors). Photocopies, photos, or digital screenshots are strictly not accepted.
+                            </li>
+                            <li>
+                              <strong>Traveling with only one parent, legal guardians, relatives, third parties, or unaccompanied:</strong> Passengers MUST present a valid original <strong>Notarized Travel Authorization (<em>Autorización Notarial de Viaje</em>)</strong> or Judicial Travel Authorization duly legalized before a Peruvian notary (or Peruvian consulate abroad).
+                            </li>
+                          </ul>
+                          <div className="bg-amber-100/90 border border-amber-300 rounded-xl p-3 flex items-start gap-2.5 text-xs font-medium text-amber-950">
+                            <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                            <p>
+                              <strong>Strict Transport &amp; Sanctuary Denial of Boarding Policy:</strong> Railway operators (<em>Inca Rail</em> and <em>PeruRail</em>), citadel bus shuttles (<em>Consettur</em>), and official checkpoints at <em>Machu Picchu Sanctuary</em> and the <em>Inca Trail</em> perform mandatory document verification. Failure to produce original physical documents and required authorizations results in <strong>denied boarding and denied entry without entitlement to any refund</strong>.
+                            </p>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <p>
+                            En estricto cumplimiento de la <strong>Ley N° 30802</strong> (Condiciones para el ingreso y traslado de niñas, niños y adolescentes en servicios de transporte turístico y hospedaje), todo pasajero menor de 18 años debe viajar acompañado de sus padres y portar obligatoriamente su <strong>documento de identidad físico original</strong>:
+                          </p>
+                          <ul className="list-disc pl-5 space-y-1">
+                            <li>
+                              <strong>DNI físico original</strong> (para ciudadanos peruanos) o <strong>Pasaporte físico original vigente</strong> (para turistas extranjeros). No se admiten fotocopias, fotos en celulares ni capturas de pantalla.
+                            </li>
+                            <li>
+                              <strong>Si viaja con solo uno de sus padres, tutores, familiares, terceros o viaja solo:</strong> Es requisito legal e indispensable presentar la <strong>Autorización Notarial de Viaje</strong> (o Autorización Judicial) otorgada por el padre o madre no acompañante (o por ambos según corresponda), debidamente legalizada ante notario público o consulado peruano.
+                            </li>
+                          </ul>
+                          <div className="bg-amber-100/90 border border-amber-300 rounded-xl p-3 flex items-start gap-2.5 text-xs font-medium text-amber-950">
+                            <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                            <p>
+                              <strong>Control estricto e impedimento de viaje:</strong> Los operadores de trenes turísticos (<em>Inca Rail y PeruRail</em>), buses a la ciudadela (<em>Consettur</em>) y las autoridades de control en <em>Machu Picchu y Red de Caminos Inca</em> realizan inspección física obligatoria. La falta de documentos originales u autorizaciones conllevará la <strong>denegación inmediata de embarque e ingreso sin derecho a reembolso</strong>.
+                            </p>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* Children Form */}
                 {childrenInfo.map((child, index) => (
                   <div key={`child-${index}`} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -708,6 +785,17 @@ export default function CheckoutPage() {
 
                   {/* Policies */}
                   <div className="mt-8 space-y-3">
+                    {hasMinors && (
+                      <div className="p-3.5 bg-amber-50/90 border border-amber-300 rounded-xl flex items-start gap-2.5 text-xs text-amber-950 mb-2">
+                        <ShieldAlert className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                        <p className="leading-relaxed">
+                          <strong>{isEn ? "Minor Travel Compliance (Law N° 30802):" : "Cumplimiento de Viaje de Menores (Ley N° 30802):"}</strong>{' '}
+                          {isEn
+                            ? "I understand and confirm that all registered minor passengers must carry their original physical DNI or valid Passport, plus valid Notarized Travel Authorizations if traveling without both parents, mandatory for boarding trains/buses and entry to Machu Picchu."
+                            : "Declaro y confirmo que todos los menores registrados deben portar su DNI o Pasaporte físico original y Autorización Notarial de Viaje si viajan sin ambos padres, requisito indispensable para abordar trenes, buses e ingresar a Machu Picchu."}
+                        </p>
+                      </div>
+                    )}
                      <label className="flex items-start cursor-pointer group">
                         <input
                           required

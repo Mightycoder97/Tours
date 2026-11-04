@@ -64,7 +64,8 @@
       "terminos": "Terms & conditions",
       "privacidad": "Privacy policies",
       "cookies": "Cookies policy",
-      "compromiso": "Our commitment"
+      "compromiso": "Our commitment",
+      "esnna": "ESNNA Code of Conduct (Protégeme)"
     },
     "ayuda": {
       "title": "Help Center",
@@ -95,6 +96,22 @@
     "bottom": {
       "copyright": "© {year} Machu Picchu Travel Adventures. All rights reserved.",
       "paymentMethods": "Payment methods:"
+    },
+    "esnna": {
+      "title": "Child Protection & Anti-ESNNA Commitment",
+      "badgeText": "Protégeme — Responsible Tourism",
+      "badgeMincetur": "Registered Travel and Tourism Agency",
+      "statementEs": "EN ESTA AGENCIA NO PROMOVEMOS NI PERMITIMOS LA EXPLOTACIÓN SEXUAL DE NIÑAS, NIÑOS Y ADOLESCENTES, NI CUALQUIER OTRO ILÍCITO PENAL DEL CUAL TOMEMOS CONOCIMIENTO EN EL DESARROLLO DE NUESTRA ACTIVIDAD, CONFORME A LO DISPUESTO EN LA LEY N° 29408.",
+      "statementEn": "IN THIS TRAVEL AGENCY, WE DO NOT PROMOTE OR PERMIT THE SEXUAL EXPLOITATION OF GIRLS, CHILDREN AND TEENAGERS, NOR ANY OTHER CRIME OF WHICH WE TAKE KNOWLEDGE IN DEVELOPMENT OF OUR ACTIVITY, ACCORDING TO LAW N° 29408.",
+      "citations": "Law N° 29408 (Arts. 43 & 44) · S.D. N° 003-2010-MINCETUR · Law N° 30963 · Law N° 30802 · M.R. N° 108-2020-MINCETUR",
+      "hotlinesLabel": "24h Free Emergency Lines:",
+      "linea100": "Línea 100 (MIMP)",
+      "linea1818": "Línea 1818 (MININTER)",
+      "central105": "Central 105 (PNP)",
+      "polturCusco": "POLTUR Cusco: (084) 249769",
+      "openModal": "View official notice & legal framework",
+      "seeDetails": "View Official ESNNA Notice",
+      "gerceturAccreditation": "Agency officially registered in the National Directory of Qualified Tourism Providers of MINCETUR and accredited by GERCETUR Cusco."
     }
   },
 
@@ -951,7 +968,7 @@
       "establishmentLabel": "Establishment",
       "noticeTitle": "Mandatory Notice — Virtual Complaints Book (Law N° 29571 & D.S. N° 011-2011-PCM)",
       "noticeParagraph": "Pursuant to the Peruvian Consumer Protection and Defense Code (Law N° 29571) and the Complaints Book Regulations (Supreme Decree N° 011-2011-PCM), this establishment provides a Virtual Complaints Book (Libro de Reclamaciones Virtual) at your disposal.",
-      "noticeBullet1": "Any registered claim (reclamo) or complaint (queja) will be answered within a maximum period of thirty (30) calendar days to your email address.",
+      "noticeBullet1": "Any registered claim (reclamo) or complaint (queja) will be answered within a maximum non-extendable period of fifteen (15) business days to your email address, pursuant to Law N° 31435.",
       "noticeBullet2": "Once the form is submitted, you will immediately receive a unique identification code and a printable copy of your Official Complaint Sheet.",
       "providerSectionTitle": "1. Provider Information (Company or Business)",
       "issueDateLabel": "Date of issue",
@@ -1003,7 +1020,7 @@
       "consumerRequestPlaceholder": "Indicate the solution you expect to receive (e.g. refund, date/product change, rescheduling, service improvement, etc.)...",
       "responseSectionTitle": "4. Company Response and Service Commitment",
       "responseMaxDeadlineTitle": "Maximum response timeframe:",
-      "responseMaxDeadlineText": "Pursuant to Article 24 of Law N° 29571 (amended by Law N° 31435 and Supreme Decree N° 101-2022-PCM), {legalName} will provide a formal response to your claim or complaint within a non-extendable maximum period of thirty (30) calendar days (estimated deadline if submitted today: {deadline}).",
+      "responseMaxDeadlineText": "Pursuant to Article 24 of Law N° 29571 (amended by Law N° 31435 and Supreme Decree N° 101-2022-PCM), {legalName} will provide a formal response to your claim or complaint within a non-extendable maximum period of fifteen (15) business days (estimated deadline if submitted today: {deadline}).",
       "responseMeasuresTitle": "Measures adopted to resolve the claim:",
       "responseMeasuresText": "Upon registration of the Complaint Sheet, our Customer Care Committee assigns a unique tracking code, evaluates the report from the operational area involved, and sends the corrective measures, refund, rescheduling, or substantiated response adopted by the company to the consumer's email address.",
       "signaturesSectionTitle": "5. Signatures of Conformity",
@@ -1062,11 +1079,11 @@
         "consumerRequestLabel": "Consumer's Request (Expected Solution):",
         "section4Title": "4. Observations and Actions Adopted by the Provider (Company Response)",
         "responseDeadlineLabel": "Legal Response Timeframe:",
-        "maxDaysText": "Maximum {days} calendar days (Due: {deadline})",
+        "maxDaysText": "Maximum {days} non-extendable business days (Due: {deadline})",
         "statusLabel": "Requirement Status:",
-        "statusPending": "PENDING RESPONSE (MAX. 30 CALENDAR DAYS)",
+        "statusPending": "PENDING RESPONSE (MAX. 15 BUSINESS DAYS)",
         "measuresLabel": "Measures adopted to resolve the claim:",
-        "defaultMeasuresAdopted": "Complaint Sheet received and registered satisfactorily. Our Customer Care Department will evaluate your case and send a formal response to your email address within a non-extendable maximum period of thirty (30) calendar days, pursuant to Peruvian Law N° 29571.",
+        "defaultMeasuresAdopted": "Complaint Sheet received and registered satisfactorily. Our Customer Care Department will evaluate your case and send a formal response to your email address within a non-extendable maximum period of fifteen (15) business days, pursuant to Peruvian Law N° 29571 and Law N° 31435.",
         "consumerSignatureTitle": "Consumer Signature",
         "signedElectronicallyOn": "Electronically signed on",
         "repSignatureTitle": "Signature of the Business Representative Receiving the Claim",
@@ -1078,7 +1095,7 @@
         "footerQuejaLabel": "COMPLAINT (QUEJA):",
         "footerQuejaText": "Dissatisfaction not related to the products or services; or discomfort regarding customer service.",
         "footerNote1": "* Filing a claim does not preclude resorting to other dispute resolution mechanisms nor is it a prerequisite for filing a formal complaint before INDECOPI.",
-        "footerNote2": "* The provider must respond to the claim or complaint within a period not exceeding thirty (30) calendar days, pursuant to Law N° 29571 and Supreme Decree N° 011-2011-PCM (amended by D.S. N° 101-2022-PCM)."
+        "footerNote2": "* The provider must respond to the claim or complaint within a period not exceeding fifteen (15) business days, pursuant to Law N° 29571 and Law N° 31435 (amended by D.S. N° 101-2022-PCM)."
       }
     }
   },
@@ -1162,6 +1179,10 @@
     "privacyPage": {
       "title": "Privacy Policy",
       "description": "Personal data protection and privacy policy pursuant to Peruvian Law N° 29733 on Personal Data Protection."
+    },
+    "protegemePage": {
+      "title": "Child Protection & Anti-ESNNA Compliance Notice",
+      "description": "Official institutional policy and zero-tolerance commitment against the sexual exploitation of children and adolescents in tourism (Law N° 29408 and R.M. N° 108-2020-MINCETUR)."
     }
   }
 }

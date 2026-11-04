@@ -1,7 +1,9 @@
 import { Link } from '@/i18n/navigation';
-import { MapPin, Phone, Mail, Clock, BookOpen } from 'lucide-react';
+import Image from 'next/image';
+import { MapPin, Phone, Mail, Clock, BookOpen, ShieldAlert, PhoneCall, ShieldCheck, ArrowRight } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import { getBrandConfig } from '@/lib/brand';
+import { ProtegemeModalTrigger } from '@/components/ui/ProtegemeModal';
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -49,8 +51,11 @@ export default async function Footer() {
           {/* Column 1: Brand & Contacts */}
           <div className="sm:col-span-2 md:col-span-3 lg:col-span-2">
             <h3 className="font-serif text-2xl text-primary mb-1 leading-tight">{brand.name}</h3>
-            <p className="text-gray-300 text-xs font-semibold mb-3">
+            <p className="text-gray-300 text-xs font-semibold mb-1">
               {brand.legalName} — RUC: {rucValue}
+            </p>
+            <p className="text-primary text-[11px] font-medium mb-3">
+              {brand.gerceturAccreditation || 'Agencia de Viajes y Turismo Registrada en GERCETUR Cusco'} · Reg. {brand.minceturRegistrationCode || 'DIRCETUR-CUSCO-2024-00129'}
             </p>
             <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-light">
               {t('brand.description')}
@@ -128,6 +133,7 @@ export default async function Footer() {
               <li><Link href="/cambios-y-devoluciones" className="hover:text-primary transition-colors">{t('ayuda.cambios')}</Link></li>
               <li><Link href="/politicas" className="hover:text-primary transition-colors">{t('legales.privacidad')}</Link></li>
               <li><Link href="/politicas#cookies" className="hover:text-primary transition-colors">{t('legales.cookies')}</Link></li>
+              <li><Link href="/protegeme" className="hover:text-primary transition-colors flex items-center gap-1.5"><ShieldAlert className="w-3.5 h-3.5 text-primary shrink-0" />{t('legales.esnna')}</Link></li>
               <li><Link href="/nosotros" className="hover:text-primary transition-colors">{t('legales.compromiso')}</Link></li>
             </ul>
           </div>
@@ -167,6 +173,9 @@ export default async function Footer() {
               <li><Link href="/nosotros" className="hover:text-primary transition-colors">{t('corporativo.ayudaSocial')}</Link></li>
               <li className="text-gray-300 font-semibold">{brand.legalName}</li>
               <li className="text-gray-300 font-semibold">{t('corporativo.rucLabel', { ruc: rucValue })}</li>
+              <li className="text-[11px] text-gray-400 font-light mt-1">
+                Acreditación: MINCETUR & GERCETUR Cusco ({brand.minceturRegistrationCode || 'DIRCETUR-CUSCO-2024-00129'})
+              </li>
             </ul>
 
             <h5 className="font-bold text-[10px] uppercase tracking-wider text-gray-400 mb-2">{t('corporativo.aliados')}</h5>
@@ -178,6 +187,136 @@ export default async function Footer() {
             </div>
           </div>
 
+        </div>
+
+        {/* Regulatory Compliance & ESNNA Prevention Banner */}
+        <div className="border-t border-gray-800 pt-10 mt-10">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-xs">
+            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
+              
+              {/* Official Badges in White Containers */}
+              <div className="flex flex-row items-center justify-center gap-4 shrink-0">
+                {/* Badge 1: MINCETUR Registered Agency */}
+                <div className="bg-white p-3 rounded-2xl shadow-md border border-white/20 flex flex-col items-center justify-center text-center w-[125px] sm:w-[135px] h-[175px]">
+                  <Image
+                    src="/imagenes/logos/1.png"
+                    alt="Agencia de Viajes y Turismo Registrada - MINCETUR"
+                    width={110}
+                    height={150}
+                    className="object-contain max-h-[125px] w-auto"
+                  />
+                  <span className="text-[10px] font-bold text-gray-800 uppercase tracking-tight mt-1.5 leading-tight">
+                    MINCETUR
+                  </span>
+                  <span className="text-[9px] text-gray-500 font-medium">
+                    Agencia Registrada
+                  </span>
+                </div>
+
+                {/* Badge 2: Protégeme ESNNA (Clicking opens ProtegemeModal) */}
+                <ProtegemeModalTrigger>
+                  <div className="bg-white p-3 rounded-2xl shadow-md border border-white/20 hover:border-primary hover:shadow-lg transition-all flex flex-col items-center justify-center text-center w-[165px] sm:w-[185px] h-[175px] cursor-pointer group">
+                    <Image
+                      src="/imagenes/logos/2.png"
+                      alt="Protégeme - Turismo Responsable contra la ESNNA"
+                      width={160}
+                      height={115}
+                      className="object-contain max-h-[115px] w-auto group-hover:scale-105 transition-transform"
+                    />
+                    <span className="text-[10px] font-bold text-primary-dark uppercase tracking-tight mt-1.5 leading-tight group-hover:text-primary transition-colors">
+                      Protégeme ESNNA
+                    </span>
+                    <span className="text-[9px] text-gray-500 font-medium group-hover:text-primary-dark transition-colors">
+                      Clic para ver afiche
+                    </span>
+                  </div>
+                </ProtegemeModalTrigger>
+              </div>
+
+              {/* Verbatim Bilingual Notice, Legal Framework & Emergency Hotlines */}
+              <div className="flex-1 space-y-4 text-center lg:text-left">
+                <div className="space-y-2">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold uppercase tracking-wider">
+                    <ShieldAlert className="w-4 h-4 text-primary shrink-0" />
+                    <span>Compromiso Legal contra la ESNNA (Ley N° 29408 & R.M. 108-2020-MINCETUR)</span>
+                  </div>
+
+                  {/* Verbatim Spanish Statement */}
+                  <p className="text-xs sm:text-sm font-semibold text-white uppercase tracking-wide leading-relaxed bg-black/25 p-3.5 rounded-xl border border-white/10">
+                    &ldquo;EN ESTA AGENCIA NO PROMOVEMOS NI PERMITIMOS LA EXPLOTACIÓN SEXUAL DE NIÑAS, NIÑOS Y ADOLESCENTES, NI CUALQUIER OTRO ILÍCITO PENAL DEL CUAL TOMEMOS CONOCIMIENTO EN EL DESARROLLO DE NUESTRA ACTIVIDAD, CONFORME A LO DISPUESTO EN LA LEY N° 29408.&rdquo;
+                  </p>
+
+                  {/* Verbatim English Statement */}
+                  <p className="text-[11px] sm:text-xs text-gray-300 italic uppercase tracking-wide leading-relaxed pl-1">
+                    &ldquo;IN THIS TRAVEL AGENCY, WE DO NOT PROMOTE OR PERMIT THE SEXUAL EXPLOITATION OF GIRLS, CHILDREN AND TEENAGERS, NOR ANY OTHER CRIME OF WHICH WE TAKE KNOWLEDGE IN DEVELOPMENT OF OUR ACTIVITY, ACCORDING TO LAW N° 29408.&rdquo;
+                  </p>
+                </div>
+
+                {/* Statutory Legal Citations */}
+                <div className="text-[11px] text-gray-400 font-light flex flex-wrap items-center justify-center lg:justify-start gap-x-2.5 gap-y-1">
+                  <span className="text-gray-200 font-medium flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-primary" />
+                    Bases Estatutarias:
+                  </span>
+                  <span>Ley N° 29408 (Arts. 43 y 44)</span>
+                  <span>•</span>
+                  <span>D.S. N° 003-2010-MINCETUR</span>
+                  <span>•</span>
+                  <span>Ley N° 30963</span>
+                  <span>•</span>
+                  <span>Ley N° 30802</span>
+                  <span>•</span>
+                  <span>R.M. N° 108-2020-MINCETUR</span>
+                  <span>•</span>
+                  <span>D.S. N° 005-2020-MINCETUR</span>
+                </div>
+
+                {/* 24h Hotlines & Direct Route Link */}
+                <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-2 text-xs">
+                  <span className="font-semibold text-gray-300 flex items-center gap-1 shrink-0">
+                    <PhoneCall className="w-3.5 h-3.5 text-primary" />
+                    Líneas Gratuitas 24 Horas:
+                  </span>
+                  <a
+                    href="tel:100"
+                    className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-primary hover:text-white transition-colors font-bold text-white border border-white/10"
+                    title="Línea 100 - MIMP (Atención y protección 24h)"
+                  >
+                    Línea 100 (MIMP)
+                  </a>
+                  <a
+                    href="tel:1818"
+                    className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-primary hover:text-white transition-colors font-bold text-white border border-white/10"
+                    title="Línea 1818 - MININTER (Denuncia trata de personas y ESNNA)"
+                  >
+                    Línea 1818 (MININTER)
+                  </a>
+                  <a
+                    href="tel:105"
+                    className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-primary hover:text-white transition-colors font-bold text-white border border-white/10"
+                    title="Central 105 - PNP (Emergencias y auxilio policial)"
+                  >
+                    Central 105 (PNP)
+                  </a>
+                  <a
+                    href="tel:+5184249769"
+                    className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-primary hover:text-white transition-colors font-bold text-white border border-white/10"
+                    title="POLTUR Cusco - Policía de Turismo Cusco"
+                  >
+                    POLTUR Cusco: (084) 249769
+                  </a>
+                  <Link
+                    href="/protegeme"
+                    className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-primary text-white hover:bg-primary-dark transition-colors font-bold text-xs shadow-xs sm:ml-auto"
+                  >
+                    <span>Ver Código ESNNA</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
       </div>
 

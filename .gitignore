@@ -51,3 +51,4 @@ next-env.d.ts
 # Scratch folder
 /scratch
 /scratch/
+/.agents/teamwork/

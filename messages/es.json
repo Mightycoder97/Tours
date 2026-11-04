@@ -64,7 +64,8 @@
       "terminos": "Términos y condiciones",
       "privacidad": "Políticas de privacidad",
       "cookies": "Política de cookies",
-      "compromiso": "Nuestro compromiso"
+      "compromiso": "Nuestro compromiso",
+      "esnna": "Código de Conducta ESNNA (Protégeme)"
     },
     "ayuda": {
       "title": "Centro de Ayuda",
@@ -95,6 +96,22 @@
     "bottom": {
       "copyright": "© {year} Machu Picchu Travel Adventures. Todos los derechos reservados.",
       "paymentMethods": "Métodos de pago:"
+    },
+    "esnna": {
+      "title": "Compromiso de Protección contra la ESNNA",
+      "badgeText": "Protégeme — Turismo Responsable",
+      "badgeMincetur": "Agencia de Viajes y Turismo Registrada",
+      "statementEs": "EN ESTA AGENCIA NO PROMOVEMOS NI PERMITIMOS LA EXPLOTACIÓN SEXUAL DE NIÑAS, NIÑOS Y ADOLESCENTES, NI CUALQUIER OTRO ILÍCITO PENAL DEL CUAL TOMEMOS CONOCIMIENTO EN EL DESARROLLO DE NUESTRA ACTIVIDAD, CONFORME A LO DISPUESTO EN LA LEY N° 29408.",
+      "statementEn": "IN THIS TRAVEL AGENCY, WE DO NOT PROMOTE OR PERMIT THE SEXUAL EXPLOITATION OF GIRLS, CHILDREN AND TEENAGERS, NOR ANY OTHER CRIME OF WHICH WE TAKE KNOWLEDGE IN DEVELOPMENT OF OUR ACTIVITY, ACCORDING TO LAW N° 29408.",
+      "citations": "Ley N° 29408 (Arts. 43 y 44) · D.S. N° 003-2010-MINCETUR · Ley N° 30963 · Ley N° 30802 · R.M. N° 108-2020-MINCETUR",
+      "hotlinesLabel": "Líneas de Auxilio 24h:",
+      "linea100": "Línea 100 (MIMP)",
+      "linea1818": "Línea 1818 (MININTER)",
+      "central105": "Central 105 (PNP)",
+      "polturCusco": "POLTUR Cusco: (084) 249769",
+      "openModal": "Ver afiche oficial y marco legal",
+      "seeDetails": "Ver Detalle Oficial ESNNA",
+      "gerceturAccreditation": "Agencia inscrita en el Directorio Nacional de Prestadores de Servicios Turísticos Calificados de MINCETUR y acreditada ante GERCETUR Cusco."
     }
   },
 
@@ -951,7 +968,7 @@
       "establishmentLabel": "Establecimiento",
       "noticeTitle": "Aviso Obligatorio — Libro de Reclamaciones Virtual (Ley N° 29571 y D.S. N° 011-2011-PCM)",
       "noticeParagraph": "Conforme a lo establecido en el Código de Protección y Defensa del Consumidor (Ley N° 29571) y el Reglamento del Libro de Reclamaciones (Decreto Supremo N° 011-2011-PCM), este establecimiento cuenta con un Libro de Reclamaciones Virtual a tu disposición.",
-      "noticeBullet1": "El reclamo o queja registrado será respondido en un plazo máximo de treinta (30) días calendario a tu correo electrónico.",
+      "noticeBullet1": "El reclamo o queja registrado será respondido en un plazo máximo de quince (15) días hábiles improrrogables a tu correo electrónico, conforme a la Ley N° 31435.",
       "noticeBullet2": "Una vez enviado el formulario, recibirás inmediatamente un código único de identificación y una copia imprimible de tu Hoja de Reclamación.",
       "providerSectionTitle": "1. Datos del Proveedor (Empresa o Negocio)",
       "issueDateLabel": "Fecha de emisión",
@@ -1003,7 +1020,7 @@
       "consumerRequestPlaceholder": "Indique qué solución espera recibir (ej. devolución de dinero, cambio de fecha/producto, reprogramación, mejora en la atención, etc.)...",
       "responseSectionTitle": "4. Respuesta de la Empresa y Compromiso de Atención",
       "responseMaxDeadlineTitle": "Plazo máximo de respuesta:",
-      "responseMaxDeadlineText": "Conforme al artículo 24° de la Ley N° 29571 (modificado por Ley N° 31435 y D.S. N° 101-2022-PCM), {legalName} dará respuesta formal a su reclamo o queja en un plazo máximo de treinta (30) días calendario improrrogables (fecha límite estimada si registra hoy: {deadline}).",
+      "responseMaxDeadlineText": "Conforme al artículo 24° de la Ley N° 29571 (modificado por Ley N° 31435 y D.S. N° 101-2022-PCM), {legalName} dará respuesta formal a su reclamo o queja en un plazo máximo de quince (15) días hábiles improrrogables (fecha límite estimada si registra hoy: {deadline}).",
       "responseMeasuresTitle": "Medidas adoptadas para solucionar el reclamo:",
       "responseMeasuresText": "Al registrarse la Hoja de Reclamación, nuestro Comité de Atención al Usuario asigna un código de seguimiento único, evalúa los descargos del área operativa involucrada y remite al correo electrónico del consumidor las medidas correctivas, reembolso, reprogramación o respuesta sustentada adoptada por la empresa.",
       "signaturesSectionTitle": "5. Firmas de Conformidad",
@@ -1062,11 +1079,11 @@
         "consumerRequestLabel": "Pedido del Consumidor (Solución Esperada):",
         "section4Title": "4. Observaciones y Acciones Adoptadas por el Proveedor (Respuesta de la Empresa)",
         "responseDeadlineLabel": "Plazo Legal de Respuesta:",
-        "maxDaysText": "Máximo {days} días calendario (Vence: {deadline})",
+        "maxDaysText": "Máximo {days} días hábiles improrrogables (Vence: {deadline})",
         "statusLabel": "Estado del Requerimiento:",
-        "statusPending": "PENDIENTE DE RESPUESTA (MÁX. 30 DÍAS CALENDARIO)",
+        "statusPending": "PENDIENTE DE RESPUESTA (MÁX. 15 DÍAS HÁBILES)",
         "measuresLabel": "Medidas adoptadas para solucionar el reclamo:",
-        "defaultMeasuresAdopted": "Hoja de Reclamación recibida y registrada satisfactoriamente. El área de Atención al Usuario evaluará su caso y enviará una respuesta formal a su correo electrónico en un plazo máximo de treinta (30) días calendario improrrogables, conforme a la Ley N° 29571.",
+        "defaultMeasuresAdopted": "Hoja de Reclamación recibida y registrada satisfactoriamente. El área de Atención al Usuario evaluará su caso y enviará una respuesta formal a su correo electrónico en un plazo máximo de quince (15) días hábiles improrrogables, conforme a la Ley N° 29571 y Ley N° 31435.",
         "consumerSignatureTitle": "Firma del Consumidor",
         "signedElectronicallyOn": "Firmado electrónicamente el",
         "repSignatureTitle": "Firma del Representante del Negocio que Recibe el Reclamo",
@@ -1078,7 +1095,7 @@
         "footerQuejaLabel": "QUEJA:",
         "footerQuejaText": "Disconformidad no relacionada a los productos o servicios; o, malestar o descontento respecto a la atención al público.",
         "footerNote1": "* La formulación del reclamo no impide acudir a otras vías de solución de controversias ni es requisito previo para interponer una denuncia ante el INDECOPI.",
-        "footerNote2": "* El proveedor debe dar respuesta al reclamo o queja en un plazo no mayor a treinta (30) días calendario, conforme a la Ley N° 29571 y el Decreto Supremo N° 011-2011-PCM (modificado por D.S. N° 101-2022-PCM)."
+        "footerNote2": "* El proveedor debe dar respuesta al reclamo o queja en un plazo no mayor a quince (15) días hábiles improrrogables, conforme a la Ley N° 29571 y la Ley N° 31435 (modificado por D.S. N° 101-2022-PCM)."
       }
     }
   },
@@ -1162,6 +1179,10 @@
     "privacyPage": {
       "title": "Política de Privacidad",
       "description": "Política de tratamiento de datos personales conforme a la Ley N° 29733 de Protección de Datos Personales del Perú."
+    },
+    "protegemePage": {
+      "title": "Prevención de la ESNNA — Código de Conducta y Protección al Menor",
+      "description": "Compromiso institucional de tolerancia cero frente a la explotación sexual de niñas, niños y adolescentes en el turismo (Ley N° 29408 y R.M. N° 108-2020-MINCETUR)."
     }
   }
 }

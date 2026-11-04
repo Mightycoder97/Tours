@@ -64,6 +64,25 @@ interface SubmittedComplaint {
   };
 }
 
+/**
+ * Adds business days (skipping Saturdays and Sundays) to a starting Date.
+ * Under Peruvian consumer protection law (Ley N° 29571 Art. 24, amended by Ley N° 31435
+ * and D.S. N° 101-2022-PCM), the statutory response deadline is fifteen (15) non-extendable
+ * business days (quince (15) días hábiles improrrogables).
+ */
+function addBusinessDays(startDate: Date, businessDays: number): Date {
+  const result = new Date(startDate);
+  let daysAdded = 0;
+  while (daysAdded < businessDays) {
+    result.setDate(result.getDate() + 1);
+    const dayOfWeek = result.getDay(); // 0 is Sunday, 6 is Saturday
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+      daysAdded++;
+    }
+  }
+  return result;
+}
+
 export default function LibroReclamacionesForm({ brand }: { brand: BrandConfig }) {
   const locale = useLocale();
   const t = useTranslations('pages.complaints');
@@ -110,8 +129,9 @@ export default function LibroReclamacionesForm({ brand }: { brand: BrandConfig }
     day: 'numeric',
   });
 
-  const estimatedDeadlineFormatted = new Date(
-    mountTimestamp + 30 * 24 * 60 * 60 * 1000
+  const estimatedDeadlineFormatted = addBusinessDays(
+    new Date(mountTimestamp),
+    15
   ).toLocaleDateString(dateLocale, {
     timeZone: 'America/Lima',
     year: 'numeric',

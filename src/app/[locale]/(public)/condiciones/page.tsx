@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getBrandConfig } from '@/lib/brand';
-import { ShieldCheck, Building2, Phone, Mail, MapPin, Clock, FileText, BookOpen, RefreshCw } from 'lucide-react';
+import { ShieldCheck, Building2, Phone, Mail, MapPin, Clock, FileText, BookOpen, RefreshCw, ShieldAlert, AlertTriangle } from 'lucide-react';
 
 export async function generateMetadata({
   params,
@@ -128,7 +128,7 @@ export default async function CondicionesPage({
                   <strong>Truthful and mandatory information:</strong> To make purchases and bookings on the platform, the user must register during the booking process by providing truthful, accurate, current, and complete information (full first and last names exactly as they appear on their official identity document, identity document type and number —National ID / DNI, Foreigner ID Card, or Passport—, date of birth, nationality, contact phone number, and valid email address), both for the primary purchaser and for all participating passengers.
                 </li>
                 <li>
-                  <strong>Requirements for registration and website use:</strong> To contract services or make payments on our platform, the user must be <strong>of legal age (at least 18 years old)</strong> and have full legal capacity to enter into binding contracts under Peruvian law. Minors may only be registered as passengers accompanied by their parents, legal guardians, or authorized representatives with a valid notarized travel authorization.
+                  <strong>Requirements for registration and website use:</strong> To contract services or make payments on our platform, the user must be <strong>of legal age (at least 18 years old)</strong> and have full legal capacity to enter into binding contracts under Peruvian law. Minors may only be registered as passengers accompanied by their parents, legal guardians, or authorized representatives with a valid notarized travel authorization in strict compliance with Peruvian Law N° 30802 (see Section 14 for comprehensive documentation and travel permit requirements).
                 </li>
                 <li>
                   <strong>Account and booking confidentiality:</strong> The user is solely responsible for maintaining the confidentiality of their account, booking codes ({brand.bookingPrefix}-XXXX), electronic vouchers, and any credentials or links sent to their email address.
@@ -410,6 +410,184 @@ export default async function CondicionesPage({
                 </Link>
               </div>
             </section>
+
+            {/* 13. Prevention of Commercial Sexual Exploitation of Children and Adolescents (ESNNA) */}
+            <section id="prevencion-esnna" className="scroll-mt-28">
+              <h2 className="font-serif text-2xl text-primary-dark mb-3 flex items-center gap-2">
+                <ShieldAlert className="w-6 h-6 text-primary shrink-0" />
+                13. Prevention of Commercial Sexual Exploitation of Children and Adolescents (ESNNA) in Tourism
+              </h2>
+              
+              {/* Verbatim Statutory Bilingual Declaration */}
+              <div className="bg-primary/5 border-2 border-primary/30 rounded-2xl p-5 sm:p-6 mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="px-2.5 py-0.5 bg-primary text-white text-[11px] font-bold uppercase tracking-wider rounded-full">
+                    Official Statutory Statement (R.M. N° 108-2020-MINCETUR / Ley N° 29408)
+                  </span>
+                </div>
+                <blockquote className="font-serif text-base sm:text-lg text-primary-dark font-bold italic leading-relaxed my-3 border-l-4 border-primary pl-4">
+                  &ldquo;IN THIS TRAVEL AGENCY, WE DO NOT PROMOTE OR PERMIT THE SEXUAL EXPLOITATION OF GIRLS, CHILDREN AND TEENAGERS, NOR ANY OTHER CRIME OF WHICH WE TAKE KNOWLEDGE IN DEVELOPMENT OF OUR ACTIVITY, ACCORDING TO LAW N° 29408.&rdquo;
+                </blockquote>
+                <blockquote className="font-serif text-sm sm:text-base text-gray-700 italic leading-relaxed pl-4 border-l-4 border-gray-300">
+                  &ldquo;EN ESTA AGENCIA NO PROMOVEMOS NI PERMITIMOS LA EXPLOTACIÓN SEXUAL DE NIÑAS, NIÑOS Y ADOLESCENTES, NI CUALQUIER OTRO ILÍCITO PENAL DEL CUAL TOMEMOS CONOCIMIENTO EN EL DESARROLLO DE NUESTRA ACTIVIDAD, CONFORME A LO DISPUESTO EN LA LEY N° 29408.&rdquo;
+                </blockquote>
+                <p className="text-xs text-text-light mt-3">
+                  Approved by Ministerial Resolution N° 108-2020-MINCETUR pursuant to Articles 43 and 44 of Peruvian General Tourism Law N° 29408 and Supreme Decree N° 005-2020-MINCETUR (Art. 17.2).
+                </p>
+              </div>
+
+              <ul className="list-disc pl-6 space-y-3 text-text-light leading-relaxed">
+                <li>
+                  <strong>Zero-Tolerance Policy:</strong> <strong>{brand.legalName}</strong> maintains an uncompromising, zero-tolerance policy regarding the Commercial Sexual Exploitation of Children and Adolescents (ESNNA), child pornography, child labor, human trafficking, and any related offense in the course of tourist operations. Any client, passenger, employee, contractor, guide, or transport driver who promotes, facilitates, tolerates, or engages in actions contrary to the protection of minors will face immediate cancellation of all services without right to refund, immediate removal from the tour group, and immediate referral to Peruvian law enforcement authorities.
+                </li>
+                <li>
+                  <strong>Civic and Statutory Duty to Report:</strong> In accordance with Article 44 of Law N° 29408, our personnel, operations team, and licensed guides are strictly trained and obligated to report immediately to the competent police and judicial authorities any suspected situation, risk, solicitation, or flagrant act of ESNNA. Travelers and third parties who observe suspicious situations are strongly urged to notify agency staff or report directly through the official national hotlines.
+                </li>
+                <li>
+                  <strong>Severe Penal Sanctions under Law N° 30963:</strong> Pursuant to Peruvian Law N° 30963 modifying the Peruvian Penal Code, offenses of sexual exploitation of children and adolescents, promotion of child sexual tourism, distribution of child sexual abuse material, and trafficking of persons carry severe custodial prison sentences ranging from <strong>15 to 25 years of imprisonment, or life imprisonment (cadena perpetua)</strong> under aggravating circumstances.
+                </li>
+                <li>
+                  <strong>Statutory Legal Framework:</strong> This policy is executed in strict adherence to:
+                  <ul className="list-circle pl-6 mt-1.5 space-y-1 text-xs sm:text-sm">
+                    <li><strong>Law N° 29408</strong> — General Tourism Law (Articles 43 and 44).</li>
+                    <li><strong>Supreme Decree N° 003-2010-MINCETUR</strong> — Regulations of the General Tourism Law.</li>
+                    <li><strong>Supreme Decree N° 005-2020-MINCETUR</strong> — Travel and Tourism Agencies Regulations (Art. 17.2).</li>
+                    <li><strong>Ministerial Resolution N° 108-2020-MINCETUR</strong> — Official National Counter-ESNNA Display Poster and Mandatory Text.</li>
+                    <li><strong>Law N° 30963</strong> — Criminal Code Amendments regarding Severe Penal Sanctions for Child Exploitation.</li>
+                    <li><strong>Law N° 30802</strong> — Law Establishing Safeguard Conditions for Minors Entering Lodging and Tourist Transport.</li>
+                  </ul>
+                </li>
+              </ul>
+
+              {/* Official 24-Hour Hotlines */}
+              <div className="mt-6">
+                <h3 className="font-bold text-base text-primary-dark mb-3">
+                  Official 24-Hour Free Emergency Reporting Hotlines (Peru)
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-start gap-3">
+                    <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold text-text-main">Línea 100 (MIMP)</p>
+                      <p className="text-xs text-text-light mb-1">Ministry of Women and Vulnerable Populations. Free 24/7 national helpline from any telephone for orientation and protection against violence and child sexual abuse.</p>
+                      <a href="tel:100" className="inline-flex items-center text-xs font-bold text-primary hover:underline">
+                        Call Línea 100 &rarr;
+                      </a>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-start gap-3">
+                    <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold text-text-main">Línea 1818 (MININTER)</p>
+                      <p className="text-xs text-text-light mb-1">Ministry of the Interior — Specialized Single Reporting Center for Human Trafficking and Child Exploitation. Free, anonymous, and confidential 24/7.</p>
+                      <a href="tel:1818" className="inline-flex items-center text-xs font-bold text-primary hover:underline">
+                        Call Línea 1818 &rarr;
+                      </a>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-start gap-3">
+                    <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold text-text-main">Central 105 (PNP)</p>
+                      <p className="text-xs text-text-light mb-1">National Police of Peru — Immediate Emergency and Police Intervention Dispatch. 24 hours a day nationwide.</p>
+                      <a href="tel:105" className="inline-flex items-center text-xs font-bold text-primary hover:underline">
+                        Call PNP 105 &rarr;
+                      </a>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-start gap-3">
+                    <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold text-text-main">POLTUR Cusco (Tourism Police)</p>
+                      <p className="text-xs text-text-light mb-1">Specialized Tourism Police Division in Cusco. Direct tourist assistance and rapid response on tourist routes.</p>
+                      <div className="flex gap-3 mt-1">
+                        <a href="tel:+5184249769" className="text-xs font-bold text-primary hover:underline">+51 (84) 249769</a>
+                        <span className="text-gray-300">|</span>
+                        <a href="tel:+5184235123" className="text-xs font-bold text-primary hover:underline">+51 (84) 235123</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 14. Requirements and Documentation for Minor Passengers (Law N° 30802) */}
+            <section id="menores-de-edad" className="scroll-mt-28">
+              <h2 className="font-serif text-2xl text-primary-dark mb-3 flex items-center gap-2">
+                <ShieldCheck className="w-6 h-6 text-primary shrink-0" />
+                14. Requirements, Travel Authorizations, and Documentation for Minor Passengers (Law N° 30802)
+              </h2>
+              <p className="text-text-light leading-relaxed mb-4">
+                To guarantee the physical integrity, legal safety, and custody of children and adolescents traveling within the national territory, <strong>{brand.legalName}</strong> strictly enforces the provisions of <strong>Peruvian Law N° 30802</strong> (Law establishing mandatory conditions for the entry and transport of minors into tourist lodging establishments and passenger transport services) as well as Ministry of Transport regulations (Supreme Decree N° 017-2009-MTC and SUTRAN directives).
+              </p>
+
+              <div className="bg-amber-50/80 border border-amber-300 rounded-2xl p-5 sm:p-6 mb-6">
+                <h3 className="font-bold text-base text-amber-950 flex items-center gap-2 mb-2">
+                  <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0" />
+                  Mandatory Identification Rules for Minor Passengers
+                </h3>
+                <ul className="list-disc pl-5 space-y-2 text-xs sm:text-sm text-amber-900 leading-relaxed">
+                  <li>
+                    <strong>Definition of Minor:</strong> Any person under eighteen (18) years of age on the date of travel is legally considered a minor under Peruvian jurisdiction.
+                  </li>
+                  <li>
+                    <strong>Mandatory Original Physical Documents:</strong> All minor passengers must present their <strong>original physical identity document</strong> at every operational checkpoint. Digital screenshots, mobile device photos, or simple photocopies are strictly prohibited and will be rejected by railway staff, tourist bus staff, and government gate inspectors:
+                    <ul className="list-circle pl-5 mt-1 space-y-1">
+                      <li><strong>Peruvian minors:</strong> Original physical National Identity Document (DNI amarillo or DNI azul depending on age).</li>
+                      <li><strong>Foreign minors:</strong> Original valid physical Passport (and Virtual Andean Migration Card TAM Virtual when requested by immigration or supervisory authorities).</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+
+              <ul className="list-disc pl-6 space-y-3 text-text-light leading-relaxed">
+                <li>
+                  <strong>Rules on Accompanying Adults &amp; Mandatory Travel Authorizations:</strong>
+                  <ul className="list-circle pl-6 mt-1.5 space-y-2">
+                    <li>
+                      <strong>Traveling accompanied by BOTH parents:</strong> Both parents must travel with the minor, carry their own matching original physical identity documents, and present proof of parentage (the minor&apos;s DNI indicating parental names or an official birth certificate).
+                    </li>
+                    <li>
+                      <strong>Traveling accompanied by ONLY ONE parent:</strong> In accordance with Peruvian Law, the traveling parent must present an original <strong>Notarized Travel Authorization (<em>Autorización Notarial de Viaje</em>)</strong> granted by the non-traveling parent before a Peruvian notary public. If the non-traveling parent resides abroad, the authorization must be executed before a Peruvian Consular Office and, where applicable, apostilled or legalized by the Peruvian Ministry of Foreign Affairs (RREE).
+                    </li>
+                    <li>
+                      <strong>Traveling accompanied by legal guardians, relatives, third parties, or school/tour groups:</strong> The accompanying adult must hold an original <strong>Notarized Travel Authorization (<em>Autorización Notarial de Viaje</em>)</strong> signed by BOTH parents (or by the legal guardian holding custody), expressly designating the accompanying guardian, specifying travel dates, destinations (Cusco, Sacred Valley, Machu Picchu), and transport modes.
+                    </li>
+                    <li>
+                      <strong>Judicial Travel Authorization:</strong> In cases of absent parent, parental death (supported by official death certificate), loss/suspension of parental authority (patria potestad), or ongoing custody disputes, an official Judicial Travel Authorization issued by a Peruvian Family Court judge must be presented.
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>Transport and Accommodation Carrier Enforcement:</strong>
+                  <ul className="list-circle pl-6 mt-1.5 space-y-2">
+                    <li>
+                      <strong>Railway Operators (Inca Rail &amp; PeruRail):</strong> Rail companies in Peru execute strict document checks at station boarding gates (Poroy, Ollantaytambo, Urubamba, Machu Picchu Pueblo). Minors without original physical IDs and required notarial permits are legally denied boarding without exception.
+                    </li>
+                    <li>
+                      <strong>Citadel Bus Transfer (Consettur):</strong> Identity verification is carried out prior to boarding shuttle buses traveling the Hiram Bingham highway between Aguas Calientes and the Machu Picchu citadel.
+                    </li>
+                    <li>
+                      <strong>Machu Picchu Sanctuary &amp; Inca Trail Network (MINCUL / SERNANP):</strong> Government checkpoints inspect nominal tickets against physical original documents. Passengers lacking required documents are denied entrance to the archaeological sanctuary.
+                    </li>
+                    <li>
+                      <strong>Hotels and Tourist Lodging Establishments:</strong> Under Law N° 30802, all hotels and hostels in Peru are legally mandated to register the relationship of accompanying adults with minors and verify notarial authorizations before providing lodging.
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>Agency Disclaimer of Liability &amp; Exclusion of Refunds:</strong>
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mt-2 text-xs sm:text-sm text-text-main">
+                    <p className="leading-relaxed mb-2">
+                      <strong>{brand.legalName}</strong> acts solely as a compliant travel agency and operator. It is the sole, exclusive, and non-delegable responsibility of the contracting client, purchasing user, and accompanying adults to verify, obtain, and physically carry all required original identity documents and valid Notarized or Judicial Travel Authorizations.
+                    </p>
+                    <p className="leading-relaxed">
+                      If any passenger or minor is denied boarding on transport (railway, bus, or road transfer), refused check-in at lodging establishments, or barred from entering the Machu Picchu Historic Sanctuary or Inca Trail by supervisory authorities or carriers due to missing, invalid, or photocopy-only documentation, <strong>the Agency disclaims all direct and indirect liability</strong>. Under such circumstances, all contracted services, transportation tickets, and government admission tickets shall be deemed forfeited and <strong>strictly non-refundable</strong>, and any auxiliary accommodation, return transport, or rebooking costs shall remain the sole financial responsibility of the customer.
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </section>
           </div>
         ) : (
           <div className="prose prose-gray max-w-none space-y-10 text-text-main">
@@ -493,7 +671,7 @@ export default async function CondicionesPage({
                   <strong>Datos verídicos y obligatorios:</strong> Para realizar compras y reservas en la plataforma, el usuario debe registrarse en el proceso de reserva proporcionando datos verídicos, exactos, vigentes y completos (nombres y apellidos completos tal como figuran en su documento oficial, tipo y número de documento de identidad —DNI, Carnet de Extranjería o Pasaporte—, fecha de nacimiento, nacionalidad, teléfono de contacto y correo electrónico válido), tanto del titular de la compra como de todos los pasajeros integrantes del viaje.
                 </li>
                 <li>
-                  <strong>Requisitos para el registro y uso de la web:</strong> Para contratar servicios o efectuar pagos en nuestra plataforma, el usuario debe ser <strong>mayor de edad (mínimo 18 años cumplidos)</strong> y contar con plena capacidad legal para celebrar contratos conforme a la legislación peruana. Los menores de edad únicamente pueden ser registrados como pasajeros acompañados por sus padres, tutores legales o apoderados con autorización notarial vigente.
+                  <strong>Requisitos para el registro y uso de la web:</strong> Para contratar servicios o efectuar pagos en nuestra plataforma, el usuario debe ser <strong>mayor de edad (mínimo 18 años cumplidos)</strong> y contar con plena capacidad legal para celebrar contratos conforme a la legislación peruana. Los menores de edad únicamente pueden ser registrados como pasajeros acompañados por sus padres, tutores legales o apoderados con autorización notarial vigente, en estricto cumplimiento de la Ley N° 30802 (ver requisitos detallados y autorizaciones en la Sección 14).
                 </li>
                 <li>
                   <strong>Confidencialidad de la cuenta y reserva:</strong> Es responsabilidad exclusiva del usuario mantener la confidencialidad de su cuenta, de sus códigos de reserva ({brand.bookingPrefix}-XXXX), vouchers electrónicos y de cualquier credencial o enlace enviado a su correo electrónico.
@@ -774,6 +952,184 @@ export default async function CondicionesPage({
                   </div>
                 </Link>
               </div>
+            </section>
+
+            {/* 13. Prevención de la Explotación Sexual de Niñas, Niños y Adolescentes (ESNNA) */}
+            <section id="prevencion-esnna" className="scroll-mt-28">
+              <h2 className="font-serif text-2xl text-primary-dark mb-3 flex items-center gap-2">
+                <ShieldAlert className="w-6 h-6 text-primary shrink-0" />
+                13. Prevención de la Explotación Sexual de Niñas, Niños y Adolescentes (ESNNA) en el Ámbito del Turismo
+              </h2>
+
+              {/* Declaración Estatutaria Verbatim Oficial */}
+              <div className="bg-primary/5 border-2 border-primary/30 rounded-2xl p-5 sm:p-6 mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="px-2.5 py-0.5 bg-primary text-white text-[11px] font-bold uppercase tracking-wider rounded-full">
+                    Declaración Oficial Obligatoria (R.M. N° 108-2020-MINCETUR / Ley N° 29408)
+                  </span>
+                </div>
+                <blockquote className="font-serif text-base sm:text-lg text-primary-dark font-bold italic leading-relaxed my-3 border-l-4 border-primary pl-4">
+                  &ldquo;EN ESTA AGENCIA NO PROMOVEMOS NI PERMITIMOS LA EXPLOTACIÓN SEXUAL DE NIÑAS, NIÑOS Y ADOLESCENTES, NI CUALQUIER OTRO ILÍCITO PENAL DEL CUAL TOMEMOS CONOCIMIENTO EN EL DESARROLLO DE NUESTRA ACTIVIDAD, CONFORME A LO DISPUESTO EN LA LEY N° 29408.&rdquo;
+                </blockquote>
+                <blockquote className="font-serif text-sm sm:text-base text-gray-700 italic leading-relaxed pl-4 border-l-4 border-gray-300">
+                  &ldquo;IN THIS TRAVEL AGENCY, WE DO NOT PROMOTE OR PERMIT THE SEXUAL EXPLOITATION OF GIRLS, CHILDREN AND TEENAGERS, NOR ANY OTHER CRIME OF WHICH WE TAKE KNOWLEDGE IN DEVELOPMENT OF OUR ACTIVITY, ACCORDING TO LAW N° 29408.&rdquo;
+                </blockquote>
+                <p className="text-xs text-text-light mt-3">
+                  Aprobado por Resolución Ministerial N° 108-2020-MINCETUR en cumplimiento de los artículos 43 y 44 de la Ley General de Turismo N° 29408 y el D.S. N° 005-2020-MINCETUR (Art. 17.2).
+                </p>
+              </div>
+
+              <ul className="list-disc pl-6 space-y-3 text-text-light leading-relaxed">
+                <li>
+                  <strong>Política de Tolerancia Cero:</strong> <strong>{brand.legalName}</strong> mantiene una estricta política de tolerancia cero frente a la Explotación Sexual de Niñas, Niños y Adolescentes (ESNNA), pornografía infantil, trabajo forzoso infantil, trata de personas y cualquier otro delito que atente contra los derechos de los menores. Cualquier cliente, pasajero, colaborador, guía, conductor o proveedor que promueva, facilite, tolere o cometa actos vinculados a la ESNNA será objeto de la cancelación inmediata y definitiva de sus servicios sin derecho a reembolso alguno, su expulsión del tour y la denuncia inmediata ante las autoridades policiales y judiciales correspondientes.
+                </li>
+                <li>
+                  <strong>Deber Cívico y Legal de Denuncia Inmediata:</strong> Conforme al artículo 44 de la Ley N° 29408, nuestro personal, equipo de operaciones y guías oficiales de turismo se encuentran debidamente instruidos y obligados a denunciar de inmediato ante las autoridades competentes cualquier situación de riesgo, indicio o flagrancia de ESNNA de la que tomen conocimiento. Se exhorta a los pasajeros y al público en general a denunciar de inmediato cualquier situación irregular a través de las líneas gratuitas nacionales.
+                </li>
+                <li>
+                  <strong>Sanciones Penales Severas bajo la Ley N° 30963:</strong> En aplicación de la Ley N° 30963 que modificó el Código Penal peruano, los delitos de explotación sexual de niñas, niños y adolescentes, promoción del turismo sexual infantil, pornografía infantil y trata de personas son sancionados con <strong>penas privativas de la libertad de 15 a 25 años o cadena perpetua</strong> en circunstancias agravadas.
+                </li>
+                <li>
+                  <strong>Marco Legal y Normativo Sectorial:</strong> Esta política se ejecuta en estricta conformidad con:
+                  <ul className="list-circle pl-6 mt-1.5 space-y-1 text-xs sm:text-sm">
+                    <li><strong>Ley N° 29408</strong> — Ley General de Turismo (Artículos 43 y 44).</li>
+                    <li><strong>Decreto Supremo N° 003-2010-MINCETUR</strong> — Reglamento de la Ley General de Turismo.</li>
+                    <li><strong>Decreto Supremo N° 005-2020-MINCETUR</strong> — Reglamento de Agencias de Viajes y Turismo (Art. 17.2).</li>
+                    <li><strong>Resolución Ministerial N° 108-2020-MINCETUR</strong> — Modelo oficial del afiche y texto obligatorio contra la ESNNA.</li>
+                    <li><strong>Ley N° 30963</strong> — Modificatoria del Código Penal respecto a penas privativas para la explotación sexual infantil.</li>
+                    <li><strong>Ley N° 30802</strong> — Ley que establece condiciones para el ingreso de menores a hospedajes y transporte turístico.</li>
+                  </ul>
+                </li>
+              </ul>
+
+              {/* Líneas Oficiales de Denuncia 24 Horas */}
+              <div className="mt-6">
+                <h3 className="font-bold text-base text-primary-dark mb-3">
+                  Líneas Telefónicas Oficiales Gratuitas de Denuncia 24 Horas (Perú)
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-start gap-3">
+                    <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold text-text-main">Línea 100 (MIMP)</p>
+                      <p className="text-xs text-text-light mb-1">Ministerio de la Mujer y Poblaciones Vulnerables. Atención gratuita 24/7 a nivel nacional desde cualquier teléfono para orientación y denuncia contra la violencia y explotación sexual de menores.</p>
+                      <a href="tel:100" className="inline-flex items-center text-xs font-bold text-primary hover:underline">
+                        Llamar a Línea 100 &rarr;
+                      </a>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-start gap-3">
+                    <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold text-text-main">Línea 1818 (MININTER)</p>
+                      <p className="text-xs text-text-light mb-1">Ministerio del Interior — Central Única de Denuncias contra la Trata de Personas y Explotación Sexual. Gratuita, anónima y confidencial las 24 horas.</p>
+                      <a href="tel:1818" className="inline-flex items-center text-xs font-bold text-primary hover:underline">
+                        Llamar a Línea 1818 &rarr;
+                      </a>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-start gap-3">
+                    <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold text-text-main">Central 105 (PNP)</p>
+                      <p className="text-xs text-text-light mb-1">Policía Nacional del Perú — Central de Emergencias e Intervención Policial Inmediata las 24 horas del día a nivel nacional.</p>
+                      <a href="tel:105" className="inline-flex items-center text-xs font-bold text-primary hover:underline">
+                        Llamar a PNP 105 &rarr;
+                      </a>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-start gap-3">
+                    <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold text-text-main">POLTUR Cusco (Policía de Turismo)</p>
+                      <p className="text-xs text-text-light mb-1">División de Policía de Turismo de Cusco. Asistencia especializada y atención inmediata en circuitos turísticos de la región.</p>
+                      <div className="flex gap-3 mt-1">
+                        <a href="tel:+5184249769" className="text-xs font-bold text-primary hover:underline">+51 (84) 249769</a>
+                        <span className="text-gray-300">|</span>
+                        <a href="tel:+5184235123" className="text-xs font-bold text-primary hover:underline">+51 (84) 235123</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 14. Requisitos y Documentación para Pasajeros Menores de Edad (Ley N° 30802) */}
+            <section id="menores-de-edad" className="scroll-mt-28">
+              <h2 className="font-serif text-2xl text-primary-dark mb-3 flex items-center gap-2">
+                <ShieldCheck className="w-6 h-6 text-primary shrink-0" />
+                14. Requisitos, Autorizaciones de Viaje y Documentación para Pasajeros Menores de Edad (Ley N° 30802)
+              </h2>
+              <p className="text-text-light leading-relaxed mb-4">
+                Con el objeto de garantizar la protección integral, la custodia legal y la seguridad de niñas, niños y adolescentes en el territorio peruano, <strong>{brand.legalName}</strong> da estricto cumplimiento a las disposiciones de la <strong>Ley N° 30802</strong> (Ley que establece condiciones para el ingreso de niñas, niños y adolescentes a establecimientos de hospedaje y transporte turístico) y a la normativa sectorial de transportes (D.S. N° 017-2009-MTC y directivas de la SUTRAN).
+              </p>
+
+              <div className="bg-amber-50/80 border border-amber-300 rounded-2xl p-5 sm:p-6 mb-6">
+                <h3 className="font-bold text-base text-amber-950 flex items-center gap-2 mb-2">
+                  <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0" />
+                  Reglas Obligatorias de Identificación para Menores de Edad
+                </h3>
+                <ul className="list-disc pl-5 space-y-2 text-xs sm:text-sm text-amber-900 leading-relaxed">
+                  <li>
+                    <strong>Definición legal de menor de edad:</strong> Toda persona menor de dieciocho (18) años a la fecha de ejecución del viaje es considerada jurídicamente menor de edad bajo la legislación peruana.
+                  </li>
+                  <li>
+                    <strong>Documento de Identidad Físico Original Obligatorio:</strong> Todo menor de edad debe portar y exhibir su <strong>documento de identidad físico original</strong> en cada punto de control. Queda terminantemente prohibido el uso de fotocopias simples, imágenes en teléfonos móviles o capturas de pantalla, las cuales serán rechazadas por las empresas ferroviarias, de buses turísticos y las autoridades del Estado:
+                    <ul className="list-circle pl-5 mt-1 space-y-1">
+                      <li><strong>Menores de nacionalidad peruana:</strong> Documento Nacional de Identidad (DNI) físico original (amarillo o azul según la edad).</li>
+                      <li><strong>Menores de nacionalidad extranjera:</strong> Pasaporte físico original vigente (y Tarjeta Andina de Migración TAM Virtual cuando sea requerida por las autoridades migratorias o de control).</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+
+              <ul className="list-disc pl-6 space-y-3 text-text-light leading-relaxed">
+                <li>
+                  <strong>Reglas sobre Adultos Acompañantes y Autorizaciones Notariales Obligatorias:</strong>
+                  <ul className="list-circle pl-6 mt-1.5 space-y-2">
+                    <li>
+                      <strong>Viaje en compañía de AMBOS padres:</strong> Ambos progenitores deben viajar junto al menor, portar sus respectivos documentos de identidad físicos originales y acreditar el vínculo de filiación (DNI del menor donde figuren los nombres de los padres o partida de nacimiento oficial).
+                    </li>
+                    <li>
+                      <strong>Viaje en compañía de SOLO UNO de los padres:</strong> Conforme a la legislación peruana, el progenitor acompañante debe presentar obligatoriamente la <strong>Autorización Notarial de Viaje</strong> original otorgada por el padre o madre que no viaja ante un notario público peruano. Si el progenitor ausente reside en el extranjero, la autorización debe otorgarse ante el Consulado Peruano correspondiente y estar legalizada/apostillada ante el Ministerio de Relaciones Exteriores (RREE).
+                    </li>
+                    <li>
+                      <strong>Viaje en compañía de tutores, familiares, terceros o delegaciones:</strong> El adulto acompañante debe portar la <strong>Autorización Notarial de Viaje</strong> original otorgada por AMBOS progenitores (o por el tutor que ostente la custodia legal), designando expresamente al adulto responsable y detallando fechas, ruta del viaje (Cusco, Valle Sagrado, Machu Picchu) y medios de transporte.
+                    </li>
+                    <li>
+                      <strong>Autorización Judicial de Viaje:</strong> En casos de fallecimiento de uno de los padres (acreditado con acta de defunción original), suspensión de la patria potestad o controversia judicial, deberá presentarse la Autorización Judicial de Viaje expedida por el Juzgado de Familia competente.
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>Fiscalización y Control en Transportes, Hoteles y Monumentos:</strong>
+                  <ul className="list-circle pl-6 mt-1.5 space-y-2">
+                    <li>
+                      <strong>Empresas Ferroviarias (Inca Rail y PeruRail):</strong> Realizan control estricto de documentos físicos originales en las salas de embarque de las estaciones (Poroy, Ollantaytambo, Urubamba, Machu Picchu Pueblo). Los menores que no cuenten con su documento original y la autorización notarial requerida no podrán abordar el tren bajo ninguna circunstancia.
+                    </li>
+                    <li>
+                      <strong>Buses a la Ciudadela de Machu Picchu (Consettur):</strong> Verifican la identidad y edad del menor antes de autorizar el abordaje de los buses que ascienden por la carretera Hiram Bingham.
+                    </li>
+                    <li>
+                      <strong>Santuario Histórico de Machu Picchu y Red de Caminos Inca (MINCUL / SERNANP):</strong> Los puestos de control oficial verifican los boletos nominales contra los documentos físicos originales. El ingreso es denegado si la documentación no coincide o no se presenta en físico.
+                    </li>
+                    <li>
+                      <strong>Establecimientos de Hospedaje y Hoteles:</strong> Por mandato de la Ley N° 30802, todo hospedaje turístico en el Perú está obligado por ley a registrar la filiación de los adultos acompañantes con los menores y verificar la autorización notarial correspondiente al momento del check-in.
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>Exención de Responsabilidad de la Agencia y Pérdida de Reembolsos:</strong>
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mt-2 text-xs sm:text-sm text-text-main">
+                    <p className="leading-relaxed mb-2">
+                      <strong>{brand.legalName}</strong> actúa exclusivamente como agencia de viajes y operadora turística formal. Es responsabilidad exclusiva, indelegable y obligatoria del cliente contratante y de los adultos acompañantes tramitar, verificar y portar físicamente todos los documentos originales de identidad y las Autorizaciones Notariales o Judiciales de Viaje exigidas por ley.
+                    </p>
+                    <p className="leading-relaxed">
+                      En caso de que a un pasajero menor de edad se le impida el embarque en transportes ferroviarios, terrestres o aéreos, se le deniegue el registro en hoteles o se le prohíba el ingreso a Machu Picchu o Caminos Inca por falta, invalidez, vencimiento o tenencia únicamente de copias o fotos de la documentación exigida, <strong>la Agencia queda totalmente exonerada de toda responsabilidad civil, penal o económica</strong>. En dicho supuesto, se perderá el 100% de los servicios y boletos contratados sin derecho a reembolso o compensación alguna, debiendo el cliente asumir cualquier gasto extraordinario de transporte, alojamiento o reprogramación.
+                    </p>
+                  </div>
+                </li>
+              </ul>
             </section>
           </div>
         )}

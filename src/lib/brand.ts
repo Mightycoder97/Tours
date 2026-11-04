@@ -6,6 +6,8 @@ export interface BrandConfig {
   shortName: string;
   legalName: string;
   ruc: string;
+  minceturRegistrationCode?: string;
+  gerceturAccreditation?: string;
   bookingPrefix: string;
   domain: string;
   emailDomain: string;
@@ -51,6 +53,8 @@ export const BRANDS: Record<BrandId, BrandConfig> = {
     shortName: 'Sonqo Perú Travel',
     legalName: 'Sonqo Perú Travel E.I.R.L.',
     ruc: '20564458385',
+    minceturRegistrationCode: 'DIRCETUR-CUSCO-2024-00129',
+    gerceturAccreditation: 'Agencia de Viajes y Turismo Registrada en GERCETUR Cusco',
     bookingPrefix: 'SNQ',
     domain: 'https://sonqoperutravel.com',
     emailDomain: 'sonqoperutravel.com',
@@ -94,6 +98,8 @@ export const BRANDS: Record<BrandId, BrandConfig> = {
     shortName: 'Machu Picchu Travel',
     legalName: 'Machu Picchu Travel Adventure E.I.R.L.',
     ruc: '20564458385',
+    minceturRegistrationCode: 'DIRCETUR-CUSCO-2024-00129',
+    gerceturAccreditation: 'Agencia de Viajes y Turismo Registrada en GERCETUR Cusco',
     bookingPrefix: 'MTP',
     domain: 'https://machupicchutravel.com',
     emailDomain: 'machupicchutravel.com',
