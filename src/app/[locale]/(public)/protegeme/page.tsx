@@ -1,13 +1,11 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 import { getBrandConfig } from '@/lib/brand';
 import { Link } from '@/i18n/navigation';
 import {
   ShieldAlert,
-  ShieldCheck,
   PhoneCall,
-  AlertTriangle,
   Building2,
   FileCheck2,
   Scale,
