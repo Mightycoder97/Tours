@@ -1,5 +1,6 @@
 import { getRequestConfig } from 'next-intl/server';
 import { routing } from './routing';
+import { applyBrandToMessages, getBrandConfig } from '@/lib/brand';
 
 export default getRequestConfig(async ({ requestLocale }) => {
   let locale = await requestLocale;
@@ -9,8 +10,12 @@ export default getRequestConfig(async ({ requestLocale }) => {
     locale = routing.defaultLocale;
   }
 
+  const rawMessages = (await import(`../../messages/${locale}.json`)).default;
+  const brand = getBrandConfig();
+
   return {
     locale,
-    messages: (await import(`../../messages/${locale}.json`)).default
+    messages: applyBrandToMessages(rawMessages, brand),
   };
 });
+

@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
 import { createClient } from '@/lib/supabase/server';
+import { getBrandConfig } from '@/lib/brand';
 
-const BASE_URL = 'https://machupicchutravel.com';
+const BASE_URL = getBrandConfig().domain;
 const LOCALES = ['es', 'en'] as const;
 
 function buildAlternates(path: string) {
@@ -63,6 +64,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...buildLocalizedUrls('/cambios-y-devoluciones', { changeFrequency: 'yearly', priority: 0.3 }),
     ...buildLocalizedUrls('/libro-de-reclamaciones', { changeFrequency: 'yearly', priority: 0.3 }),
     ...buildLocalizedUrls('/politicas', { changeFrequency: 'yearly', priority: 0.3 }),
+    ...buildLocalizedUrls('/protegeme', { changeFrequency: 'yearly', priority: 0.3 }),
     ...tourUrls,
   ];
 }

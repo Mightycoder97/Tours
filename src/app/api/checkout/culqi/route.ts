@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getBrandConfig } from '@/lib/brand';
 
 /**
  * POST /api/checkout/culqi
@@ -12,6 +13,7 @@ import { NextResponse } from 'next/server';
  */
 export async function POST(req: Request) {
   try {
+    const brand = getBrandConfig();
     const culqiSecretKey = process.env.CULQI_SECRET_KEY;
     if (!culqiSecretKey) {
       console.error('[Culqi] CULQI_SECRET_KEY no está configurada en las variables de entorno.');
@@ -55,7 +57,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const rawDescription = String(description || 'Tour - Machu Picchu Travel Adventures').trim();
+    const rawDescription = String(description || `Tour - ${brand.name}`).trim();
     const safeDescription =
       rawDescription.length < 5
         ? `${rawDescription} - Tour Perú`.slice(0, 80)

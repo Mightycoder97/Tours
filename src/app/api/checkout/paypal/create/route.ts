@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getBrandConfig } from '@/lib/brand';
 
 const PAYPAL_API = process.env.NODE_ENV === 'production' 
   ? 'https://api-m.paypal.com' 
@@ -31,6 +32,7 @@ async function generateAccessToken() {
 
 export async function POST(req: Request) {
   try {
+    const brand = getBrandConfig();
     const { amount } = await req.json();
     const numericAmount = Number(amount);
     if (!numericAmount || isNaN(numericAmount) || numericAmount <= 0) {
@@ -53,7 +55,7 @@ export async function POST(req: Request) {
               currency_code: 'USD',
               value: numericAmount.toFixed(2),
             },
-            description: "Reserva de Paquetes VIP - Machu Picchu Travel",
+            description: `Reserva de Paquetes VIP - ${brand.shortName}`,
           },
         ],
       }),
