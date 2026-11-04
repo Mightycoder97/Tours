@@ -94,14 +94,14 @@ export default async function ProtegemePage({
             <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center text-center w-[160px] sm:w-[170px]">
               <Image
                 src="/imagenes/logos/1.png"
-                alt="Agencia de Viajes y Turismo Registrada - MINCETUR"
+                alt={isEn ? 'Registered Travel and Tourism Agency - MINCETUR' : 'Agencia de Viajes y Turismo Registrada - MINCETUR'}
                 width={130}
                 height={190}
                 className="object-contain max-h-[140px] w-auto"
                 priority
               />
               <span className="text-xs font-bold text-gray-800 uppercase tracking-tight mt-3 leading-tight">
-                Agencia Registrada
+                {isEn ? 'Registered Agency' : 'Agencia Registrada'}
               </span>
               <span className="text-[10px] text-gray-500 mt-0.5">
                 R.M. N° 061-2021-MINCETUR
@@ -115,7 +115,11 @@ export default async function ProtegemePage({
             <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center text-center w-[230px] sm:w-[260px]">
               <Image
                 src="/imagenes/logos/2.png"
-                alt="Protégeme - Turismo Responsable para prevenir la explotación sexual de niñas, niños y adolescentes"
+                alt={
+                  isEn
+                    ? 'Protégeme - Responsible Tourism to Prevent Sexual Exploitation of Children and Adolescents'
+                    : 'Protégeme - Turismo Responsable para prevenir la explotación sexual de niñas, niños y adolescentes'
+                }
                 width={240}
                 height={160}
                 className="object-contain max-h-[140px] w-auto"
@@ -128,7 +132,7 @@ export default async function ProtegemePage({
                 R.M. N° 108-2020-MINCETUR
               </span>
               <span className="text-[10px] text-gray-600 font-semibold mt-1">
-                Turismo Responsable
+                {isEn ? 'Responsible Tourism' : 'Turismo Responsable'}
               </span>
             </div>
           </div>
@@ -235,44 +239,68 @@ export default async function ProtegemePage({
 
           <div className="space-y-3 text-xs sm:text-sm text-text-light divide-y divide-gray-100">
             <div className="pt-2">
-              <strong className="text-text-main">Ley N° 29408 — Ley General de Turismo:</strong>
+              <strong className="text-text-main">
+                {isEn ? 'Law N° 29408 — General Tourism Law:' : 'Ley N° 29408 — Ley General de Turismo:'}
+              </strong>
               <p className="mt-1">
-                Artículos 43 y 44: Establecen la obligación ineludible de los prestadores de servicios turísticos de prevenir la explotación sexual de niñas, niños y adolescentes, adoptar códigos de conducta y denunciar de inmediato cualquier hecho ilícito ante la autoridad competente.
+                {isEn
+                  ? 'Articles 43 and 44: Establish the mandatory obligation of tourism service providers to prevent the sexual exploitation of children and adolescents, adopt codes of conduct, and immediately report any illicit act to the competent authority.'
+                  : 'Artículos 43 y 44: Establecen la obligación ineludible de los prestadores de servicios turísticos de prevenir la explotación sexual de niñas, niños y adolescentes, adoptar códigos de conducta y denunciar de inmediato cualquier hecho ilícito ante la autoridad competente.'}
               </p>
             </div>
 
             <div className="pt-3">
-              <strong className="text-text-main">Decreto Supremo N° 003-2010-MINCETUR:</strong>
+              <strong className="text-text-main">
+                {isEn ? 'Supreme Decree N° 003-2010-MINCETUR:' : 'Decreto Supremo N° 003-2010-MINCETUR:'}
+              </strong>
               <p className="mt-1">
-                Reglamento de la Ley General de Turismo, detallando las responsabilidades de los operadores y prestadores de servicios turísticos respecto a la prevención de delitos contra la indemnidad sexual.
+                {isEn
+                  ? 'Regulations of the General Tourism Law, detailing the responsibilities of tour operators and tourism service providers regarding the prevention of crimes against sexual integrity.'
+                  : 'Reglamento de la Ley General de Turismo, detallando las responsabilidades de los operadores y prestadores de servicios turísticos respecto a la prevención de delitos contra la indemnidad sexual.'}
               </p>
             </div>
 
             <div className="pt-3">
-              <strong className="text-text-main">Ley N° 30963:</strong>
+              <strong className="text-text-main">
+                {isEn ? 'Law N° 30963:' : 'Ley N° 30963:'}
+              </strong>
               <p className="mt-1">
-                Ley que modifica el Código Penal para sancionar con penas privativas de la libertad severas (hasta 25 años o cadena perpetua) los delitos de explotación sexual infantil, pornografía infantil y trata de personas.
+                {isEn
+                  ? 'Law amending the Peruvian Penal Code to punish with severe custodial sentences (up to 25 years of imprisonment or life imprisonment) the crimes of child sexual exploitation, child pornography, and human trafficking.'
+                  : 'Ley que modifica el Código Penal para sancionar con penas privativas de la libertad severas (hasta 25 años o cadena perpetua) los delitos de explotación sexual infantil, pornografía infantil y trata de personas.'}
               </p>
             </div>
 
             <div className="pt-3">
-              <strong className="text-text-main">Ley N° 30802:</strong>
+              <strong className="text-text-main">
+                {isEn ? 'Law N° 30802:' : 'Ley N° 30802:'}
+              </strong>
               <p className="mt-1">
-                Ley que establece condiciones obligatorias para el ingreso de niñas, niños y adolescentes a establecimientos de hospedaje y al abordaje de medios de transporte turístico, exigiendo acreditación de parentesco o autorización notarial de viaje.
+                {isEn
+                  ? 'Law establishing mandatory conditions for the entry of children and adolescents into lodging establishments and boarding of tourist transport, requiring proof of parentage or a notarized travel authorization.'
+                  : 'Ley que establece condiciones obligatorias para el ingreso de niñas, niños y adolescentes a establecimientos de hospedaje y al abordaje de medios de transporte turístico, exigiendo acreditación de parentesco o autorización notarial de viaje.'}
               </p>
             </div>
 
             <div className="pt-3">
-              <strong className="text-text-main">Resolución Ministerial N° 108-2020-MINCETUR:</strong>
+              <strong className="text-text-main">
+                {isEn ? 'Ministerial Resolution N° 108-2020-MINCETUR:' : 'Resolución Ministerial N° 108-2020-MINCETUR:'}
+              </strong>
               <p className="mt-1">
-                Aprueba las características técnicas y el modelo oficial del afiche contra la ESNNA que debe ser exhibido de manera obligatoria y visible en establecimientos físicos y plataformas digitales de turismo.
+                {isEn
+                  ? 'Approves the technical specifications and official template of the anti-ESNNA poster that must be mandatorily and visibly displayed at physical establishments and digital tourism platforms.'
+                  : 'Aprueba las características técnicas y el modelo oficial del afiche contra la ESNNA que debe ser exhibido de manera obligatoria y visible en establecimientos físicos y plataformas digitales de turismo.'}
               </p>
             </div>
 
             <div className="pt-3">
-              <strong className="text-text-main">Decreto Supremo N° 005-2020-MINCETUR:</strong>
+              <strong className="text-text-main">
+                {isEn ? 'Supreme Decree N° 005-2020-MINCETUR:' : 'Decreto Supremo N° 005-2020-MINCETUR:'}
+              </strong>
               <p className="mt-1">
-                Reglamento de Agencias de Viajes y Turismo. En sus artículos 17 y 22 dispone la exhibición obligatoria del distintivo de Agencia Registrada y los datos de identificación comercial en canales digitales.
+                {isEn
+                  ? 'Travel and Tourism Agencies Regulations. Articles 17 and 22 mandate the display of the Registered Agency badge and commercial identification data on digital channels.'
+                  : 'Reglamento de Agencias de Viajes y Turismo. En sus artículos 17 y 22 dispone la exhibición obligatoria del distintivo de Agencia Registrada y los datos de identificación comercial en canales digitales.'}
               </p>
             </div>
           </div>
@@ -309,7 +337,9 @@ export default async function ProtegemePage({
                   Línea 100 (MIMP)
                 </h3>
                 <p className="text-xs text-text-light mt-1 leading-relaxed">
-                  Ministerio de la Mujer y Poblaciones Vulnerables. Orientación, soporte legal y psicológico ante violencia familiar o sexual. Gratuito, confidencial y 24/7 a nivel nacional.
+                  {isEn
+                    ? 'Ministry of Women and Vulnerable Populations. Guidance, legal, and psychological support against domestic or sexual violence. Free, confidential, and 24/7 nationwide.'
+                    : 'Ministerio de la Mujer y Poblaciones Vulnerables. Orientación, soporte legal y psicológico ante violencia familiar o sexual. Gratuito, confidencial y 24/7 a nivel nacional.'}
                 </p>
               </div>
             </a>
@@ -327,7 +357,9 @@ export default async function ProtegemePage({
                   Línea 1818 (MININTER)
                 </h3>
                 <p className="text-xs text-text-light mt-1 leading-relaxed">
-                  Ministerio del Interior — Central Única de Denuncias. Opción especializada en delitos de trata de personas y explotación sexual. Gratuito y confidencial.
+                  {isEn
+                    ? 'Ministry of the Interior — Single Reporting Hotline. Specialized channel for crimes of human trafficking and sexual exploitation. Free and confidential 24/7.'
+                    : 'Ministerio del Interior — Central Única de Denuncias. Opción especializada en delitos de trata de personas y explotación sexual. Gratuito y confidencial.'}
                 </p>
               </div>
             </a>
@@ -345,7 +377,9 @@ export default async function ProtegemePage({
                   Central 105 (PNP)
                 </h3>
                 <p className="text-xs text-text-light mt-1 leading-relaxed">
-                  Policía Nacional del Perú — Central de Emergencias. Para intervenciones inmediatas en flagrancia delictiva y operativos de rescate en todo el territorio nacional.
+                  {isEn
+                    ? 'National Police of Peru — Emergency Dispatch. Immediate police intervention in flagrant crimes and rescue operations throughout the national territory.'
+                    : 'Policía Nacional del Perú — Central de Emergencias. Para intervenciones inmediatas en flagrancia delictiva y operativos de rescate en todo el territorio nacional.'}
                 </p>
               </div>
             </a>
@@ -363,7 +397,9 @@ export default async function ProtegemePage({
                   POLTUR Cusco: (084) 249769
                 </h3>
                 <p className="text-xs text-text-light mt-1 leading-relaxed">
-                  Policía de Turismo de Cusco (Plaza Túpac Amaru / Av. El Sol). Atención directa, patrullaje y auxilio inmediato a visitantes nacionales y extranjeros en la región Cusco.
+                  {isEn
+                    ? 'Cusco Tourism Police (Plaza Túpac Amaru / Av. El Sol). Direct assistance, patrol, and immediate protection for domestic and foreign visitors in the Cusco region.'
+                    : 'Policía de Turismo de Cusco (Plaza Túpac Amaru / Av. El Sol). Atención directa, patrullaje y auxilio inmediato a visitantes nacionales y extranjeros en la región Cusco.'}
                 </p>
               </div>
             </a>

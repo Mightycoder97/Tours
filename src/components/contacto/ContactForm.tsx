@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { getBrandConfig } from '@/lib/brand';
 
 export default function ContactForm() {
   const t = useTranslations('pages.contact');
+  const brand = getBrandConfig();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -13,8 +15,8 @@ export default function ContactForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanPhone = '51955723329';
-    const textMessage = `¡Hola Machupicchu Travel Adventure! Deseo enviar un mensaje desde la web.\n\n` +
+    const cleanPhone = brand.contact.cleanPhone;
+    const textMessage = `¡Hola ${brand.name}! Deseo enviar un mensaje desde la web.\n\n` +
       `👤 Nombre: ${name}\n` +
       `✉️ Correo: ${email}\n` +
       `📞 Teléfono: ${phone || 'No provisto'}\n` +

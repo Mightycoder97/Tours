@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { getBrandConfig } from '@/lib/brand';
 
 export default function AdvisorContact() {
   const t = useTranslations('pages.experiences');
+  const brand = getBrandConfig();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [interest, setInterest] = useState('');
@@ -13,8 +15,8 @@ export default function AdvisorContact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanPhone = '51955723329';
-    const textMessage = `¡Hola Machupicchu Travel Adventure! Deseo solicitar asesoría personalizada.\n\n` +
+    const cleanPhone = brand.contact.cleanPhone;
+    const textMessage = `¡Hola ${brand.name}! Deseo solicitar asesoría personalizada.\n\n` +
       `👤 Nombre: ${name || 'No provisto'}\n` +
       `✉️ Correo: ${email || 'No provisto'}\n` +
       `📍 Destino de interés: ${interest || 'Varios / No especificado'}\n` +

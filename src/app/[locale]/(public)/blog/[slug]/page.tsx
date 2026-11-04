@@ -7,6 +7,7 @@ import JsonLd from '@/components/seo/JsonLd';
 import BlogSidebarClient from '@/components/blog/BlogSidebarClient';
 import { createClient } from '@supabase/supabase-js';
 import type { Metadata } from 'next';
+import { getBrandConfig } from '@/lib/brand';
 
 interface PageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const resolvedParams = await params;
   const { locale, slug } = resolvedParams;
   const t = await getTranslations({ locale, namespace: 'pages.blog' });
+  const brand = getBrandConfig();
   
   const postIndices = [0, 1, 2, 3] as const;
   let matchedIdx: number | null = null;
@@ -44,22 +46,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     '/tours/cusco/palcoyo-montana-de-colores-alternativa/01.png',
     '/tours/cusco/pachamanca-full-day/01.png',
   ];
-  const imagePath = `https://machupicchutravel.com${postImages[matchedIdx]}`;
+  const imagePath = `${brand.domain}${postImages[matchedIdx]}`;
   
   const esSlug = await getSlugForLocale(matchedIdx, 'es');
   const enSlug = await getSlugForLocale(matchedIdx, 'en');
 
   return {
-    title: `${postTitle} | Machu Picchu Travel Blog`,
+    title: `${postTitle} | ${brand.shortName} Blog`,
     description: postExcerpt.substring(0, 160),
     openGraph: {
       title: postTitle,
       description: postExcerpt,
       images: [{ url: imagePath }],
       type: 'article',
-      url: `https://machupicchutravel.com${locale === 'es' ? '' : '/en'}/blog/${slug}`,
+      url: `${brand.domain}${locale === 'es' ? '' : '/en'}/blog/${slug}`,
       publishedTime: matchedIdx === 0 ? '2026-05-15T00:00:00Z' : matchedIdx === 1 ? '2026-05-10T00:00:00Z' : matchedIdx === 2 ? '2026-05-05T00:00:00Z' : '2026-05-01T00:00:00Z',
-      authors: ['Machu Picchu Travel Adventures'],
+      authors: [brand.name],
     },
     twitter: {
       card: 'summary_large_image',
@@ -68,11 +70,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: [imagePath],
     },
     alternates: {
-      canonical: `https://machupicchutravel.com${locale === 'es' ? '' : '/en'}/blog/${slug}`,
+      canonical: `${brand.domain}${locale === 'es' ? '' : '/en'}/blog/${slug}`,
       languages: {
-        'es': `https://machupicchutravel.com/blog/${esSlug}`,
-        'en': `https://machupicchutravel.com/en/blog/${enSlug}`,
-        'x-default': `https://machupicchutravel.com/blog/${esSlug}`,
+        'es': `${brand.domain}/blog/${esSlug}`,
+        'en': `${brand.domain}/en/blog/${enSlug}`,
+        'x-default': `${brand.domain}/blog/${esSlug}`,
       },
     },
   };
@@ -171,8 +173,9 @@ export default async function BlogPostPage({ params }: PageProps) {
     return recommendedSlugs.indexOf(a.slug) - recommendedSlugs.indexOf(b.slug);
   });
 
-  const canonicalUrl = `https://machupicchutravel.com${locale === 'es' ? '' : '/en'}/blog/${slug}`;
-  const imageFullPath = `https://machupicchutravel.com${postImage}`;
+  const brand = getBrandConfig();
+  const canonicalUrl = `${brand.domain}${locale === 'es' ? '' : '/en'}/blog/${slug}`;
+  const imageFullPath = `${brand.domain}${postImage}`;
   
   // Format publish date to ISO for Schema
   const dateIso = matchedIdx === 0 ? '2026-05-15T08:00:00Z' : matchedIdx === 1 ? '2026-05-10T08:00:00Z' : matchedIdx === 2 ? '2026-05-05T08:00:00Z' : '2026-05-01T08:00:00Z';
@@ -234,10 +237,10 @@ export default async function BlogPostPage({ params }: PageProps) {
         },
         'publisher': {
           '@type': 'Organization',
-          'name': 'Machu Picchu Travel Adventures',
+          'name': brand.name,
           'logo': {
             '@type': 'ImageObject',
-            'url': 'https://machupicchutravel.com/imagenes/logo.png'
+            'url': `${brand.domain}${brand.logo.ogImageSrc}`
           }
         },
         'mainEntityOfPage': {

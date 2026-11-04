@@ -10,6 +10,7 @@ import { TEST_PEN_TOUR_SLUG } from '@/store/useCartStore';
 
 import { createClient } from '@/lib/supabase/server';
 import { getTranslations } from 'next-intl/server';
+import { getBrandConfig } from '@/lib/brand';
 
 const fetchTour = async (slug: string) => {
   const supabase = await createClient();
@@ -46,19 +47,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const t = await getTranslations('tours.detail');
     return { title: t('notFound') };
   }
+  const brand = getBrandConfig();
   
   return {
-    title: `${tour.title} | Machu Picchu Travel`,
+    title: `${tour.title} | ${brand.shortName}`,
     description: tour.description?.substring(0, 160) || tour.title,
     openGraph: {
       images: [tour.image],
     },
     alternates: {
-      canonical: `https://machupicchutravel.com/tours/${tour.slug}`,
+      canonical: `${brand.domain}/tours/${tour.slug}`,
       languages: {
-        'es': `https://machupicchutravel.com/es/tours/${tour.slug}`,
-        'en': `https://machupicchutravel.com/en/tours/${tour.slug}`,
-        'x-default': `https://machupicchutravel.com/es/tours/${tour.slug}`,
+        'es': `${brand.domain}/es/tours/${tour.slug}`,
+        'en': `${brand.domain}/en/tours/${tour.slug}`,
+        'x-default': `${brand.domain}/es/tours/${tour.slug}`,
       },
     },
   };
@@ -78,6 +80,7 @@ export default async function TourDetail({
   if (!tour) return notFound();
 
   const t = await getTranslations('tours.detail');
+  const brand = getBrandConfig();
   const currentYear = new Date().getFullYear();
 
   // All gallery images: includes main hero image + extras
@@ -96,17 +99,17 @@ export default async function TourDetail({
         image: [tour.image, ...tour.images],
         brand: {
           '@type': 'Brand',
-          name: 'Machu Picchu Travel Adventures',
+          name: brand.name,
         },
         offers: {
           '@type': 'Offer',
           price: tour.price,
           priceCurrency: 'USD',
           availability: 'https://schema.org/InStock',
-          url: `https://machupicchutravel.com/tours/${tour.slug}`,
+          url: `${brand.domain}/tours/${tour.slug}`,
           seller: {
             '@type': 'Organization',
-            name: 'Machu Picchu Travel Adventures',
+            name: brand.name,
           },
         },
       }} />
@@ -219,7 +222,7 @@ export default async function TourDetail({
 
             {/* Copyright footer */}
             <div className="mt-8 text-center text-xs text-text-muted font-sans py-4 border-t border-gray-100">
-              © {currentYear} Machu Picchu Travel Adventures. Fotografías protegidas por derechos de autor.
+              © {currentYear} {brand.name}. Fotografías protegidas por derechos de autor.
               Prohibida su reproducción sin autorización expresa.
             </div>
 

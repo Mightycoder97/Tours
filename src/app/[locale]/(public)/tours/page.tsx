@@ -1,17 +1,19 @@
 import ToursPageClient from '@/components/tours/ToursPageClient';
 import { createClient } from '@/lib/supabase/server';
 import { getTranslations } from 'next-intl/server';
+import { getBrandConfig } from '@/lib/brand';
 
 export async function generateMetadata() {
   const t = await getTranslations('meta.toursPage');
+  const brand = getBrandConfig();
   return {
     title: t('title'),
     description: t('description'),
     alternates: {
-      canonical: 'https://machupicchutravel.com/tours',
+      canonical: `${brand.domain}/tours`,
       languages: {
-        'es': 'https://machupicchutravel.com/es/tours',
-        'en': 'https://machupicchutravel.com/en/tours',
+        'es': `${brand.domain}/es/tours`,
+        'en': `${brand.domain}/en/tours`,
       },
     },
   };

@@ -179,6 +179,7 @@ export function applyBrandToMessages<T>(messages: T, brand: BrandConfig = getBra
         .replace(/Machu\s*Picchu\s*Travel\s*Adventures?/gi, brand.name)
         .replace(/Machu\s*Picchu\s*Travel/gi, brand.shortName)
         .replace(/reservasmtaperu@gmail\.com/gi, brand.contact.email)
+        .replace(/https?:\/\/machupicchutravel\.com/gi, brand.domain)
         .replace(/\+51 955 723 329/g, brand.contact.phone);
     }
     if (Array.isArray(val)) {
@@ -196,3 +197,4 @@ export function applyBrandToMessages<T>(messages: T, brand: BrandConfig = getBra
 
   return transformValue(messages) as T;
 }
+

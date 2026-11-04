@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, type ReactNode } from 'react';
 import Image from 'next/image';
 import { X, ShieldAlert, PhoneCall, ExternalLink, ShieldCheck, AlertCircle } from 'lucide-react';
+import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { getBrandConfig } from '@/lib/brand';
 
@@ -13,6 +14,8 @@ export interface ProtegemeModalProps {
 
 export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps) {
   const brand = getBrandConfig();
+  const locale = useLocale();
+  const isEn = locale === 'en';
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -68,10 +71,12 @@ export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps)
             </span>
             <div>
               <h2 id="protegeme-modal-title" className="font-serif text-lg sm:text-xl font-bold leading-tight">
-                Compromiso de Protección contra la ESNNA
+                {isEn ? 'Child Protection & Anti-ESNNA Commitment' : 'Compromiso de Protección contra la ESNNA'}
               </h2>
               <p className="text-[11px] sm:text-xs text-primary-light/90">
-                R.M. N° 108-2020-MINCETUR · Ley N° 29408 · Código de Conducta
+                {isEn
+                  ? 'R.M. N° 108-2020-MINCETUR · Law N° 29408 · Code of Conduct'
+                  : 'R.M. N° 108-2020-MINCETUR · Ley N° 29408 · Código de Conducta'}
               </p>
             </div>
           </div>
@@ -79,7 +84,7 @@ export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps)
             type="button"
             onClick={onClose}
             className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-white"
-            aria-label="Cerrar ventana modal"
+            aria-label={isEn ? 'Close modal window' : 'Cerrar ventana modal'}
           >
             <X className="w-5 h-5" />
           </button>
@@ -93,14 +98,14 @@ export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps)
             <div className="bg-white p-3 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center text-center w-[130px] shrink-0">
               <Image
                 src="/imagenes/logos/1.png"
-                alt="Agencia de Viajes y Turismo Registrada - MINCETUR"
+                alt={isEn ? 'Registered Travel and Tourism Agency - MINCETUR' : 'Agencia de Viajes y Turismo Registrada - MINCETUR'}
                 width={110}
                 height={150}
                 className="object-contain max-h-[120px] w-auto"
                 priority
               />
               <span className="text-[10px] font-bold text-gray-700 uppercase tracking-tight mt-1.5 leading-tight">
-                Agencia Registrada
+                {isEn ? 'Registered Agency' : 'Agencia Registrada'}
               </span>
               <span className="text-[9px] text-gray-500">MINCETUR</span>
             </div>
@@ -109,7 +114,11 @@ export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps)
             <div className="bg-white p-3 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center text-center w-[200px] sm:w-[220px] shrink-0">
               <Image
                 src="/imagenes/logos/2.png"
-                alt="Protégeme - Turismo Responsable para prevenir la explotación sexual de niñas, niños y adolescentes"
+                alt={
+                  isEn
+                    ? 'Protégeme - Responsible Tourism to Prevent Sexual Exploitation of Children and Adolescents'
+                    : 'Protégeme - Turismo Responsable para prevenir la explotación sexual de niñas, niños y adolescentes'
+                }
                 width={200}
                 height={140}
                 className="object-contain max-h-[120px] w-auto"
@@ -126,7 +135,11 @@ export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps)
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-primary-dark font-serif font-bold text-base border-b border-gray-200 pb-2">
               <AlertCircle className="w-5 h-5 text-primary" />
-              <span>Declaración Oficial Obligatoria (Bilingüe Español / Inglés)</span>
+              <span>
+                {isEn
+                  ? 'Mandatory Official Statement (Bilingual Spanish / English)'
+                  : 'Declaración Oficial Obligatoria (Bilingüe Español / Inglés)'}
+              </span>
             </div>
 
             {/* Spanish Verbatim */}
@@ -164,26 +177,59 @@ export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps)
           <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 sm:p-5 space-y-2.5">
             <div className="flex items-center gap-2 text-gray-900 font-bold text-xs uppercase tracking-wider">
               <ShieldCheck className="w-4 h-4 text-primary" />
-              <span>Marco Legal y Bases Estatutarias</span>
+              <span>{isEn ? 'Legal Framework & Statutory Basis' : 'Marco Legal y Bases Estatutarias'}</span>
             </div>
             <ul className="text-xs text-text-light space-y-1.5 list-disc pl-5">
               <li>
-                <strong className="text-text-main">Ley N° 29408</strong> — Ley General de Turismo (Arts. 43 y 44: Deber ineludible de los prestadores de servicios turísticos de prevenir, rechazar y denunciar la ESNNA).
+                <strong className="text-text-main">
+                  {isEn ? 'Law N° 29408' : 'Ley N° 29408'}
+                </strong>{' '}
+                —{' '}
+                {isEn
+                  ? 'General Tourism Law (Arts. 43 & 44: Mandatory duty of tourism service providers to prevent, reject, and report ESNNA).'
+                  : 'Ley General de Turismo (Arts. 43 y 44: Deber ineludible de los prestadores de servicios turísticos de prevenir, rechazar y denunciar la ESNNA).'}
               </li>
               <li>
-                <strong className="text-text-main">D.S. N° 003-2010-MINCETUR</strong> — Reglamento de la Ley General de Turismo.
+                <strong className="text-text-main">
+                  {isEn ? 'Supreme Decree N° 003-2010-MINCETUR' : 'D.S. N° 003-2010-MINCETUR'}
+                </strong>{' '}
+                —{' '}
+                {isEn
+                  ? 'Regulations of the General Tourism Law.'
+                  : 'Reglamento de la Ley General de Turismo.'}
               </li>
               <li>
-                <strong className="text-text-main">Ley N° 30963</strong> — Modificación del Código Penal respecto a las sanciones de explotación sexual infantil, pornografía infantil y trata de personas (penas privativas de la libertad de hasta 25 años o cadena perpetua).
+                <strong className="text-text-main">
+                  {isEn ? 'Law N° 30963' : 'Ley N° 30963'}
+                </strong>{' '}
+                —{' '}
+                {isEn
+                  ? 'Penal Code amendments regarding severe sanctions for child sexual exploitation, child pornography, and human trafficking (up to 25 years or life imprisonment).'
+                  : 'Modificación del Código Penal respecto a las sanciones de explotación sexual infantil, pornografía infantil y trata de personas (penas privativas de la libertad de hasta 25 años o cadena perpetua).'}
               </li>
               <li>
-                <strong className="text-text-main">Ley N° 30802</strong> — Condiciones para el ingreso y traslado de menores de edad a hospedajes y transportes turísticos (documento de identidad original físico y autorización notarial).
+                <strong className="text-text-main">
+                  {isEn ? 'Law N° 30802' : 'Ley N° 30802'}
+                </strong>{' '}
+                —{' '}
+                {isEn
+                  ? 'Conditions for entry and transport of minors in lodging and tourist transport (original physical ID and notarized travel permit).'
+                  : 'Condiciones para el ingreso y traslado de menores de edad a hospedajes y transportes turísticos (documento de identidad original físico y autorización notarial).'}
               </li>
               <li>
-                <strong className="text-text-main">R.M. N° 108-2020-MINCETUR</strong> — Aprueba el modelo oficial de afiche y las especificaciones técnicas contra la ESNNA en el sector turismo.
+                <strong className="text-text-main">R.M. N° 108-2020-MINCETUR</strong> —{' '}
+                {isEn
+                  ? 'Approves the official poster template and technical specifications against ESNNA in the tourism sector.'
+                  : 'Aprueba el modelo oficial de afiche y las especificaciones técnicas contra la ESNNA en el sector turismo.'}
               </li>
               <li>
-                <strong className="text-text-main">D.S. N° 005-2020-MINCETUR</strong> — Reglamento de Agencias de Viajes y Turismo (Arts. 17 y 22: Exhibición de distintivos oficiales y datos de identificación).
+                <strong className="text-text-main">
+                  {isEn ? 'Supreme Decree N° 005-2020-MINCETUR' : 'D.S. N° 005-2020-MINCETUR'}
+                </strong>{' '}
+                —{' '}
+                {isEn
+                  ? 'Travel and Tourism Agencies Regulations (Arts. 17 & 22: Mandatory display of official badges and commercial identification).'
+                  : 'Reglamento de Agencias de Viajes y Turismo (Arts. 17 y 22: Exhibición de distintivos oficiales y datos de identificación).'}
               </li>
             </ul>
           </div>
@@ -192,7 +238,11 @@ export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps)
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-primary-dark font-serif font-bold text-base">
               <PhoneCall className="w-5 h-5 text-primary" />
-              <span>Líneas Telefónicas Gratuitas de Denuncia y Auxilio 24 Horas</span>
+              <span>
+                {isEn
+                  ? '24-Hour Free Reporting & Emergency Hotlines'
+                  : 'Líneas Telefónicas Gratuitas de Denuncia y Auxilio 24 Horas'}
+              </span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {/* Linea 100 */}
@@ -208,7 +258,9 @@ export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps)
                     Línea 100 (MIMP)
                   </div>
                   <p className="text-[11px] text-text-light leading-snug mt-0.5">
-                    Ministerio de la Mujer y Poblaciones Vulnerables. Gratuito, confidencial y 24/7 desde cualquier teléfono.
+                    {isEn
+                      ? 'Ministry of Women and Vulnerable Populations. Free, confidential, and 24/7 from any phone.'
+                      : 'Ministerio de la Mujer y Poblaciones Vulnerables. Gratuito, confidencial y 24/7 desde cualquier teléfono.'}
                   </p>
                 </div>
               </a>
@@ -226,7 +278,9 @@ export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps)
                     Línea 1818 (MININTER)
                   </div>
                   <p className="text-[11px] text-text-light leading-snug mt-0.5">
-                    Central Única de Denuncias del Ministerio del Interior. Denuncia de trata de personas y ESNNA.
+                    {isEn
+                      ? 'Single Reporting Center of the Ministry of the Interior. Reports of human trafficking and ESNNA.'
+                      : 'Central Única de Denuncias del Ministerio del Interior. Denuncia de trata de personas y ESNNA.'}
                   </p>
                 </div>
               </a>
@@ -244,7 +298,9 @@ export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps)
                     Central 105 (PNP)
                   </div>
                   <p className="text-[11px] text-text-light leading-snug mt-0.5">
-                    Policía Nacional del Perú. Central de Emergencias para auxilio, flagrancia y rescate inmediato.
+                    {isEn
+                      ? 'National Police of Peru. Emergency dispatch for immediate police assistance and rescue.'
+                      : 'Policía Nacional del Perú. Central de Emergencias para auxilio, flagrancia y rescate inmediato.'}
                   </p>
                 </div>
               </a>
@@ -262,7 +318,9 @@ export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps)
                     POLTUR Cusco: (084) 249769
                   </div>
                   <p className="text-[11px] text-text-light leading-snug mt-0.5">
-                    Policía de Turismo Cusco (Plaza Túpac Amaru / Av. El Sol). Protección integral al turista.
+                    {isEn
+                      ? 'Cusco Tourism Police (Plaza Túpac Amaru / Av. El Sol). Comprehensive tourist protection.'
+                      : 'Policía de Turismo Cusco (Plaza Túpac Amaru / Av. El Sol). Protección integral al turista.'}
                   </p>
                 </div>
               </a>
@@ -283,7 +341,7 @@ export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps)
                 onClick={onClose}
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-colors shadow-xs"
               >
-                <span>Página Completa</span>
+                <span>{isEn ? 'Full Page' : 'Página Completa'}</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </Link>
               <button
@@ -291,7 +349,7 @@ export default function ProtegemeModal({ isOpen, onClose }: ProtegemeModalProps)
                 onClick={onClose}
                 className="px-3.5 py-1.5 rounded-xl border border-gray-300 bg-white text-gray-700 text-xs font-semibold hover:bg-gray-100 transition-colors"
               >
-                Cerrar
+                {isEn ? 'Close' : 'Cerrar'}
               </button>
             </div>
           </div>
@@ -313,6 +371,8 @@ export function ProtegemeModalTrigger({
   className?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const locale = useLocale();
+  const isEn = locale === 'en';
 
   return (
     <>
@@ -320,7 +380,11 @@ export function ProtegemeModalTrigger({
         type="button"
         onClick={() => setIsOpen(true)}
         className={className || 'inline-block text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary rounded-xl'}
-        aria-label="Abrir afiche y aviso oficial de prevención contra la ESNNA"
+        aria-label={
+          isEn
+            ? 'Open official poster and child protection notice against ESNNA'
+            : 'Abrir afiche y aviso oficial de prevención contra la ESNNA'
+        }
       >
         {children}
       </button>

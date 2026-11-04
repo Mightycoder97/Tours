@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { useRouter, Link } from '@/i18n/navigation';
 import { Calendar as CalendarIcon, Users, MapPin, Search, MessageCircle, Compass, Tag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { getBrandConfig } from '@/lib/brand';
 
 export default function BookingWidget() {
   const t = useTranslations('home.booking');
+  const brand = getBrandConfig();
   const router = useRouter();
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
@@ -28,10 +30,10 @@ export default function BookingWidget() {
 
   const handleWhatsApp = (e: React.MouseEvent) => {
     e.preventDefault();
-    const cleanPhone = '51955723329';
+    const cleanPhone = brand.contact.cleanPhone;
     const selectedTripType = tripType ? t(`tripTypes.${tripType}`) : 'Cualquiera';
     
-    const textMessage = `¡Hola Machupicchu Travel Adventure! Me interesa planificar un viaje.\n\n` +
+    const textMessage = `¡Hola ${brand.name}! Me interesa planificar un viaje.\n\n` +
       `📍 Destino/Tour: ${destination || 'Por definir'}\n` +
       `📅 Fecha: ${date || 'Por definir'}\n` +
       `👥 Pasajeros: ${passengers}\n` +

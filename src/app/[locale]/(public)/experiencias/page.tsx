@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import PassengerGallery from '@/components/experiencias/PassengerGallery';
 import AdvisorContact from '@/components/experiencias/AdvisorContact';
 import JsonLd from '@/components/seo/JsonLd';
+import { getBrandConfig } from '@/lib/brand';
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -41,11 +42,12 @@ function TripAdvisorLogo({ className }: { className?: string }) {
 export default async function ExperienciasPage() {
   const t = await getTranslations('pages.experiences');
   const tTestimonials = await getTranslations('home.testimonials');
+  const brand = getBrandConfig();
   
-  const whatsappUrl = 'https://wa.me/51955723329';
-  const facebookUrl = 'https://www.facebook.com/MachupicchuTravelAdventure/';
-  const instagramUrl = 'https://www.instagram.com/machupicchutraveladventure/';
-  const RUC = '20564458385';
+  const whatsappUrl = `https://wa.me/${brand.contact.cleanPhone}`;
+  const facebookUrl = brand.social.facebook;
+  const instagramUrl = brand.social.instagram;
+  const RUC = brand.ruc;
 
   const benefitsKeys = ['allInOne', 'support', 'flexibility', 'directOperator'] as const;
   const benefitIcons = {
@@ -69,13 +71,13 @@ export default async function ExperienciasPage() {
               '@type': 'ListItem',
               position: 1,
               name: 'Home',
-              item: 'https://machupicchutravel.com'
+              item: brand.domain
             },
             {
               '@type': 'ListItem',
               position: 2,
               name: t('title'),
-              item: 'https://machupicchutravel.com/experiencias'
+              item: `${brand.domain}/experiencias`
             }
           ]
         }

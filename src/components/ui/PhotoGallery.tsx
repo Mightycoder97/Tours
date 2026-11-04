@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
+import { getBrandConfig } from '@/lib/brand';
 
 interface PhotoGalleryProps {
   images: string[];
@@ -16,6 +17,7 @@ interface PhotoGalleryProps {
  * - Copyright footer in the modal
  */
 export default function PhotoGallery({ images, altText }: PhotoGalleryProps) {
+  const brand = getBrandConfig();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const openLightbox = (index: number) => setLightboxIndex(index);
@@ -142,7 +144,7 @@ export default function PhotoGallery({ images, altText }: PhotoGalleryProps) {
 
           {/* Copyright footer */}
           <div className="text-center py-3 text-white/40 text-xs font-sans pointer-events-none select-none">
-            © Machu Picchu Travel Adventures — Todos los derechos reservados. Fotografías protegidas por derechos de autor.
+            © {brand.name} — Todos los derechos reservados. Fotografías protegidas por derechos de autor.
           </div>
         </div>
       )}

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Calendar, Clock, ArrowRight, Search, Mic, Camera, Sparkles, AlertCircle } from 'lucide-react';
 import { Link, useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import { getBrandConfig } from '@/lib/brand';
 
 interface Tour {
   id: string;
@@ -113,7 +114,7 @@ export default function BlogPageClient({ tours }: BlogPageClientProps) {
             >
               <Image
                 src={img}
-                alt="Machu Picchu Travel Adventure Banner"
+                alt={`${getBrandConfig().name} Banner`}
                 fill
                 className="object-cover scale-[1.08]"
                 sizes="100vw"
@@ -126,7 +127,7 @@ export default function BlogPageClient({ tours }: BlogPageClientProps) {
 
         {/* Recommended Tours Horizontal Slider */}
         <div className="mb-6 flex justify-between items-center">
-          <h3 className="text-xs font-bold uppercase tracking-widest text-primary">Blog MachuPicchuTravel Adventure</h3>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-primary">Blog {getBrandConfig().name}</h3>
           <Link href="/tours" className="text-xs font-bold text-primary hover:text-primary-dark uppercase tracking-wider flex items-center gap-1">
             <span>Ver todos los tours</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -190,7 +191,7 @@ export default function BlogPageClient({ tours }: BlogPageClientProps) {
       {/* 3. Search block styled like Google Search + Modo IA */}
       <section className="bg-accent/30 py-16 border-y border-gray-100">
         <div className="container mx-auto px-4 lg:px-8 max-w-3xl text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-primary block mb-3">Blog MTA</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-primary block mb-3">Blog {getBrandConfig().shortName}</span>
           <h2 className="text-2xl sm:text-3xl font-serif text-text-main mb-8">
             Toda la informacion que necesitas esta aqui
           </h2>

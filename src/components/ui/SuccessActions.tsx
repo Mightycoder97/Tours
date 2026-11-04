@@ -2,6 +2,7 @@
 
 import { Download, Calendar } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { getBrandConfig } from '@/lib/brand';
 
 interface SuccessActionsProps {
   bookingCode: string;
@@ -9,6 +10,7 @@ interface SuccessActionsProps {
 
 export default function SuccessActions({ bookingCode }: SuccessActionsProps) {
   const t = useTranslations('pages.success');
+  const brand = getBrandConfig();
 
   const handleDownloadPDF = () => {
     // Use browser print as PDF - cleanest approach without server-side PDF generation
@@ -32,7 +34,7 @@ export default function SuccessActions({ bookingCode }: SuccessActionsProps) {
     const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//Machu Picchu Travel//Tours//ES',
+      `PRODID:-//${brand.shortName}//Tours//ES`,
       'CALSCALE:GREGORIAN',
       'METHOD:PUBLISH',
       'BEGIN:VEVENT',
@@ -41,7 +43,7 @@ export default function SuccessActions({ bookingCode }: SuccessActionsProps) {
       `SUMMARY:${t('calendarEvent.summary', { code: bookingCode })}`,
       `DESCRIPTION:${t('calendarEvent.description', { code: bookingCode }).replace(/\n/g, '\\\\n')}`,
       `LOCATION:${t('calendarEvent.location')}`,
-      `UID:${bookingCode}@machupicchutravel.com`,
+      `UID:${bookingCode}@${brand.emailDomain}`,
       'STATUS:CONFIRMED',
       'BEGIN:VALARM',
       'TRIGGER:-PT1H',

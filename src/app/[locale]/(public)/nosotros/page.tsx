@@ -3,18 +3,20 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
+import { getBrandConfig } from '@/lib/brand';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('meta');
+  const brand = getBrandConfig();
   return {
     title: t('aboutPage.title'),
     description: t('aboutPage.description'),
     alternates: {
-      canonical: 'https://machupicchutravel.com/es/nosotros',
+      canonical: `${brand.domain}/es/nosotros`,
       languages: {
-        'es': 'https://machupicchutravel.com/es/nosotros',
-        'en': 'https://machupicchutravel.com/en/nosotros',
-        'x-default': 'https://machupicchutravel.com/es/nosotros',
+        'es': `${brand.domain}/es/nosotros`,
+        'en': `${brand.domain}/en/nosotros`,
+        'x-default': `${brand.domain}/es/nosotros`,
       },
     },
   };
@@ -22,6 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function NosotrosPage() {
   const t = await getTranslations('pages.about');
+  const brand = getBrandConfig();
 
   return (
     <div className="bg-white min-h-screen">
@@ -46,8 +49,8 @@ export default async function NosotrosPage() {
         <div className="flex justify-center mb-6">
           <div className="relative w-20 h-20">
             <Image
-              src="/imagenes/logo.png"
-              alt="Logo Machu Picchu Travel Adventure"
+              src={brand.logo.lightBgSrc}
+              alt={brand.logo.alt}
               fill
               className="object-contain"
               sizes="80px"
@@ -59,7 +62,7 @@ export default async function NosotrosPage() {
           Vive experiencias únicas en los destinos más increíbles del Perú
         </h2>
         <p className="text-text-light text-base sm:text-lg leading-relaxed font-light">
-          Descubre la magia del Perú con Machupicchu Travel Adventure. Recorre destinos inolvidables, sumérgete en su historia, cultura y paisajes extraordinarios con tours diseñados para brindarte una experiencia auténtica, segura y llena de momentos que recordarás para siempre.
+          Descubre la magia del Perú con {brand.name}. Recorre destinos inolvidables, sumérgete en su historia, cultura y paisajes extraordinarios con tours diseñados para brindarte una experiencia auténtica, segura y llena de momentos que recordarás para siempre.
         </p>
       </section>
 
@@ -83,7 +86,7 @@ export default async function NosotrosPage() {
             <div className="lg:col-span-8 text-white">
               <h2 className="text-sm font-bold uppercase tracking-widest text-accent-light mb-2">Nuestros Valores</h2>
               <p className="text-white/95 text-base sm:text-lg leading-relaxed font-light mb-8 max-w-2xl border-b border-white/20 pb-6">
-                Machu Picchu Travel Adventure opera con un conjunto de valores fundamentales que guían todos los aspectos de nuestro servicio, compromiso comunitario y esfuerzos de sostenibilidad.
+                {brand.name} opera con un conjunto de valores fundamentales que guían todos los aspectos de nuestro servicio, compromiso comunitario y esfuerzos de sostenibilidad.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
@@ -125,7 +128,7 @@ export default async function NosotrosPage() {
               <span className="text-primary text-sm font-bold uppercase tracking-wider block mb-2">Sostenibilidad</span>
               <h2 className="text-3xl font-serif text-text-main mb-4">Nuestro Compromiso con la Reforestación</h2>
               <p className="text-text-light text-sm sm:text-base font-light leading-relaxed mb-4">
-                En Machu Picchu Travel Adventure, estamos profundamente comprometidos con la conservación de los ecosistemas andinos. Por cada viajero que reserva con nosotros, destinamos un porcentaje de nuestros ingresos a proyectos de reforestación local en las cuencas de Cusco, plantando árboles nativos como el Queñua para restaurar bosques, proteger cuencas hídricas y conservar la biodiversidad autóctona.
+                En {brand.name}, estamos profundamente comprometidos con la conservación de los ecosistemas andinos. Por cada viajero que reserva con nosotros, destinamos un porcentaje de nuestros ingresos a proyectos de reforestación local en las cuencas de Cusco, plantando árboles nativos como el Queñua para restaurar bosques, proteger cuencas hídricas y conservar la biodiversidad autóctona.
               </p>
             </div>
             <div className="md:col-span-6 relative aspect-[16/10] w-full rounded-2xl overflow-hidden shadow-md">
@@ -167,7 +170,7 @@ export default async function NosotrosPage() {
                 Una agencia hecha con pasión por el Perú
               </h2>
               <p className="text-text-light text-base leading-relaxed font-light mb-4">
-                Somos Machu Picchu Travel Adventure, una agencia de viajes y turismo comprometida en ofrecer experiencias inolvidables a nuestros clientes. Nuestro equipo de profesionales del turismo se dedica a proporcionar asesoramiento personalizado en cada etapa de su viaje, desde la planificación hasta la aventura.
+                Somos {brand.name}, una agencia de viajes y turismo comprometida en ofrecer experiencias inolvidables a nuestros clientes. Nuestro equipo de profesionales del turismo se dedica a proporcionar asesoramiento personalizado en cada etapa de su viaje, desde la planificación hasta la aventura.
               </p>
               <p className="text-text-light text-base leading-relaxed font-light">
                 Nos esforzamos por brindar información precisa y un servicio de alta calidad que supere las expectativas de nuestros clientes. Nuestra amabilidad y atención al detalle nos distinguen, asegurando que cada viaje sea una experiencia memorable.
@@ -207,8 +210,8 @@ export default async function NosotrosPage() {
                 </div>
                 <h3 className="font-serif text-lg text-text-main font-bold mb-4">Registro RUC</h3>
                 <div className="text-sm text-text-light space-y-2 mb-4 font-light">
-                  <p><span className="font-semibold text-text-main">Número de RUC:</span> 20564458385</p>
-                  <p><span className="font-semibold text-text-main">Razón Social:</span> Machu Picchu Travel Adventure E.I.R.L.</p>
+                  <p><span className="font-semibold text-text-main">Número de RUC:</span> {brand.ruc}</p>
+                  <p><span className="font-semibold text-text-main">Razón Social:</span> {brand.legalName}</p>
                 </div>
               </div>
               <p className="text-xs text-gray-400 border-t border-gray-50 pt-4 leading-relaxed">
@@ -336,7 +339,7 @@ export default async function NosotrosPage() {
                   </div>
                 </div>
                 <p className="text-text-light text-xs sm:text-sm leading-relaxed">
-                  Viajó a Perú con la agencia Machu Picchu Travel Adventure. Todo excelente, la atención al cliente, la puntualidad en los trenes y la gran guía turística. ¡10000% recomendado!
+                  Viajó a Perú con la agencia {brand.name}. Todo excelente, la atención al cliente, la puntualidad en los trenes y la gran guía turística. ¡10000% recomendado!
                 </p>
               </div>
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { getBrandConfig } from '@/lib/brand';
 
 interface HeroCarouselProps {
   images: string[];
@@ -88,7 +89,7 @@ export default function HeroCarousel({ images, altText }: HeroCarouselProps) {
           className="absolute bottom-2 right-3 text-white/60 text-[9px] font-sans pointer-events-none select-none z-10 bg-black/30 px-1.5 py-0.5 rounded"
           aria-hidden="true"
         >
-          © Machu Picchu Travel Adventures
+          © {getBrandConfig().name}
         </div>
       </div>
     );
@@ -177,7 +178,7 @@ export default function HeroCarousel({ images, altText }: HeroCarouselProps) {
         className="absolute bottom-2 right-3 z-20 text-white/55 text-[9px] font-sans pointer-events-none select-none bg-black/25 px-1.5 py-0.5 rounded"
         aria-hidden="true"
       >
-        © Machu Picchu Travel Adventures
+        © {getBrandConfig().name}
       </div>
     </div>
   );

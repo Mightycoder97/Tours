@@ -4,29 +4,30 @@ import { useState, useEffect } from 'react';
 import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Cookie, X, Check } from 'lucide-react';
-
-const COOKIE_CONSENT_KEY = 'mpta_cookie_consent';
+import { getBrandConfig } from '@/lib/brand';
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
   const locale = useLocale();
   const isEn = locale === 'en';
+  const brand = getBrandConfig();
+  const cookieConsentKey = `${brand.id}_cookie_consent`;
 
   useEffect(() => {
-    const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+    const consent = localStorage.getItem(cookieConsentKey) || localStorage.getItem('mpta_cookie_consent');
     if (!consent) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setVisible(true);
     }
-  }, []);
+  }, [cookieConsentKey]);
 
   const accept = () => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, 'accepted');
+    localStorage.setItem(cookieConsentKey, 'accepted');
     setVisible(false);
   };
 
   const reject = () => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, 'rejected');
+    localStorage.setItem(cookieConsentKey, 'rejected');
     setVisible(false);
   };
 

@@ -7,6 +7,7 @@ import BookingSidebar from '@/components/tours/BookingSidebar';
 import BookingWidget from '@/components/home/BookingWidget';
 import JsonLd from '@/components/seo/JsonLd';
 import { createClient } from '@/lib/supabase/server';
+import { getBrandConfig } from '@/lib/brand';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('meta');
@@ -18,6 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ContactoPage() {
   const t = await getTranslations('pages.contact');
+  const brand = getBrandConfig();
   
   // Fetch default popular tour for the booking widget on the contact page
   const supabase = await createClient();
@@ -43,10 +45,10 @@ export default async function ContactoPage() {
         '@type': 'ContactPage',
         name: t('title'),
         description: t('subtitle'),
-        url: 'https://machupicchutravel.com/contacto',
+        url: `${brand.domain}/contacto`,
         contactPoint: {
           '@type': 'ContactPoint',
-          telephone: '+51-955-723-329',
+          telephone: brand.contact.phone,
           contactType: 'reservations',
           areaServed: 'PE',
           availableLanguage: ['Spanish', 'English']
@@ -126,17 +128,17 @@ export default async function ContactoPage() {
             <div className="bg-white p-5 rounded-2xl border border-gray-150 shadow-sm flex flex-col items-center">
               <MapPin className="w-6 h-6 text-primary mb-2 animate-bounce" />
               <h4 className="font-bold text-xs uppercase tracking-wider text-text-light mb-1">Dirección</h4>
-              <p className="text-text-main text-xs sm:text-sm font-semibold">Av. El Sol 123, Cusco, Perú</p>
+              <p className="text-text-main text-xs sm:text-sm font-semibold">{brand.contact.address}</p>
             </div>
             <div className="bg-white p-5 rounded-2xl border border-gray-150 shadow-sm flex flex-col items-center">
               <MessageCircle className="w-6 h-6 text-primary mb-2" />
               <h4 className="font-bold text-xs uppercase tracking-wider text-text-light mb-1">WhatsApp Principal</h4>
-              <p className="text-text-main text-xs sm:text-sm font-semibold">+51 955 723 329</p>
+              <p className="text-text-main text-xs sm:text-sm font-semibold">{brand.contact.phone}</p>
             </div>
             <div className="bg-white p-5 rounded-2xl border border-gray-150 shadow-sm flex flex-col items-center">
               <Mail className="w-6 h-6 text-primary mb-2" />
               <h4 className="font-bold text-xs uppercase tracking-wider text-text-light mb-1">Consultas</h4>
-              <p className="text-text-main text-xs sm:text-sm font-semibold break-all">reservasmtaperu@gmail.com</p>
+              <p className="text-text-main text-xs sm:text-sm font-semibold break-all">{brand.contact.email}</p>
             </div>
           </div>
         </div>
