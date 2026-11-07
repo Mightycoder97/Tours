@@ -52,7 +52,7 @@ export const BRANDS: Record<BrandId, BrandConfig> = {
     name: 'Sonqo Perú Travel',
     shortName: 'Sonqo Perú Travel',
     legalName: 'Sonqo Perú Travel E.I.R.L.',
-    ruc: '20616667549',
+    ruc: '20564458385',
     minceturRegistrationCode: 'DIRCETUR-CUSCO-2024-00129',
     gerceturAccreditation: 'Agencia de Viajes y Turismo Registrada en GERCETUR Cusco',
     bookingPrefix: 'SNQ',
@@ -79,10 +79,10 @@ export const BRANDS: Record<BrandId, BrandConfig> = {
       white: '#FFFFFF',
     },
     contact: {
-      phone: '+51 984 228 417',
-      cleanPhone: '51984228417',
-      email: 'sonqoperutravel@gmail.com',
-      address: 'Cal. Fernando Túpac Amaru Mz. LL Lote 3, Urb. Túpac Amaru, Cusco, Perú',
+      phone: '+51 955 723 329',
+      cleanPhone: '51955723329',
+      email: 'reservas@sonqoperutravel.com',
+      address: 'Av. El Sol 123, Centro Histórico, Cusco, Perú',
     },
     social: {
       facebook: 'https://www.facebook.com/MachupicchuTravelAdventure/',
@@ -178,11 +178,9 @@ export function applyBrandToMessages<T>(messages: T, brand: BrandConfig = getBra
         .replace(/Machu\s*Picchu\s*Travel\s*Adventure\s*E\.I\.R\.L\./gi, brand.legalName)
         .replace(/Machu\s*Picchu\s*Travel\s*Adventures?/gi, brand.name)
         .replace(/Machu\s*Picchu\s*Travel/gi, brand.shortName)
-        .replace(/20564458385/g, brand.ruc)
         .replace(/reservasmtaperu@gmail\.com/gi, brand.contact.email)
         .replace(/https?:\/\/machupicchutravel\.com/gi, brand.domain)
-        .replace(/\+51 955 723 329/g, brand.contact.phone)
-        .replace(/Av\.\s*El\s*Sol\s*123,\s*(Centro\s*Hist[oó]rico|Historic\s*Center),\s*Cusco,\s*Per[uú]/gi, brand.contact.address);
+        .replace(/\+51 955 723 329/g, brand.contact.phone);
     }
     if (Array.isArray(val)) {
       return val.map(transformValue);
