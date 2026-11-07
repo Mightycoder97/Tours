@@ -5,20 +5,20 @@ import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getBrandConfig } from '@/lib/brand';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('meta');
-  const brand = getBrandConfig();
+import { buildPageAlternates } from '@/lib/seo';
+
+export async function generateMetadata({
+  params,
+}: {
+  params?: Promise<{ locale?: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = params ? await params : undefined;
+  const locale = resolvedParams?.locale || 'es';
+  const t = await getTranslations({ locale, namespace: 'meta' });
   return {
     title: t('aboutPage.title'),
     description: t('aboutPage.description'),
-    alternates: {
-      canonical: `${brand.domain}/es/nosotros`,
-      languages: {
-        'es': `${brand.domain}/es/nosotros`,
-        'en': `${brand.domain}/en/nosotros`,
-        'x-default': `${brand.domain}/es/nosotros`,
-      },
-    },
+    alternates: buildPageAlternates(locale, '/nosotros'),
   };
 }
 

@@ -179,7 +179,12 @@
     "featured": {
       "defaultTitle": "Encuentra la aventura ideal para ti",
       "defaultSubtitle": "Explora nuestros paquetes turísticos cuidadosamente diseñados para ofrecerte una experiencia inolvidable.",
-      "viewAllTours": "Ver todos los tours"
+      "viewAllTours": "Ver todos los tours",
+      "tabs": {
+        "recommended": "PAQUETES RECOMENDADOS",
+        "individual": "PAQUETES INDIVIDUALES",
+        "promotions": "PROMOCIONES"
+      }
     },
 
     "promotions": {
@@ -322,8 +327,8 @@
     },
 
     "seo": {
-      "title": "Vive experiencias únicas en los destinos más increíbles del Perú",
-      "content": "Descubre la magia del Perú con Machupicchu Travel Adventure. Recorre destinos extraordinarios con tours diseñados para brindarte una experiencia auténtica, segura y llena de momentos que recordarás para siempre."
+      "title": "Operador Directo de Tours a Machu Picchu, Cusco y el Camino Inca",
+      "content": "En Machu Picchu Travel Adventure diseñamos viajes inolvidables con salidas diarias, guías locales certificados y logística integral desde Cusco. Disfruta del Santuario Histórico de Machu Picchu, el Valle Sagrado, la Montaña de 7 Colores y los principales destinos del Perú con la máxima seguridad, asistencia 24/7 y la garantía de una agencia autorizada."
     }
   },
 
@@ -399,7 +404,10 @@
 
     "card": {
       "from": "Desde",
-      "off": "{percent}% OFF"
+      "off": "{percent}% OFF",
+      "readMore": "Leer más",
+      "bookNow": "Reservar ahora",
+      "defaultDescription": "Explora la magia y la belleza de este destino increíble con nuestro tour guiado."
     }
   },
 
@@ -1133,15 +1141,15 @@
     "home": {
       "title": "Machu Picchu Travel Adventures | Tours a Machu Picchu, Cusco y Valle Sagrado",
       "titleTemplate": "%s | Machu Picchu Travel Adventures",
-      "description": "Reserva tours guiados a Machu Picchu, Valle Sagrado y Cusco. Guías expertos, transporte incluido y pago seguro. +500 viajeros satisfechos.",
-      "ogTitle": "Machu Picchu Travel Adventures | Tours Guiados en Perú",
+      "description": "Operador directo de tours a Machu Picchu, Valle Sagrado y Camino Inca. Salidas diarias, guías locales certificados y asistencia 24/7 en Cusco.",
+      "ogTitle": "Machu Picchu Travel Adventures | Operador Directo en Perú",
       "ogDescription": "Descubre la magia de Machu Picchu con tours guiados. Guías expertos, todo incluido, pago seguro.",
       "ogImageAlt": "Machu Picchu al amanecer",
       "twitterDescription": "Tours guiados a Machu Picchu y Cusco. Reserva ahora.",
-      "keywords": "tours machu picchu, viajes cusco, tour valle sagrado, paquetes turísticos peru, excursiones machu picchu"
+      "keywords": "tours machu picchu, viajes machu picchu, operador camino inca cusco, paquetes turisticos peru, excursiones valle sagrado, boletos machu picchu"
     },
     "toursPage": {
-      "title": "Tours & Paquetes a Machu Picchu | Machu Picchu Travel",
+      "title": "Tours & Paquetes a Machu Picchu",
       "description": "Descubre los mejores tours guiados en Cusco, Valle Sagrado y Machu Picchu."
     },
     "aboutPage": {
@@ -1157,7 +1165,7 @@
       "description": "Conoce todas las rutas disponibles para llegar a Machu Picchu. Tren, caminata y opciones combinadas."
     },
     "experiencesPage": {
-      "title": "Experiencias de Pasajeros | Machu Picchu Travel Adventure",
+      "title": "Experiencias de Pasajeros",
       "description": "Comentarios y fotos de nuestros pasajeros en Machu Picchu y todo el Perú. Testimonios certificados por TripAdvisor."
     },
     "contactPage": {

@@ -179,7 +179,12 @@
     "featured": {
       "defaultTitle": "Find the adventure perfect for you",
       "defaultSubtitle": "Explore our carefully designed tour packages for an unforgettable experience.",
-      "viewAllTours": "View all tours"
+      "viewAllTours": "View all tours",
+      "tabs": {
+        "recommended": "RECOMMENDED PACKAGES",
+        "individual": "INDIVIDUAL PACKAGES",
+        "promotions": "PROMOTIONS"
+      }
     },
 
     "promotions": {
@@ -322,8 +327,8 @@
     },
 
     "seo": {
-      "title": "Live unique experiences in Peru's most incredible destinations",
-      "content": "Discover the magic of Peru with Machupicchu Travel Adventure. Travel through extraordinary destinations with tours designed to offer you an authentic, safe experience full of moments you will remember forever."
+      "title": "Direct Tour Operator to Machu Picchu, Cusco & the Inca Trail",
+      "content": "At Machu Picchu Travel Adventure, we curate unforgettable travel experiences with daily departures, licensed local guides, and full logistical support from Cusco. Discover Machu Picchu, the Sacred Valley, Rainbow Mountain, and Peru's premier highlights with top-tier safety, 24/7 assistance, and official licensed operator assurance."
     }
   },
 
@@ -399,7 +404,10 @@
 
     "card": {
       "from": "From",
-      "off": "{percent}% OFF"
+      "off": "{percent}% OFF",
+      "readMore": "Read more",
+      "bookNow": "Book now",
+      "defaultDescription": "Explore the magic and beauty of this incredible destination with our guided tour."
     }
   },
 
@@ -1133,15 +1141,15 @@
     "home": {
       "title": "Machu Picchu Travel Adventures | Tours to Machu Picchu, Cusco & Sacred Valley",
       "titleTemplate": "%s | Machu Picchu Travel Adventures",
-      "description": "Book guided tours to Machu Picchu, Sacred Valley and Cusco. Expert guides, all-inclusive, secure payment. 500+ happy travelers.",
-      "ogTitle": "Machu Picchu Travel Adventures | Guided Tours in Peru",
+      "description": "Direct tour operator to Machu Picchu, Sacred Valley and Inca Trail. Daily departures, licensed local guides and 24/7 assistance in Cusco.",
+      "ogTitle": "Machu Picchu Travel Adventures | Direct Tour Operator in Peru",
       "ogDescription": "Discover the magic of Machu Picchu with guided tours. Expert guides, all-inclusive, secure payment.",
       "ogImageAlt": "Machu Picchu at sunrise",
       "twitterDescription": "Guided tours to Machu Picchu and Cusco. Book now.",
-      "keywords": "machu picchu tours, cusco travel, sacred valley tour, peru tour packages, machu picchu excursions"
+      "keywords": "machu picchu tours, travel machu picchu, inca trail operator cusco, peru vacation packages, sacred valley excursions, machu picchu tickets"
     },
     "toursPage": {
-      "title": "Tours & Packages to Machu Picchu | Machu Picchu Travel",
+      "title": "Tours & Packages to Machu Picchu",
       "description": "Discover the best guided tours in Cusco, Sacred Valley, and Machu Picchu."
     },
     "aboutPage": {
@@ -1157,7 +1165,7 @@
       "description": "Discover all available routes to reach Machu Picchu. Train, hiking, and combined options."
     },
     "experiencesPage": {
-      "title": "Passenger Experiences | Machu Picchu Travel Adventure",
+      "title": "Passenger Experiences",
       "description": "Comments and photos of our passengers in Machu Picchu and all of Peru. Testimonials certified by TripAdvisor."
     },
     "contactPage": {

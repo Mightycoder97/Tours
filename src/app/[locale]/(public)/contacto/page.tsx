@@ -9,11 +9,20 @@ import JsonLd from '@/components/seo/JsonLd';
 import { createClient } from '@/lib/supabase/server';
 import { getBrandConfig } from '@/lib/brand';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('meta');
+import { buildPageAlternates } from '@/lib/seo';
+
+export async function generateMetadata({
+  params,
+}: {
+  params?: Promise<{ locale?: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = params ? await params : undefined;
+  const locale = resolvedParams?.locale || 'es';
+  const t = await getTranslations({ locale, namespace: 'meta' });
   return {
     title: t('contactPage.title'),
     description: t('contactPage.description'),
+    alternates: buildPageAlternates(locale, '/contacto'),
   };
 }
 

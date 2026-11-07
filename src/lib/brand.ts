@@ -52,7 +52,7 @@ export const BRANDS: Record<BrandId, BrandConfig> = {
     name: 'Sonqo Perú Travel',
     shortName: 'Sonqo Perú Travel',
     legalName: 'Sonqo Perú Travel E.I.R.L.',
-    ruc: '20564458385',
+    ruc: '20616667549',
     minceturRegistrationCode: 'DIRCETUR-CUSCO-2024-00129',
     gerceturAccreditation: 'Agencia de Viajes y Turismo Registrada en GERCETUR Cusco',
     bookingPrefix: 'SNQ',
@@ -79,15 +79,15 @@ export const BRANDS: Record<BrandId, BrandConfig> = {
       white: '#FFFFFF',
     },
     contact: {
-      phone: '+51 955 723 329',
-      cleanPhone: '51955723329',
-      email: 'reservas@sonqoperutravel.com',
-      address: 'Av. El Sol 123, Centro Histórico, Cusco, Perú',
+      phone: '+51 984 228 417',
+      cleanPhone: '51984228417',
+      email: 'sonqoperutravel@gmail.com',
+      address: 'Cal. Fernando Túpac Amaru Mz. LL Lote 3, Urb. Túpac Amaru, Cusco, Perú',
     },
     social: {
-      facebook: 'https://www.facebook.com/MachupicchuTravelAdventure/',
-      instagram: 'https://www.instagram.com/machupicchutraveladventure/',
-      tiktok: 'https://www.tiktok.com/@machupicchutraveladventu',
+      facebook: 'https://www.facebook.com/sonqoperutravel/',
+      instagram: 'https://www.instagram.com/sonqoperutravel/',
+      tiktok: 'https://www.tiktok.com/@sonqoperutravel',
       tripadvisor: 'https://www.tripadvisor.com',
     },
     adminBadgeClass: 'bg-[#8B66E8]/15 text-[#8B66E8] border border-[#8B66E8]/30',
@@ -105,9 +105,9 @@ export const BRANDS: Record<BrandId, BrandConfig> = {
     emailDomain: 'machupicchutravel.com',
     logo: {
       alt: 'Machu Picchu Travel Adventure Logo',
-      lightBgSrc: '/imagenes/logo.png?v=2',
-      darkBgSrc: '/imagenes/logo.png?v=2',
-      ogImageSrc: '/imagenes/logo.png?v=2',
+      lightBgSrc: '/imagenes/logo.png',
+      darkBgSrc: '/imagenes/logo.png',
+      ogImageSrc: '/imagenes/logo.png',
       sizeClass: 'w-[58px] h-[58px] sm:w-[68px] sm:h-[68px] lg:w-[78px] lg:h-[78px]',
       sizesAttr: '(max-width: 640px) 58px, (max-width: 1024px) 68px, 78px',
       filterOnDark: 'brightness-0 invert',
@@ -178,9 +178,12 @@ export function applyBrandToMessages<T>(messages: T, brand: BrandConfig = getBra
         .replace(/Machu\s*Picchu\s*Travel\s*Adventure\s*E\.I\.R\.L\./gi, brand.legalName)
         .replace(/Machu\s*Picchu\s*Travel\s*Adventures?/gi, brand.name)
         .replace(/Machu\s*Picchu\s*Travel/gi, brand.shortName)
+        .replace(/20564458385/g, brand.ruc)
         .replace(/reservasmtaperu@gmail\.com/gi, brand.contact.email)
+        .replace(/reservas@sonqoperutravel\.com/gi, brand.contact.email)
         .replace(/https?:\/\/machupicchutravel\.com/gi, brand.domain)
-        .replace(/\+51 955 723 329/g, brand.contact.phone);
+        .replace(/\+51 955 723 329/g, brand.contact.phone)
+        .replace(/Av\.\s*El\s*Sol\s*123,\s*(Centro\s*Hist[oó]rico|Historic\s*Center),\s*Cusco,\s*Per[uú]/gi, brand.contact.address);
     }
     if (Array.isArray(val)) {
       return val.map(transformValue);

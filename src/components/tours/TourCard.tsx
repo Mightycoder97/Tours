@@ -73,7 +73,6 @@ export default function TourCard({ tour }: { tour: TourProps }) {
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover w-full h-full"
           showCopyright={false}
-          unoptimized
         />
       </div>
 

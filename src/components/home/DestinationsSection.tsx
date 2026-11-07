@@ -92,7 +92,7 @@ export default async function DestinationsSection() {
           {destCards.map((dest) => (
             <Link
               key={dest.id}
-              href={`/tours?destino=${dest.slug}`}
+              href={`/destinos/${dest.slug}`}
               className="group relative rounded-2xl overflow-hidden aspect-[3/4] sm:aspect-[3/4] lg:aspect-[2/3] block shadow-md hover:shadow-2xl transition-shadow duration-300 focus:outline-none focus:ring-2 focus:ring-primary-light"
               aria-label={`Ver tours en ${dest.name}`}
             >

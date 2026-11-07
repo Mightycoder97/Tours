@@ -67,7 +67,7 @@ export default function FeaturedToursGrid({ tours }: FeaturedToursGridProps) {
                 </h3>
               </Link>
               <p className="text-text-light text-xs sm:text-sm line-clamp-2 mb-4 font-light">
-                {stripHtml(tour.description) || 'Explora la magia y la belleza de este destino increíble con nuestro tour guiado.'}
+                {stripHtml(tour.description) || t('defaultDescription')}
               </p>
             </div>
 
@@ -86,13 +86,13 @@ export default function FeaturedToursGrid({ tours }: FeaturedToursGridProps) {
                   href={`/tours/${tour.slug}`}
                   className="flex-1 text-center py-2.5 px-3 border border-primary text-primary hover:bg-primary hover:text-white transition-colors text-xs font-bold rounded-lg cursor-pointer flex items-center justify-center gap-1"
                 >
-                  <span>Leer más</span>
+                  <span>{t('readMore')}</span>
                 </Link>
                 <Link
                   href={`/tours/${tour.slug}?book=true`}
                   className="flex-1 text-center py-2.5 px-3 bg-[#ff7a00] hover:bg-[#e06b00] text-white transition-colors text-xs font-bold rounded-lg cursor-pointer flex items-center justify-center gap-1 shadow-sm"
                 >
-                  <span>Reservar ahora</span>
+                  <span>{t('bookNow')}</span>
                 </Link>
               </div>
             </div>

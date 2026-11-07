@@ -22,7 +22,7 @@ const DESTINOS = [
     icon: Utensils,
     color: 'text-emerald-600',
     bg: 'bg-emerald-50',
-    href: '/tours?destino=lima',
+    href: '/destinos/lima',
   },
   {
     slug: 'cusco',
@@ -31,7 +31,7 @@ const DESTINOS = [
     icon: Landmark,
     color: 'text-teal-600',
     bg: 'bg-teal-50',
-    href: '/tours?destino=cusco',
+    href: '/destinos/cusco',
   },
   {
     slug: 'arequipa',
@@ -40,7 +40,7 @@ const DESTINOS = [
     icon: Mountain,
     color: 'text-orange-600',
     bg: 'bg-orange-50',
-    href: '/tours?destino=arequipa',
+    href: '/destinos/arequipa',
   },
   {
     slug: 'puno',
@@ -49,7 +49,7 @@ const DESTINOS = [
     icon: Waves,
     color: 'text-blue-600',
     bg: 'bg-blue-50',
-    href: '/tours?destino=puno',
+    href: '/destinos/puno',
   },
 ];
 
@@ -170,7 +170,7 @@ export default function Navbar() {
           <Link href="/" className="flex-shrink-0 flex items-center">
             <div className={`relative w-[58px] h-[58px] sm:w-[68px] sm:h-[68px] lg:w-[78px] lg:h-[78px] transition-all duration-300 ${logoFilterClass}`}>
               <Image
-                src="/imagenes/logo.png?v=2"
+                src="/imagenes/logo.png"
                 alt={t('ariaLabels.logo')}
                 fill
                 sizes="(max-width: 640px) 58px, (max-width: 1024px) 68px, 78px"

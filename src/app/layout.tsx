@@ -23,6 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const brand = getBrandConfig();
 
   return {
+    metadataBase: new URL(brand.domain),
     title: {
       default: t('title'),
       template: t('titleTemplate'),
@@ -40,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: t('ogDescription'),
       images: [
         {
-          url: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=1200',
+          url: `${brand.domain}${brand.logo.ogImageSrc}`,
           width: 1200,
           height: 630,
           alt: t('ogImageAlt'),
@@ -51,13 +52,11 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title: brand.name,
       description: t('twitterDescription'),
+      images: [`${brand.domain}${brand.logo.ogImageSrc}`],
     },
     robots: {
       index: true,
       follow: true,
-    },
-    alternates: {
-      canonical: brand.domain,
     },
   };
 }

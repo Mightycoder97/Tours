@@ -1,37 +1,57 @@
 import ToursPageClient from '@/components/tours/ToursPageClient';
 import { createClient } from '@/lib/supabase/server';
 import { getTranslations } from 'next-intl/server';
-import { getBrandConfig } from '@/lib/brand';
+import { buildPageAlternates } from '@/lib/seo';
+import { localizeTourList } from '@/lib/tours-i18n';
+import { localizeCategoryName } from '@/data/categories-i18n';
+import { localizeDestinationName } from '@/data/destinations-i18n';
 
-export async function generateMetadata() {
-  const t = await getTranslations('meta.toursPage');
-  const brand = getBrandConfig();
+export async function generateMetadata({
+  params,
+}: {
+  params?: Promise<{ locale?: string }>;
+}) {
+  const resolvedParams = params ? await params : undefined;
+  const locale = resolvedParams?.locale || 'es';
+  const t = await getTranslations({ locale, namespace: 'meta.toursPage' });
   return {
     title: t('title'),
     description: t('description'),
-    alternates: {
-      canonical: `${brand.domain}/tours`,
-      languages: {
-        'es': `${brand.domain}/es/tours`,
-        'en': `${brand.domain}/en/tours`,
-      },
-    },
+    alternates: buildPageAlternates(locale, '/tours'),
   };
 }
 
 export const revalidate = 60;
 
 interface ToursPageProps {
+  params?: Promise<{ locale?: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export default async function ToursPage({ searchParams }: ToursPageProps) {
-  const params = await searchParams;
+export default async function ToursPage({ params, searchParams }: ToursPageProps) {
+  const resolvedParams = params ? await params : undefined;
+  const locale = resolvedParams?.locale || 'es';
+  const resolvedSearchParams = await searchParams;
+
   const supabase = await createClient();
-  const { data: tours } = await supabase.from('tours').select('*, categories(name), destinations(name)').eq('is_active', true).order('created_at', { ascending: true });
-  const { data: categories } = await supabase.from('categories').select('*').order('name');
-  const { data: destinations } = await supabase.from('destinations').select('*').order('name');
+  const { data: rawTours } = await supabase
+    .from('tours')
+    .select('*, categories(name), destinations(name)')
+    .eq('is_active', true)
+    .order('created_at', { ascending: true });
+  const { data: rawCategories } = await supabase.from('categories').select('*').order('name');
+  const { data: rawDestinations } = await supabase.from('destinations').select('*').order('name');
   
+  const localizedTours = localizeTourList(rawTours || [], locale);
+  const localizedCategories = (rawCategories || []).map((cat) => ({
+    ...cat,
+    name: localizeCategoryName(cat.slug || cat.name, locale),
+  }));
+  const localizedDestinations = (rawDestinations || []).map((dest) => ({
+    ...dest,
+    name: localizeDestinationName(dest.slug || dest.name, locale),
+  }));
+
   const t = await getTranslations('tours.listing');
 
   return (
@@ -48,11 +68,11 @@ export default async function ToursPage({ searchParams }: ToursPageProps) {
       </div>
 
       <ToursPageClient 
-        tours={tours || []} 
-        categories={categories || []}
-        destinations={destinations || []}
-        initialSearch={typeof params.q === 'string' ? params.q : ''}
-        initialDestino={typeof params.destino === 'string' ? params.destino : undefined}
+        tours={localizedTours} 
+        categories={localizedCategories}
+        destinations={localizedDestinations}
+        initialSearch={typeof resolvedSearchParams.q === 'string' ? resolvedSearchParams.q : ''}
+        initialDestino={typeof resolvedSearchParams.destino === 'string' ? resolvedSearchParams.destino : undefined}
       />
     </div>
   );

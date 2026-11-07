@@ -5,7 +5,12 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const nextConfig: NextConfig = {
   images: {
-    unoptimized: true,
+    localPatterns: [
+      {
+        pathname: '/**',
+        search: '',
+      },
+    ],
     qualities: [75, 85],
     remotePatterns: [
       {

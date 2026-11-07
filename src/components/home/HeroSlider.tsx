@@ -10,8 +10,8 @@ import { useTranslations } from 'next-intl';
 
 const slideImages = [
   'https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=2600&auto=format&fit=crop',
-  '/imagenes/hero-machupicchu-1.png?v=2',
-  '/imagenes/hero-camino-inca.png?v=2',
+  '/imagenes/hero-machupicchu-1.png',
+  '/imagenes/hero-camino-inca.png',
 ];
 
 const slideCtaLinks = ['/tours', '/tours', '/tours'];

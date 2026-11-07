@@ -30,7 +30,6 @@ export function ProtectedImage({ showCopyright = false, fill, className, ...prop
         draggable={false}
         onDragStart={(e) => e.preventDefault()}
         onContextMenu={(e) => e.preventDefault()}
-        unoptimized
       />
       {showCopyright && (
         <div

@@ -5,9 +5,11 @@ import { Link } from '@/i18n/navigation';
 import { Calendar, Clock, User, ChevronRight, ArrowLeft } from 'lucide-react';
 import JsonLd from '@/components/seo/JsonLd';
 import BlogSidebarClient from '@/components/blog/BlogSidebarClient';
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase/server';
 import type { Metadata } from 'next';
 import { getBrandConfig } from '@/lib/brand';
+import { buildPageAlternates } from '@/lib/seo';
+import { localizeTourList } from '@/lib/tours-i18n';
 
 interface PageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -41,8 +43,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const postExcerpt = t(`posts.${matchedIdx}.excerpt`);
   
   const postImages = [
-    '/imagenes/hero-machupicchu.png?v=2',
-    '/imagenes/tren-machupicchu.png?v=2',
+    '/imagenes/hero-machupicchu.png',
+    '/imagenes/tren-machupicchu.png',
     '/tours/cusco/palcoyo-montana-de-colores-alternativa/01.png',
     '/tours/cusco/pachamanca-full-day/01.png',
   ];
@@ -52,7 +54,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const enSlug = await getSlugForLocale(matchedIdx, 'en');
 
   return {
-    title: `${postTitle} | ${brand.shortName} Blog`,
+    title: postTitle,
     description: postExcerpt.substring(0, 160),
     openGraph: {
       title: postTitle,
@@ -69,14 +71,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: postExcerpt,
       images: [imagePath],
     },
-    alternates: {
-      canonical: `${brand.domain}${locale === 'es' ? '' : '/en'}/blog/${slug}`,
-      languages: {
-        'es': `${brand.domain}/blog/${esSlug}`,
-        'en': `${brand.domain}/en/blog/${enSlug}`,
-        'x-default': `${brand.domain}/blog/${esSlug}`,
-      },
-    },
+    alternates: buildPageAlternates(locale, `/blog/${slug}`, {
+      es: `/blog/${esSlug}`,
+      en: `/blog/${enSlug}`,
+    }),
   };
 }
 
@@ -146,17 +144,14 @@ export default async function BlogPostPage({ params }: PageProps) {
   const postConclusion = t(`posts.${matchedIdx}.conclusion`);
 
   const postImages = [
-    '/imagenes/hero-machupicchu.png?v=2',
-    '/imagenes/tren-machupicchu.png?v=2',
+    '/imagenes/hero-machupicchu.png',
+    '/imagenes/tren-machupicchu.png',
     '/tours/cusco/palcoyo-montana-de-colores-alternativa/01.png',
     '/tours/cusco/pachamanca-full-day/01.png',
   ];
   const postImage = postImages[matchedIdx];
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = await createClient();
   const recommendedSlugs = [
     'machu-picchu-full-day',
     'valle-sagrado-vip',
@@ -169,7 +164,8 @@ export default async function BlogPostPage({ params }: PageProps) {
     .eq('is_active', true)
     .in('slug', recommendedSlugs);
 
-  const tours = (rawTours || []).sort((a, b) => {
+  const localizedTours = localizeTourList(rawTours || [], locale);
+  const tours = localizedTours.sort((a, b) => {
     return recommendedSlugs.indexOf(a.slug) - recommendedSlugs.indexOf(b.slug);
   });
 
@@ -252,7 +248,9 @@ export default async function BlogPostPage({ params }: PageProps) {
       {/* Breadcrumbs Navigation */}
       <div className="container mx-auto px-4 lg:px-8 py-4 max-w-6xl">
         <div className="flex items-center gap-2 text-xs text-text-light font-light uppercase tracking-wider mb-6">
-          <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+          <Link href="/" className="hover:text-primary transition-colors">
+            {locale === 'en' ? 'Home' : 'Inicio'}
+          </Link>
           <ChevronRight className="w-3 h-3 text-gray-300" />
           <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
           <ChevronRight className="w-3 h-3 text-gray-300" />

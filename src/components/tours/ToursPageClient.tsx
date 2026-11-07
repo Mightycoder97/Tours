@@ -336,7 +336,7 @@ export default function ToursPageClient({
         {/* Background Image */}
         <div className="absolute inset-0 overflow-hidden">
           <Image
-            src="/imagenes/tren-machupicchu.png?v=2"
+            src="/imagenes/tren-machupicchu.png"
             alt="Tren a Machu Picchu"
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"

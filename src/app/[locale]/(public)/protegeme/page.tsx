@@ -13,6 +13,8 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 
+import { buildPageAlternates } from '@/lib/seo';
+
 export async function generateMetadata({
   params,
 }: {
@@ -25,11 +27,12 @@ export async function generateMetadata({
 
   return {
     title: isEn
-      ? `Child Protection & Anti-ESNNA Compliance Notice | ${brand.name}`
-      : `Prevención de la ESNNA — Código de Conducta y Protección al Menor | ${brand.name}`,
+      ? `Child Protection & Anti-ESNNA Compliance Notice`
+      : `Prevención de la ESNNA — Código de Conducta y Protección al Menor`,
     description: isEn
       ? `Official child protection policy and zero-tolerance commitment against the Sexual Exploitation of Children and Adolescents (ESNNA) pursuant to Peruvian Law N° 29408 and R.M. N° 108-2020-MINCETUR.`
       : `Política oficial de protección a menores y compromiso institucional de tolerancia cero frente a la Explotación Sexual de Niñas, Niños y Adolescentes (ESNNA) conforme a la Ley N° 29408 y R.M. N° 108-2020-MINCETUR.`,
+    alternates: buildPageAlternates(locale, '/protegeme'),
   };
 }
 

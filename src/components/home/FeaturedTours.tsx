@@ -1,10 +1,12 @@
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import FeaturedToursTabs from './FeaturedToursTabs';
+import { localizeTourList } from '@/lib/tours-i18n';
 
 export default async function FeaturedTours() {
+  const locale = await getLocale();
   const t = await getTranslations('home.featured');
   const supabase = await createClient();
   
@@ -14,7 +16,7 @@ export default async function FeaturedTours() {
     .select('id, slug, title, description, image_url, price_adult, tag')
     .eq('is_active', true);
     
-  const displayTours = tours || [];
+  const displayTours = localizeTourList(tours || [], locale);
 
   const heroTitle = t('defaultTitle');
   const heroSubtitle = t('defaultSubtitle');

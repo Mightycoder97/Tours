@@ -4,6 +4,8 @@ import { Link } from '@/i18n/navigation';
 import { getBrandConfig } from '@/lib/brand';
 import { RefreshCw, Clock, AlertTriangle, Phone, Mail, MapPin, FileText, BookOpen, ShieldCheck } from 'lucide-react';
 
+import { buildPageAlternates } from '@/lib/seo';
+
 export async function generateMetadata({
   params,
 }: {
@@ -14,8 +16,9 @@ export async function generateMetadata({
   const tMeta = await getTranslations({ locale, namespace: 'meta.returnsPage' });
   const brand = getBrandConfig();
   return {
-    title: `${tMeta('title')} | ${brand.name}`,
+    title: tMeta('title'),
     description: `${tMeta('description')} (${brand.legalName} — RUC ${brand.ruc}).`,
+    alternates: buildPageAlternates(locale, '/cambios-y-devoluciones'),
   };
 }
 

@@ -3,6 +3,8 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getBrandConfig } from '@/lib/brand';
 import { Link } from '@/i18n/navigation';
 
+import { buildPageAlternates } from '@/lib/seo';
+
 export async function generateMetadata({
   params,
 }: {
@@ -13,8 +15,9 @@ export async function generateMetadata({
   const tMeta = await getTranslations({ locale, namespace: 'meta.privacyPage' });
   const brand = getBrandConfig();
   return {
-    title: `${tMeta('title')} | ${brand.name}`,
+    title: tMeta('title'),
     description: `${tMeta('description')} (${brand.legalName} — RUC ${brand.ruc}).`,
+    alternates: buildPageAlternates(locale, '/politicas'),
   };
 }
 

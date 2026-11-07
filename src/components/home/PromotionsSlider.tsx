@@ -47,7 +47,7 @@ export default function PromotionsSlider() {
 
   const promoCards = [
     {
-      bgImage: '/imagenes/manu-ecology.png?v=2',
+      bgImage: '/imagenes/manu-ecology.png',
       tagKey: 'cards.0.tag',
       titleKey: 'cards.0.title',
       descKey: 'cards.0.description',
@@ -55,7 +55,7 @@ export default function PromotionsSlider() {
       link: '/tours?coupon=MAGIA10',
     },
     {
-      bgImage: '/imagenes/tren-machupicchu.png?v=2',
+      bgImage: '/imagenes/tren-machupicchu.png',
       tagKey: 'cards.1.tag',
       titleKey: 'cards.1.title',
       descKey: 'cards.1.description',
@@ -63,7 +63,7 @@ export default function PromotionsSlider() {
       link: '/tours',
     },
     {
-      bgImage: '/imagenes/salkantay-trek.png?v=2',
+      bgImage: '/imagenes/salkantay-trek.png',
       tagKey: 'cards.2.tag',
       titleKey: 'cards.2.title',
       descKey: 'cards.2.description',

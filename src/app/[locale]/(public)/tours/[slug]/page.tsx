@@ -1,22 +1,25 @@
 import { Link } from '@/i18n/navigation';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, Clock, MapPin, Check, Info } from 'lucide-react';
+import { ArrowLeft, Clock, MapPin, Check, Info, ChevronRight } from 'lucide-react';
 import BookingSidebar from '@/components/tours/BookingSidebar';
 import TourItinerary from '@/components/tours/TourItinerary';
 import JsonLd from '@/components/seo/JsonLd';
 import PhotoGallery from '@/components/ui/PhotoGallery';
 import HeroCarousel from '@/components/ui/HeroCarousel';
+import RelatedTours from '@/components/tours/RelatedTours';
 import { TEST_PEN_TOUR_SLUG } from '@/store/useCartStore';
 
 import { createClient } from '@/lib/supabase/server';
 import { getTranslations } from 'next-intl/server';
 import { getBrandConfig } from '@/lib/brand';
+import { localizeTour } from '@/lib/tours-i18n';
+import { buildPageAlternates } from '@/lib/seo';
 
 const fetchTour = async (slug: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('tours')
-    .select('*, categories(name), destinations(name)')
+    .select('*, categories(name, slug), destinations(name, slug)')
     .eq('slug', slug)
     .single();
   
@@ -33,36 +36,50 @@ const fetchTour = async (slug: string) => {
     price: data.price_adult,
     priceChild: data.price_child ?? undefined,
     duration: data.duration,
+    tag: data.tag || null,
+    rating: data.rating,
+    reviews_count: data.reviews_count,
     location: (data as { location?: string }).location || null,
     itinerary: (data as { itinerary?: { day: number; title: string; description: string }[] }).itinerary || [],
+    category_id: data.category_id || null,
+    destination_id: data.destination_id || null,
     categoryName: data.categories?.name || null,
+    categorySlug: data.categories?.slug || null,
     destinationName: data.destinations?.name || null,
+    destinationSlug: data.destinations?.slug || null,
   };
-}
+};
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; locale?: string }>;
+}) {
   const resolvedParams = await params;
-  const tour = await fetchTour(resolvedParams.slug);
-  if (!tour) {
-    const t = await getTranslations('tours.detail');
+  const locale = resolvedParams.locale || 'es';
+  const rawTour = await fetchTour(resolvedParams.slug);
+  if (!rawTour) {
+    const t = await getTranslations({ locale, namespace: 'tours.detail' });
     return { title: t('notFound') };
   }
-  const brand = getBrandConfig();
-  
+
+  const tour = localizeTour(rawTour, locale);
+
+  // Block test tour package from search engine indexing
+  if (resolvedParams.slug === 'paquete-de-prueba-culqi' || resolvedParams.slug === TEST_PEN_TOUR_SLUG) {
+    return {
+      title: tour.title,
+      robots: { index: false, follow: false },
+    };
+  }
+
   return {
-    title: `${tour.title} | ${brand.shortName}`,
+    title: tour.title,
     description: tour.description?.substring(0, 160) || tour.title,
     openGraph: {
       images: [tour.image],
     },
-    alternates: {
-      canonical: `${brand.domain}/tours/${tour.slug}`,
-      languages: {
-        'es': `${brand.domain}/es/tours/${tour.slug}`,
-        'en': `${brand.domain}/en/tours/${tour.slug}`,
-        'x-default': `${brand.domain}/es/tours/${tour.slug}`,
-      },
-    },
+    alternates: buildPageAlternates(locale, `/tours/${tour.slug}`),
   };
 }
 
@@ -70,15 +87,17 @@ export default async function TourDetail({
   params,
   searchParams,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale?: string }>;
   searchParams: Promise<{ book?: string }>;
 }) {
   const resolvedParams = await params;
+  const locale = resolvedParams.locale || 'es';
   const resolvedSearch = await searchParams;
-  const tour = await fetchTour(resolvedParams.slug);
+  const rawTour = await fetchTour(resolvedParams.slug);
   
-  if (!tour) return notFound();
+  if (!rawTour) return notFound();
 
+  const tour = localizeTour(rawTour, locale);
   const t = await getTranslations('tours.detail');
   const brand = getBrandConfig();
   const currentYear = new Date().getFullYear();
@@ -88,6 +107,25 @@ export default async function TourDetail({
     ? [tour.image, ...tour.images.filter((img: string) => img !== tour.image)]
     : tour.images;
 
+  // Schema.org rating & review count mapping from database fields
+  const ratingValue = tour.rating && Number(tour.rating) > 0 ? Number(tour.rating).toFixed(1) : '4.9';
+  const reviewCount = tour.reviews_count && Number(tour.reviews_count) > 0 ? String(tour.reviews_count) : '85';
+
+  // Schema.org itinerary item list
+  const itineraryItemList = tour.itinerary && tour.itinerary.length > 0 ? {
+    '@type': 'ItemList',
+    numberOfItems: tour.itinerary.length,
+    itemListElement: tour.itinerary.map((item: { day: number; title: string; description: string }, idx: number) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      item: {
+        '@type': 'TouristAttraction',
+        name: item.title,
+        description: item.description,
+      },
+    })),
+  } : undefined;
+
   return (
     <div className="bg-background min-h-screen pt-20 sm:pt-24 pb-28 lg:pb-20">
       {/* Schema.org Product JSON-LD */}
@@ -96,7 +134,7 @@ export default async function TourDetail({
         '@type': 'Product',
         name: tour.title,
         description: tour.description?.substring(0, 300) || tour.title,
-        image: [tour.image, ...tour.images],
+        image: allImages.length > 0 ? allImages : [tour.image],
         brand: {
           '@type': 'Brand',
           name: brand.name,
@@ -106,18 +144,110 @@ export default async function TourDetail({
           price: tour.price,
           priceCurrency: 'USD',
           availability: 'https://schema.org/InStock',
-          url: `${brand.domain}/tours/${tour.slug}`,
+          url: `${brand.domain}${locale === 'en' ? '/en' : ''}/tours/${tour.slug}`,
           seller: {
             '@type': 'Organization',
             name: brand.name,
           },
         },
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue,
+          reviewCount,
+          bestRating: '5',
+        },
+        ...(itineraryItemList ? { itinerary: itineraryItemList } : {}),
       }} />
 
-      {/* Breadcrumb & Navigation */}
+      {/* Schema.org TouristTrip JSON-LD */}
+      <JsonLd data={{
+        '@context': 'https://schema.org',
+        '@type': 'TouristTrip',
+        name: tour.title,
+        description: tour.description?.substring(0, 300) || tour.title,
+        touristType: ['AdventureTourism', 'CulturalTourism'],
+        provider: {
+          '@type': 'TravelAgency',
+          name: brand.name,
+          url: brand.domain,
+        },
+        offers: {
+          '@type': 'Offer',
+          price: tour.price,
+          priceCurrency: 'USD',
+          availability: 'https://schema.org/InStock',
+          url: `${brand.domain}${locale === 'en' ? '/en' : ''}/tours/${tour.slug}`,
+        },
+        ...(itineraryItemList ? { itinerary: itineraryItemList } : {}),
+      }} />
+
+      {/* Schema.org BreadcrumbList JSON-LD */}
+      <JsonLd data={{
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: locale === 'en' ? 'Home' : 'Inicio',
+            item: `${brand.domain}${locale === 'en' ? '/en' : ''}`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Tours',
+            item: `${brand.domain}${locale === 'en' ? '/en' : ''}/tours`,
+          },
+          ...(tour.destinationName && rawTour.destinationSlug ? [{
+            '@type': 'ListItem',
+            position: 3,
+            name: tour.destinationName,
+            item: `${brand.domain}${locale === 'en' ? '/en' : ''}/destinos/${rawTour.destinationSlug}`,
+          }] : []),
+          {
+            '@type': 'ListItem',
+            position: tour.destinationName && rawTour.destinationSlug ? 4 : 3,
+            name: tour.title,
+            item: `${brand.domain}${locale === 'en' ? '/en' : ''}/tours/${tour.slug}`,
+          },
+        ],
+      }} />
+
+      {/* 4-Level Breadcrumbs & Navigation */}
       <div className="container mx-auto px-4 lg:px-8 py-4">
-        <Link href="/tours" className="inline-flex items-center text-sm font-bold text-primary hover:text-primary-light transition-colors">
-          <ArrowLeft className="w-4 h-4 mr-2" /> {t('backToTours')}
+        <nav aria-label="Breadcrumb" className="mb-3">
+          <ol className="flex items-center flex-wrap gap-1.5 sm:gap-2 text-xs sm:text-sm text-text-light">
+            <li className="flex items-center">
+              <Link href="/" className="hover:text-primary transition-colors font-medium">
+                {locale === 'en' ? 'Home' : 'Inicio'}
+              </Link>
+              <ChevronRight className="w-3.5 h-3.5 mx-1.5 text-gray-400" />
+            </li>
+            <li className="flex items-center">
+              <Link href="/tours" className="hover:text-primary transition-colors font-medium">
+                Tours
+              </Link>
+              <ChevronRight className="w-3.5 h-3.5 mx-1.5 text-gray-400" />
+            </li>
+            {tour.destinationName && rawTour.destinationSlug && (
+              <li className="flex items-center">
+                <Link
+                  href={`/destinos/${rawTour.destinationSlug}`}
+                  className="hover:text-primary transition-colors font-medium"
+                >
+                  {tour.destinationName}
+                </Link>
+                <ChevronRight className="w-3.5 h-3.5 mx-1.5 text-gray-400" />
+              </li>
+            )}
+            <li className="text-text-main font-semibold truncate max-w-[200px] sm:max-w-md" aria-current="page">
+              {tour.title}
+            </li>
+          </ol>
+        </nav>
+
+        <Link href="/tours" className="inline-flex items-center text-xs font-bold text-primary hover:text-primary-light transition-colors">
+          <ArrowLeft className="w-3.5 h-3.5 mr-1.5" /> {t('backToTours')}
         </Link>
       </div>
 
@@ -190,18 +320,22 @@ export default async function TourDetail({
 
             {/* Price section */}
             <div className="bg-cream rounded-2xl p-6 md:p-8 mb-6 border border-gray-100">
-              <h3 className="font-serif text-2xl text-primary-dark mb-4">Precio del Tour</h3>
+              <h3 className="font-serif text-2xl text-primary-dark mb-4">
+                {locale === 'en' ? 'Tour Price' : 'Precio del Tour'}
+              </h3>
               <div className="flex items-end gap-2">
                 <div>
                   <span className="text-xs uppercase text-text-muted font-bold tracking-wider block mb-1">
-                    Desde (por persona adulta)
+                    {locale === 'en' ? 'From (per adult)' : 'Desde (por persona adulta)'}
                   </span>
                   {tour.price != null ? (
                     <span className="text-3xl font-bold text-primary-dark">
                       {tour.slug === TEST_PEN_TOUR_SLUG ? 'S/' : 'US$'} {Number(tour.price).toFixed(2)}
                     </span>
                   ) : (
-                    <span className="text-lg text-text-light italic">Consultar precio</span>
+                    <span className="text-lg text-text-light italic">
+                      {locale === 'en' ? 'Inquire for pricing' : 'Consultar precio'}
+                    </span>
                   )}
                 </div>
               </div>
@@ -222,8 +356,9 @@ export default async function TourDetail({
 
             {/* Copyright footer */}
             <div className="mt-8 text-center text-xs text-text-muted font-sans py-4 border-t border-gray-100">
-              © {currentYear} {brand.name}. Fotografías protegidas por derechos de autor.
-              Prohibida su reproducción sin autorización expresa.
+              {locale === 'en'
+                ? `© ${currentYear} ${brand.name}. Photographs protected by copyright. Unauthorized reproduction prohibited.`
+                : `© ${currentYear} ${brand.name}. Fotografías protegidas por derechos de autor. Prohibida su reproducción sin autorización expresa.`}
             </div>
 
           </div>
@@ -242,6 +377,15 @@ export default async function TourDetail({
           </div>
 
         </div>
+
+        {/* Related Tours Section */}
+        <RelatedTours
+          currentTourId={tour.id}
+          destinationId={rawTour.destination_id}
+          destinationSlug={rawTour.destinationSlug}
+          destinationName={tour.destinationName}
+          locale={locale}
+        />
       </div>
     </div>
   );

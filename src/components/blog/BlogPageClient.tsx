@@ -33,10 +33,10 @@ export default function BlogPageClient({ tours }: BlogPageClientProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const fadeImages = [
-    '/imagenes/hero-machupicchu.png?v=2',
-    '/imagenes/hero-machupicchu-1.png?v=2',
-    '/imagenes/hero-camino-inca.png?v=2',
-    '/imagenes/tren-machupicchu.png?v=2'
+    '/imagenes/hero-machupicchu.png',
+    '/imagenes/hero-machupicchu-1.png',
+    '/imagenes/hero-camino-inca.png',
+    '/imagenes/tren-machupicchu.png'
   ];
 
   useEffect(() => {
@@ -48,8 +48,8 @@ export default function BlogPageClient({ tours }: BlogPageClientProps) {
 
   // Mapped local images for the 4 blog posts (to remove remote Unsplash images)
   const postImages = [
-    '/imagenes/hero-machupicchu.png?v=2', // Post 0
-    '/imagenes/tren-machupicchu.png?v=2', // Post 1
+    '/imagenes/hero-machupicchu.png', // Post 0
+    '/imagenes/tren-machupicchu.png', // Post 1
     '/tours/cusco/palcoyo-montana-de-colores-alternativa/01.png', // Post 2
     '/tours/cusco/pachamanca-full-day/01.png', // Post 3
   ];

@@ -3,11 +3,20 @@ import { Link } from '@/i18n/navigation';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('meta');
+import { buildPageAlternates } from '@/lib/seo';
+
+export async function generateMetadata({
+  params,
+}: {
+  params?: Promise<{ locale?: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = params ? await params : undefined;
+  const locale = resolvedParams?.locale || 'es';
+  const t = await getTranslations({ locale, namespace: 'meta' });
   return {
     title: t('routesPage.title'),
     description: t('routesPage.description'),
+    alternates: buildPageAlternates(locale, '/rutas'),
   };
 }
 

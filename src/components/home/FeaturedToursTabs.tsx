@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import FeaturedToursGrid from './FeaturedToursGrid';
+import { useTranslations } from 'next-intl';
 
 interface Tour {
   id: string;
@@ -19,6 +20,7 @@ interface FeaturedToursTabsProps {
 
 export default function FeaturedToursTabs({ tours }: FeaturedToursTabsProps) {
   const [activeTab, setActiveTab] = useState<'recommended' | 'individual' | 'promotions'>('recommended');
+  const t = useTranslations('home.featured.tabs');
   
   // Filter tours based on active tab
   const getFilteredTours = () => {
@@ -68,7 +70,7 @@ export default function FeaturedToursTabs({ tours }: FeaturedToursTabsProps) {
               : 'border-transparent text-text-light hover:text-text-main'
           }`}
         >
-          PAQUETES RECOMENDADOS
+          {t('recommended')}
         </button>
         <button
           onClick={() => setActiveTab('individual')}
@@ -78,7 +80,7 @@ export default function FeaturedToursTabs({ tours }: FeaturedToursTabsProps) {
               : 'border-transparent text-text-light hover:text-text-main'
           }`}
         >
-          PAQUETES INDIVIDUALES
+          {t('individual')}
         </button>
         <button
           onClick={() => setActiveTab('promotions')}
@@ -88,7 +90,7 @@ export default function FeaturedToursTabs({ tours }: FeaturedToursTabsProps) {
               : 'border-transparent text-text-light hover:text-text-main'
           }`}
         >
-          PROMOCIONES
+          {t('promotions')}
         </button>
       </div>
 
