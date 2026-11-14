@@ -5,6 +5,9 @@ import { revalidatePath } from 'next/cache';
 
 export async function createCategory(formData: FormData) {
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Unauthorized');
+
   const name = formData.get('name');
   const slug = formData.get('slug');
 
@@ -18,6 +21,9 @@ export async function createCategory(formData: FormData) {
 
 export async function deleteCategory(id: string) {
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Unauthorized');
+
   const { error } = await supabase.from('categories').delete().eq('id', id);
   if (error) return { error: error.message };
   

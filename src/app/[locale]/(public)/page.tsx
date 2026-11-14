@@ -8,7 +8,8 @@ import PromotionsSlider from '@/components/home/PromotionsSlider';
 import JsonLd from '@/components/seo/JsonLd';
 import { getTranslations } from 'next-intl/server';
 import { getBrandConfig } from '@/lib/brand';
-
+import { createClient } from '@/lib/supabase/server';
+import { parseHeroSlidesJson, getFallbackHeroSlides, HeroSlide } from '@/lib/visual-assets';
 
 import type { Metadata } from 'next';
 import { buildPageAlternates } from '@/lib/seo';
@@ -36,6 +37,27 @@ export default async function Home() {
     brand.social.tiktok,
     brand.social.tripadvisor,
   ].filter(Boolean);
+
+  // Dynamically query hero slider banners configured in CMS for this brand
+  const supabase = await createClient();
+  const { data: heroSetting } = await supabase
+    .from('site_settings')
+    .select('value')
+    .eq('tenant', brand.id)
+    .eq('key', 'home_hero_slides')
+    .maybeSingle();
+
+  let heroSlides: HeroSlide[] = getFallbackHeroSlides(brand.id);
+  if (heroSetting?.value) {
+    try {
+      const parsed = parseHeroSlidesJson(heroSetting.value);
+      if (parsed.length > 0) {
+        heroSlides = parsed;
+      }
+    } catch (e) {
+      console.error('Error parsing hero slides for brand:', brand.id, e);
+    }
+  }
 
   return (
     <main>
@@ -100,7 +122,7 @@ export default async function Home() {
           },
         })),
       }} />
-      <Hero />
+      <Hero slides={heroSlides} />
       <div className="h-6 sm:h-8 xl:h-36"></div>
 
       {/* SEO Content Block */}

@@ -142,10 +142,16 @@ export const BRANDS: Record<BrandId, BrandConfig> = {
 export const DEFAULT_BRAND_ID: BrandId = 'mta';
 
 export function getBrandConfig(tenantOverride?: string | null): BrandConfig {
-  const raw = (tenantOverride || process.env.NEXT_PUBLIC_BRAND_TENANT || DEFAULT_BRAND_ID)
-    .toLowerCase()
-    .trim();
-  if (raw === 'sonqo') {
+  let raw = tenantOverride;
+  if (!raw && typeof document !== 'undefined') {
+    const dataBrand = document.documentElement?.getAttribute('data-brand');
+    if (dataBrand) raw = dataBrand;
+  }
+  if (!raw) {
+    raw = process.env.NEXT_PUBLIC_BRAND_TENANT || DEFAULT_BRAND_ID;
+  }
+  const clean = raw.toLowerCase().trim();
+  if (clean === 'sonqo') {
     return BRANDS.sonqo;
   }
   return BRANDS.mta;

@@ -5,6 +5,8 @@ import { revalidatePath } from 'next/cache';
 
 export async function createAvailabilitySlots(formData: FormData) {
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Unauthorized');
   
   const tourId = formData.get('tour_id')?.toString();
   const startDate = formData.get('start_date')?.toString();
@@ -14,6 +16,17 @@ export async function createAvailabilitySlots(formData: FormData) {
 
   if (!tourId || !startDate || !endDate) {
     return { error: 'Tour, fecha inicio y fecha fin son requeridos.' };
+  }
+
+  // Verify that the tour exists
+  const { data: tour, error: tourError } = await supabase
+    .from('tours')
+    .select('id, tenant')
+    .eq('id', tourId)
+    .single();
+
+  if (tourError || !tour) {
+    return { error: 'El tour especificado no existe.' };
   }
 
   // Generate all dates in range
@@ -51,6 +64,8 @@ export async function createAvailabilitySlots(formData: FormData) {
 
 export async function updateAvailabilitySlot(id: string, formData: FormData) {
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Unauthorized');
   
   const maxCapacity = parseInt(formData.get('max_capacity')?.toString() || '20');
   const isActive = formData.get('is_active') === 'on';
@@ -70,6 +85,8 @@ export async function updateAvailabilitySlot(id: string, formData: FormData) {
 
 export async function deleteAvailabilitySlot(id: string) {
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Unauthorized');
   
   const { error } = await supabase
     .from('tour_availability')
@@ -86,6 +103,8 @@ export async function deleteAvailabilitySlot(id: string) {
 
 export async function bulkDeleteAvailability(tourId: string) {
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Unauthorized');
   
   // Only delete future, un-booked slots
   const today = new Date().toISOString().split('T')[0];

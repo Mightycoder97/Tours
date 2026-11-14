@@ -2,8 +2,10 @@ import { createClient } from '@/lib/supabase/server';
 import TourForm from '@/components/admin/TourForm';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { getAdminActiveBrand } from '@/lib/admin-brand';
 
 export default async function NewTourPage() {
+  const activeBrand = await getAdminActiveBrand();
   const supabase = await createClient();
   
   const { data: categories } = await supabase.from('categories').select('*').order('name');
@@ -24,6 +26,7 @@ export default async function NewTourPage() {
       <TourForm 
         categories={categories || []} 
         destinations={destinations || []} 
+        activeBrand={activeBrand}
       />
     </div>
   );

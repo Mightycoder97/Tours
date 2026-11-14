@@ -5,6 +5,7 @@ import { buildPageAlternates } from '@/lib/seo';
 import { localizeTourList } from '@/lib/tours-i18n';
 import { localizeCategoryName } from '@/data/categories-i18n';
 import { localizeDestinationName } from '@/data/destinations-i18n';
+import { getBrandConfig } from '@/lib/brand';
 
 export async function generateMetadata({
   params,
@@ -33,11 +34,13 @@ export default async function ToursPage({ params, searchParams }: ToursPageProps
   const locale = resolvedParams?.locale || 'es';
   const resolvedSearchParams = await searchParams;
 
+  const brand = getBrandConfig();
   const supabase = await createClient();
   const { data: rawTours } = await supabase
     .from('tours')
     .select('*, categories(name), destinations(name)')
     .eq('is_active', true)
+    .eq('tenant', brand.id)
     .order('created_at', { ascending: true });
   const { data: rawCategories } = await supabase.from('categories').select('*').order('name');
   const { data: rawDestinations } = await supabase.from('destinations').select('*').order('name');

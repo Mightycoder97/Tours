@@ -4,6 +4,7 @@ import TourCard from '@/components/tours/TourCard';
 import { Link } from '@/i18n/navigation';
 import { ArrowRight, Compass } from 'lucide-react';
 import { TEST_PEN_TOUR_SLUG } from '@/store/useCartStore';
+import { getBrandConfig } from '@/lib/brand';
 
 interface RelatedToursProps {
   currentTourId: string;
@@ -20,13 +21,15 @@ export default async function RelatedTours({
   destinationName,
   locale = 'es',
 }: RelatedToursProps) {
+  const brand = getBrandConfig();
   const supabase = await createClient();
 
-  // 1. Fetch complementary tours in the same destination (excluding current tour & test tour)
+  // 1. Fetch complementary tours in the same destination (excluding current tour & test tour, scoped to active brand)
   let query = supabase
     .from('tours')
     .select('*, categories(name), destinations(name)')
     .eq('is_active', true)
+    .eq('tenant', brand.id)
     .neq('id', currentTourId)
     .neq('slug', TEST_PEN_TOUR_SLUG)
     .order('rating', { ascending: false });
@@ -39,13 +42,14 @@ export default async function RelatedTours({
 
   let finalTours = destTours || [];
 
-  // Fallback: if fewer than 3 tours in this destination, pull other top-rated tours
+  // Fallback: if fewer than 3 tours in this destination, pull other top-rated tours of the same brand
   if (finalTours.length < 3) {
     const existingIds = [currentTourId, ...finalTours.map((t) => t.id)];
     const { data: fallbackTours } = await supabase
       .from('tours')
       .select('*, categories(name), destinations(name)')
       .eq('is_active', true)
+      .eq('tenant', brand.id)
       .not('id', 'in', `(${existingIds.join(',')})`)
       .neq('slug', TEST_PEN_TOUR_SLUG)
       .order('rating', { ascending: false })

@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import AdminSidebar from '@/components/admin/AdminSidebar';
+import { getAdminActiveBrand } from '@/lib/admin-brand';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -10,9 +11,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     redirect('/login');
   }
 
+  const activeBrand = await getAdminActiveBrand();
+
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
-      <AdminSidebar userEmail={user.email || ''} />
+      <AdminSidebar userEmail={user.email || ''} activeBrand={activeBrand} />
       
       {/* Main Content Area */}
       <main className="flex-1 overflow-auto">

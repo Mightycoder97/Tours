@@ -4,17 +4,20 @@ import { createClient } from '@/lib/supabase/server';
 import { getLocale, getTranslations } from 'next-intl/server';
 import FeaturedToursTabs from './FeaturedToursTabs';
 import { localizeTourList } from '@/lib/tours-i18n';
+import { getBrandConfig } from '@/lib/brand';
 
 export default async function FeaturedTours() {
   const locale = await getLocale();
   const t = await getTranslations('home.featured');
+  const brand = getBrandConfig();
   const supabase = await createClient();
   
   // Fetch all active tours to categorize them in client-side tabs
   const { data: tours } = await supabase
     .from('tours')
     .select('id, slug, title, description, image_url, price_adult, tag')
-    .eq('is_active', true);
+    .eq('is_active', true)
+    .eq('tenant', brand.id);
     
   const displayTours = localizeTourList(tours || [], locale);
 

@@ -2,13 +2,18 @@
 
 import BookingWidget from '@/components/home/BookingWidget';
 import HeroSlider from '@/components/home/HeroSlider';
+import { HeroSlide } from '@/lib/visual-assets';
 
-export default function Hero() {
+interface HeroProps {
+  slides?: HeroSlide[];
+}
+
+export default function Hero({ slides }: HeroProps) {
   return (
     <section className="relative xl:h-[90vh] xl:min-h-[750px] w-full mt-[-80px] flex flex-col">
       {/* Hero Slider */}
       <div className="relative h-[65vh] sm:h-[75vh] md:h-[80vh] xl:h-full xl:min-h-[750px] w-full">
-        <HeroSlider />
+        <HeroSlider slides={slides} />
       </div>
 
       {/* Floating Booking Widget */}

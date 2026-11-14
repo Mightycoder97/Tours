@@ -48,7 +48,8 @@ next-env.d.ts
 # Archivos generados por scripts (el SQL sí va al repo)
 /scripts/tour-photos-map.json
 
-# Scratch folder
+# Coordination & scratch folders
+.agents/
+/.agents/
 /scratch
 /scratch/
-/.agents/teamwork/

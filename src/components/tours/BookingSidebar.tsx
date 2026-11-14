@@ -15,11 +15,21 @@ interface BookingSidebarProps {
   tourSlug: string;
   priceAdult: number;
   priceChild?: number;
+  priceInfant?: number;
   imageUrl: string;
   autoOpen?: boolean;
 }
 
-export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult, priceChild: priceChildProp, imageUrl, autoOpen }: BookingSidebarProps) {
+export default function BookingSidebar({ 
+  tourId, 
+  tourName, 
+  tourSlug, 
+  priceAdult, 
+  priceChild: priceChildProp, 
+  priceInfant: priceInfantProp,
+  imageUrl, 
+  autoOpen 
+}: BookingSidebarProps) {
   const router = useRouter();
   const addItem = useCartStore((state) => state.addItem);
   const t = useTranslations('tours.booking');
@@ -228,6 +238,20 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
              >+</button>
            </div>
         </div>
+
+        {/* Infant Price Info */}
+        {priceInfantProp !== undefined && priceInfantProp !== null && (
+          <div className="text-xs text-text-light bg-gray-50 border border-gray-100 rounded-lg p-3 flex items-center justify-between">
+            <span className="font-medium text-text-main">
+              {locale === 'en' ? 'Infants (0-2 yrs):' : 'Bebés / Infantes (0-2 años):'}
+            </span>
+            <span className="font-bold text-primary">
+              {Number(priceInfantProp) === 0 
+                ? (locale === 'en' ? 'Free' : 'Gratis')
+                : `${displayCurrency} ${priceInfantProp}`}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -253,6 +277,14 @@ export default function BookingSidebar({ tourId, tourName, tourSlug, priceAdult,
               <span className="text-base sm:text-lg font-medium text-text-light mr-1">{displayCurrency}</span>
               {priceAdult}
             </div>
+            {priceInfantProp !== undefined && priceInfantProp !== null && (
+              <p className="text-xs text-text-light mt-1">
+                {locale === 'en' ? 'Infants (0-2 yrs): ' : 'Infantes (0-2 años): '}
+                <span className="font-semibold text-primary">
+                  {Number(priceInfantProp) === 0 ? (locale === 'en' ? 'Free' : 'Gratis') : `${displayCurrency} ${priceInfantProp}`}
+                </span>
+              </p>
+            )}
           </div>
         </div>
 

@@ -1,6 +1,6 @@
 import { Link } from '@/i18n/navigation';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, Clock, MapPin, Check, Info, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Clock, MapPin, Check, Info, ChevronRight, XCircle } from 'lucide-react';
 import BookingSidebar from '@/components/tours/BookingSidebar';
 import TourItinerary from '@/components/tours/TourItinerary';
 import JsonLd from '@/components/seo/JsonLd';
@@ -16,11 +16,13 @@ import { localizeTour } from '@/lib/tours-i18n';
 import { buildPageAlternates } from '@/lib/seo';
 
 const fetchTour = async (slug: string) => {
+  const brand = getBrandConfig();
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('tours')
     .select('*, categories(name, slug), destinations(name, slug)')
     .eq('slug', slug)
+    .eq('tenant', brand.id)
     .single();
   
   if (error || !data) return null;
@@ -31,16 +33,18 @@ const fetchTour = async (slug: string) => {
     slug: data.slug,
     description: data.description,
     inclusions: data.inclusions || [],
+    exclusions: data.exclusions || [],
     image: data.image_url,
     images: data.images || [],
     price: data.price_adult,
     priceChild: data.price_child ?? undefined,
+    priceInfant: data.price_infant != null ? Number(data.price_infant) : undefined,
     duration: data.duration,
     tag: data.tag || null,
     rating: data.rating,
     reviews_count: data.reviews_count,
     location: (data as { location?: string }).location || null,
-    itinerary: (data as { itinerary?: { day: number; title: string; description: string }[] }).itinerary || [],
+    itinerary: (Array.isArray(data.itinerary) && data.itinerary.length > 0) ? data.itinerary : [],
     category_id: data.category_id || null,
     destination_id: data.destination_id || null,
     categoryName: data.categories?.name || null,
@@ -292,19 +296,20 @@ export default async function TourDetail({
               <PhotoGallery images={allImages} altText={tour.title} />
             )}
 
-            {/* Description & Inclusions */}
+            {/* Description & Inclusions / Exclusions */}
             <div className="bg-white rounded-2xl p-5 sm:p-6 md:p-10 shadow-sm border border-gray-100 mb-6">
               <h2 className="font-serif text-3xl text-primary-dark mb-6">{t('tourDescription')}</h2>
               <p className="text-lg text-text-light leading-relaxed mb-10">
                 {tour.description}
               </p>
 
-              {tour.inclusions.length > 0 && (
+              {/* Inclusions */}
+              {tour.inclusions && tour.inclusions.length > 0 && (
                 <>
                   <h3 className="font-serif text-2xl text-primary-dark mb-6 flex items-center">
                     {t('whatIsIncluded')}
                   </h3>
-                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                     {tour.inclusions.map((item: string, idx: number) => (
                       <li key={idx} className="flex items-start text-text-main">
                         <div className="w-6 h-6 rounded-full bg-green-100 text-success flex items-center justify-center mr-3 mt-1 flex-shrink-0">
@@ -316,32 +321,76 @@ export default async function TourDetail({
                   </ul>
                 </>
               )}
+
+              {/* Exclusions */}
+              {tour.exclusions && tour.exclusions.length > 0 && (
+                <div className={tour.inclusions?.length > 0 ? "pt-8 border-t border-gray-100" : ""}>
+                  <h3 className="font-serif text-2xl text-primary-dark mb-6 flex items-center">
+                    <XCircle className="w-6 h-6 mr-3 text-red-500" />
+                    {locale === 'en' ? 'What is Not Included' : 'No Incluye'}
+                  </h3>
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {tour.exclusions.map((item: string, idx: number) => (
+                      <li key={idx} className="flex items-start text-text-main">
+                        <div className="w-6 h-6 rounded-full bg-red-50 text-red-500 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                          <XCircle className="w-4 h-4" />
+                        </div>
+                        <span className="font-medium text-lg leading-snug">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
 
-            {/* Price section */}
+            {/* 3-Tier Price Section */}
             <div className="bg-cream rounded-2xl p-6 md:p-8 mb-6 border border-gray-100">
               <h3 className="font-serif text-2xl text-primary-dark mb-4">
-                {locale === 'en' ? 'Tour Price' : 'Precio del Tour'}
+                {locale === 'en' ? 'Tour Pricing' : 'Precios del Tour'}
               </h3>
-              <div className="flex items-end gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div>
                   <span className="text-xs uppercase text-text-muted font-bold tracking-wider block mb-1">
-                    {locale === 'en' ? 'From (per adult)' : 'Desde (por persona adulta)'}
+                    {locale === 'en' ? 'Adult (per person)' : 'Adulto (por persona)'}
                   </span>
                   {tour.price != null ? (
-                    <span className="text-3xl font-bold text-primary-dark">
+                    <span className="text-2xl sm:text-3xl font-bold text-primary-dark">
                       {tour.slug === TEST_PEN_TOUR_SLUG ? 'S/' : 'US$'} {Number(tour.price).toFixed(2)}
                     </span>
                   ) : (
-                    <span className="text-lg text-text-light italic">
+                    <span className="text-sm text-text-light italic">
                       {locale === 'en' ? 'Inquire for pricing' : 'Consultar precio'}
                     </span>
                   )}
                 </div>
+
+                {tour.priceChild != null && (
+                  <div>
+                    <span className="text-xs uppercase text-text-muted font-bold tracking-wider block mb-1">
+                      {locale === 'en' ? 'Child (3-11 yrs)' : 'Niño (3-11 años)'}
+                    </span>
+                    <span className="text-2xl sm:text-3xl font-bold text-primary">
+                      {tour.slug === TEST_PEN_TOUR_SLUG ? 'S/' : 'US$'} {Number(tour.priceChild).toFixed(2)}
+                    </span>
+                  </div>
+                )}
+
+                {tour.priceInfant != null && (
+                  <div>
+                    <span className="text-xs uppercase text-text-muted font-bold tracking-wider block mb-1">
+                      {locale === 'en' ? 'Infant (0-2 yrs)' : 'Infante (0-2 años)'}
+                    </span>
+                    <span className="text-2xl sm:text-3xl font-bold text-teal-600">
+                      {Number(tour.priceInfant) === 0 
+                        ? (locale === 'en' ? 'Free' : 'Gratis')
+                        : `${tour.slug === TEST_PEN_TOUR_SLUG ? 'S/' : 'US$'} ${Number(tour.priceInfant).toFixed(2)}`}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Itinerary */}
+            {/* Dynamic Itinerary (DB with fallback) */}
             <TourItinerary items={tour.itinerary} />
             
             {/* Additional Info */}
@@ -371,6 +420,7 @@ export default async function TourDetail({
               tourSlug={tour.slug}
               priceAdult={tour.price}
               priceChild={tour.priceChild}
+              priceInfant={tour.priceInfant}
               imageUrl={tour.image}
               autoOpen={resolvedSearch.book === 'true'}
             />
@@ -378,7 +428,7 @@ export default async function TourDetail({
 
         </div>
 
-        {/* Related Tours Section */}
+        {/* Related Tours Section (Brand-scoped) */}
         <RelatedTours
           currentTourId={tour.id}
           destinationId={rawTour.destination_id}

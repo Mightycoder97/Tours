@@ -7,17 +7,24 @@ import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { HeroSlide } from '@/lib/visual-assets';
 
-const slideImages = [
+const defaultStaticImages = [
   'https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=2600&auto=format&fit=crop',
   '/imagenes/hero-machupicchu-1.png',
   '/imagenes/hero-camino-inca.png',
 ];
 
-const slideCtaLinks = ['/tours', '/tours', '/tours'];
+const defaultStaticLinks = ['/tours', '/tours', '/tours'];
 
-export default function HeroSlider() {
+interface HeroSliderProps {
+  slides?: HeroSlide[];
+}
+
+export default function HeroSlider({ slides }: HeroSliderProps) {
   const t = useTranslations('home.hero');
+  const hasDynamicSlides = Array.isArray(slides) && slides.length > 0;
+
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, duration: 30 },
     [Autoplay({ delay: 6000, stopOnInteraction: false, stopOnMouseEnter: true })]
@@ -26,10 +33,86 @@ export default function HeroSlider() {
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
+  // If dynamic slides are provided, render them
+  if (hasDynamicSlides && slides) {
+    return (
+      <div className="relative w-full h-full select-none touch-pan-y" ref={emblaRef}>
+        <div className="flex h-full">
+          {slides.map((slide, index) => {
+            const isPriority = index === 0;
+
+            return (
+              <div key={index} className="relative flex-[0_0_100%] min-w-0 h-full">
+                <Image
+                  src={slide.image}
+                  alt={slide.title}
+                  fill
+                  className="object-cover"
+                  style={{ objectPosition: 'center calc(50% + 50px)' }}
+                  priority={isPriority}
+                  sizes="100vw"
+                  quality={85}
+                />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/40" />
+
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-serif text-white mb-4 sm:mb-6 tracking-wide drop-shadow-lg leading-tight max-w-4xl">
+                    {slide.title}
+                  </h2>
+                  {slide.subtitle && (
+                    <p className="text-base sm:text-lg md:text-2xl text-white/90 font-light max-w-2xl drop-shadow-md px-4 mb-8">
+                      {slide.subtitle}
+                    </p>
+                  )}
+                  {slide.link ? (
+                    <Link
+                      href={slide.link}
+                      className="bg-primary hover:bg-primary-dark text-white px-8 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg transition-all hover:shadow-xl hover:scale-105 inline-flex items-center gap-2"
+                    >
+                      {slide.cta || 'Ver Tours'}
+                    </Link>
+                  ) : slide.cta ? (
+                    <span className="bg-primary text-white px-8 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg inline-flex items-center gap-2 cursor-default">
+                      {slide.cta}
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Navigation arrows (shown when more than 1 slide) */}
+        {slides.length > 1 && (
+          <>
+            <button
+              onClick={scrollPrev}
+              className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/30 transition-all z-10"
+              aria-label={t('ariaLabels.previousSlide')}
+            >
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+            <button
+              onClick={scrollNext}
+              className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/30 transition-all z-10"
+              aria-label={t('ariaLabels.nextSlide')}
+            >
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+            <DotIndicators emblaApi={emblaApi} t={t} count={slides.length} />
+          </>
+        )}
+      </div>
+    );
+  }
+
+  // Fallback to static/translated slides
   return (
     <div className="relative w-full h-full select-none touch-pan-y" ref={emblaRef}>
       <div className="flex h-full">
-        {slideImages.map((image, index) => {
+        {defaultStaticImages.map((image, index) => {
           const title = t(`slides.${index}.title`);
           const titleAccent = t(`slides.${index}.titleAccent`);
           const titleSuffix = t(`slides.${index}.titleSuffix`);
@@ -62,7 +145,7 @@ export default function HeroSlider() {
                   {subtitle}
                 </p>
                 <Link
-                  href={slideCtaLinks[index]}
+                  href={defaultStaticLinks[index]}
                   className="bg-primary hover:bg-primary-dark text-white px-8 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg transition-all hover:shadow-xl hover:scale-105 inline-flex items-center gap-2"
                 >
                   {cta}
@@ -83,19 +166,27 @@ export default function HeroSlider() {
       </button>
       <button
         onClick={scrollNext}
-        className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/30 transition-all z-10"
+        className="absolute right-4 sm:left-8 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/30 transition-all z-10"
         aria-label={t('ariaLabels.nextSlide')}
       >
         <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
 
       {/* Dot indicators */}
-      <DotIndicators emblaApi={emblaApi} t={t} />
+      <DotIndicators emblaApi={emblaApi} t={t} count={defaultStaticImages.length} />
     </div>
   );
 }
 
-function DotIndicators({ emblaApi, t }: { emblaApi: ReturnType<typeof useEmblaCarousel>[1]; t: ReturnType<typeof useTranslations> }) {
+function DotIndicators({ 
+  emblaApi, 
+  t, 
+  count 
+}: { 
+  emblaApi: ReturnType<typeof useEmblaCarousel>[1]; 
+  t: ReturnType<typeof useTranslations>;
+  count?: number;
+}) {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
@@ -107,11 +198,11 @@ function DotIndicators({ emblaApi, t }: { emblaApi: ReturnType<typeof useEmblaCa
   }, [emblaApi]);
 
   if (!emblaApi) return null;
-  const count = emblaApi.scrollSnapList().length;
+  const snapCount = count ?? emblaApi.scrollSnapList().length;
 
   return (
     <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-      {Array.from({ length: count }).map((_, i) => (
+      {Array.from({ length: snapCount }).map((_, i) => (
         <button
           key={i}
           onClick={() => emblaApi.scrollTo(i)}

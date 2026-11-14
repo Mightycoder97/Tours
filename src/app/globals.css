@@ -39,6 +39,16 @@
   --radius-full: 9999px;
 }
 
+html[data-brand="sonqo"] {
+  --color-primary: #8B66E8;
+  --color-primary-light: #A485F0;
+  --color-primary-dark: #213E4C;
+  --color-footer-bg: #213E4C;
+  --color-accent: #8B66E8;
+  --color-accent-light: #A485F0;
+  --color-accent-dark: #6444B5;
+}
+
 @layer base {
   :root {
     --background: #ffffff;

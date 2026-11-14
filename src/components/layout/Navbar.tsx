@@ -5,13 +5,14 @@ import Image from 'next/image';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Menu, X, ShoppingCart, Mountain, Compass, ChevronDown,
-  Utensils, Footprints, Users, Landmark, TreePine, Waves,
+  Utensils, Footprints, Landmark, TreePine, Waves,
   Camera, Star, MapPin, Clock, Tent,
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { usePathname } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import LanguageSwitcher from './LanguageSwitcher';
+import { getBrandConfig } from '@/lib/brand';
 
 // ── Destinos reales de la empresa ─────────────────────────────────────────────
 const DESTINOS = [
@@ -112,6 +113,8 @@ export default function Navbar() {
   }, []);
 
   const isHome = pathname === '/';
+  const brand = getBrandConfig();
+  const isDarkNavbar = isScrolled || isHome;
 
   // Custom variables to determine navbar styling on scroll/page
   const headerBgClass = isScrolled
@@ -120,11 +123,10 @@ export default function Navbar() {
       ? 'bg-transparent text-white border-b border-transparent py-3'
       : 'bg-white/95 backdrop-blur-md text-primary border-b border-gray-100 py-3';
 
-  const logoFilterClass = isScrolled
-    ? 'brightness-0 invert'
-    : isHome
-      ? 'brightness-0 invert'
-      : 'brightness-0';
+  const logoSrc = isDarkNavbar ? brand.logo.darkBgSrc : brand.logo.lightBgSrc;
+  const logoFilterClass = isDarkNavbar
+    ? brand.logo.filterOnDark
+    : brand.logo.filterOnLight;
 
   const mobileToggleColorClass = isScrolled
     ? 'text-white hover:bg-white/10'
@@ -168,12 +170,12 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center">
-            <div className={`relative w-[58px] h-[58px] sm:w-[68px] sm:h-[68px] lg:w-[78px] lg:h-[78px] transition-all duration-300 ${logoFilterClass}`}>
+            <div className={`relative ${brand.logo.sizeClass} transition-all duration-300 ${logoFilterClass}`}>
               <Image
-                src="/imagenes/logo.png"
-                alt={t('ariaLabels.logo')}
+                src={logoSrc}
+                alt={brand.logo.alt || t('ariaLabels.logo')}
                 fill
-                sizes="(max-width: 640px) 58px, (max-width: 1024px) 68px, 78px"
+                sizes={brand.logo.sizesAttr}
                 className="object-contain"
                 priority
               />

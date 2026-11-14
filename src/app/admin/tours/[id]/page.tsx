@@ -3,9 +3,11 @@ import TourForm from '@/components/admin/TourForm';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { getAdminActiveBrand } from '@/lib/admin-brand';
 
 export default async function EditTourPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
+  const activeBrand = await getAdminActiveBrand();
   const supabase = await createClient();
   
   const { data: tour } = await supabase.from('tours').select('*').eq('id', params.id).single();
@@ -33,6 +35,7 @@ export default async function EditTourPage(props: { params: Promise<{ id: string
         tour={tour}
         categories={categories || []} 
         destinations={destinations || []} 
+        activeBrand={activeBrand}
       />
     </div>
   );
